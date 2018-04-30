@@ -1,0 +1,15 @@
+{
+  "name": "fullstackprojecttemplate",
+  "version": "1.0.0",
+  "description": "A template for building a new full stack javascript project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "boilerplate",
+    "template"
+  ],
+  "author": "Rian & Eric",
+  "license": "ISC"
+}
