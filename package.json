@@ -4,7 +4,8 @@
   "description": "A template for building a new full stack javascript project",
   "main": "index.js",
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "start-dev": "webpack -w & nodemon server"
   },
   "keywords": [
     "boilerplate",
@@ -16,6 +17,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
+    "nodemon": "^1.17.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.2.2"
