@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 const crypto = require('crypto')
+const _ = require('lodash')
 
 const User = db.define('user', {
   email: {
