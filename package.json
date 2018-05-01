@@ -18,13 +18,17 @@
     "express": "^4.16.3",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.3",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "sequelize": "^4.37.6",
+    "socket.io": "^2.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
