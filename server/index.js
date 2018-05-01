@@ -4,8 +4,19 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const db = require('./db')
 const socketio = require('socket.io')
+const session = require('express-session')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
+const passport = require('passport')
+const sessionStore = new SequelizeStore({ db })
 const app = express()
 const port = process.env.PORT || 8080
+
+//passport registration
+passport.serializeUser((user, done) => done(null, user.id))
+passport.deserializeUser((id, done) =>
+  db.models.user.findById(id)
+  .then(user => done(null, user))
+  .catch(done))
 
 const createApp = () => {
 
@@ -15,6 +26,16 @@ const createApp = () => {
   //body parsing middleware
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
+
+  //session middleware with passport
+  app.use(session({
+    secret: process.env.SESSION_SECRET || 'PLACEHOLDER SECRET',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+  }))
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   //server routes
   app.use('/api', require('./api'))
@@ -63,7 +84,8 @@ const syncDB = () => db.sync()
 
 
 if (require.main === module) {
-  syncDB()
+  sessionStore.sync()
+    .then(syncDB)
     .then(createApp)
     .then(startListening)
 } else {
