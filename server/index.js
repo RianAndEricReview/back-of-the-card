@@ -56,8 +56,8 @@ const createApp = () => {
   })
 
   //send index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '/public/index.html'))
   })
 
   //Error Handling

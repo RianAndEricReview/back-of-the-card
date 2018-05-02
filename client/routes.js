@@ -12,16 +12,18 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
+
     return (
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         {
-          isLoggedIn && <Switch>
+          isLoggedIn &&
+          <Switch>
             <Route path="/home" component={UserHome} />
           </Switch>
         }
-        <Route component={Login} />
+        <Route component={Signup} />
       </Switch>
     )
   }
