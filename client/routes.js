@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Route, Switch } from 'react-router-dom'
+import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Login, Signup, UserHome } from './components'
 import { meThunk } from './store'
@@ -23,7 +23,7 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
           </Switch>
         }
-        <Route component={Signup} />
+        <Route component={Login} />
       </Switch>
     )
   }

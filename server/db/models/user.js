@@ -50,8 +50,8 @@ User.encryptPassword = function(plainText, salt) {
 // Hooks
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
-    user.salt = user.generateSalt()
-    user.password = user.encryptPassword(user.password(), user.salt())
+    user.salt = User.generateSalt()
+    user.password = User.encryptPassword(user.password(), user.salt())
   }
 }
 
