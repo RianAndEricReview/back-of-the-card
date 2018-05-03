@@ -4,8 +4,11 @@
   "description": "A template for building a new full stack javascript project",
   "main": "index.js",
   "scripts": {
+    "build-client": "webpack",
+    "build-client-watch": "webpack -w",
     "start": "node server",
-    "start-dev": "webpack -w & nodemon server",
+    "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
+    "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
     "test": "NODE_ENV='test' mocha ./server/**/*.spec.js ./server/**/**/*.spec.js ./client/**/*.spec.js --require @babel/polyfill --require @babel/register"
   },
   "keywords": [
@@ -22,7 +25,6 @@
     "express-session": "^1.15.6",
     "lodash": "^4.17.10",
     "morgan": "^1.9.0",
-    "nodemon": "^1.17.3",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "pg": "^7.4.1",
@@ -47,6 +49,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
     "css-loader": "^0.28.11",
+    "nodemon": "^1.17.3",
     "redux-devtools-extension": "^2.13.2",
     "style-loader": "^0.21.0",
     "webpack": "^4.6.0",

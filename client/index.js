@@ -5,6 +5,7 @@ import store from './store'
 import { Router } from 'react-router-dom'
 import history from './history'
 import App from './app'
+import './socket'
 import '../index.css'
 
 ReactDOM.render(

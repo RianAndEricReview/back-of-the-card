@@ -7,6 +7,7 @@ const socketio = require('socket.io')
 const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const passport = require('passport')
+const compression = require ('compression')
 const sessionStore = new SequelizeStore({ db })
 const app = express()
 const port = process.env.PORT || 8080
@@ -28,6 +29,9 @@ const createApp = () => {
   //body parsing middleware
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
+
+    // compression middleware
+    app.use(compression())
 
   //session middleware with passport
   app.use(session({
