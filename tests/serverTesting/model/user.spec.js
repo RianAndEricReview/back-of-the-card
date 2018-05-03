@@ -6,10 +6,11 @@ describe('User routes', () => {
   beforeEach(() => db.sync({ force: true }))
 
   let bob
-  beforeEach(() => User.create({ email: 'bob@bob.bob', password: 'iambob' }))
+  beforeEach(() => User.create({ email: 'bob@bob.bob', password: 'iambob' })
     .then(user => {
       bob = user
     })
+  )
 
   describe('Instance methods', () => {
     describe('correctPassword', () => {
@@ -27,7 +28,7 @@ describe('User routes', () => {
     describe('generateSalt', () => {
 
       it('returns a salted password', () => {
-        expect(bob.salt).to.be.an('string')
+        expect(bob.salt()).to.be.an('string')
         expect(bob.salt).to.not.be.equal(bob.password)
       })
     })

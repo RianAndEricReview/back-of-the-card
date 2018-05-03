@@ -10,6 +10,7 @@ const passport = require('passport')
 const compression = require ('compression')
 const sessionStore = new SequelizeStore({ db })
 const app = express()
+module.exports = app
 const port = process.env.PORT || 8080
 
 if (process.env.NODE_ENV !== 'production') require('../secrets')

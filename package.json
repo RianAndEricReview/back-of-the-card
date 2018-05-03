@@ -9,7 +9,7 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' mocha ./server/**/*.spec.js ./server/**/**/*.spec.js ./client/**/*.spec.js --require @babel/polyfill --require @babel/register"
+    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/PLACEHOLDER_DB_NAME-test' mocha ./tests/**/**/*.spec.js --require babel-polyfill --require babel-register"
   },
   "keywords": [
     "boilerplate",
@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "compression": "^1.7.2",
     "connect-session-sequelize": "^5.2.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
