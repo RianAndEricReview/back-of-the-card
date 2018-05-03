@@ -1,8 +1,12 @@
 # fullStackProjectTemplate
 Basic template for starting new full stack projects built with:
+
 []Server: Express
+
 []Database: Postgres
+
 []ORM: Sequelize
+
 []Frontend: React and Redux
 
 Setup -->
