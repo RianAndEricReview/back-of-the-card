@@ -1,7 +1,7 @@
 {
-  "name": "fullstackprojecttemplate",
+  "name": "back-of-the-card",
   "version": "1.0.0",
-  "description": "A template for building a new full stack javascript project",
+  "description": "A baseball trivia game",
   "main": "index.js",
   "scripts": {
     "build-client": "webpack",
@@ -9,7 +9,7 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/PLACEHOLDER_DB_NAME-test' mocha ./tests/**/**/*.spec.js --require babel-polyfill --require babel-register"
+    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' mocha ./tests/**/**/*.spec.js --require babel-polyfill --require babel-register"
   },
   "keywords": [
     "boilerplate",

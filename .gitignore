@@ -1,4 +1,4 @@
 node_modules
 bundle.js
 bundle.js.map
-localSecrets.js
+secrets.js

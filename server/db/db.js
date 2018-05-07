@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-const db = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost:5432/PLACEHOLDER_DB_NAME', {
+const db = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost:5432/back_of_the_card', {
   logging: false
 })
 
