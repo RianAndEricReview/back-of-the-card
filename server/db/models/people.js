@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//left out retroID and bbrefID columns as we don't need that data. May affect our import.
+//currently removed timestamps to allow for data import. 
+//Would like research how to keep timestamps and import csv data that doesn't have those two columns.
 
 const People = db.define('people', {
   playerID: {
@@ -71,6 +72,12 @@ const People = db.define('people', {
   finalGame: {
     type: Sequelize.DATEONLY,
   },
-})
+  retroID: {
+    type: Sequelize.STRING,
+  },
+  bbrefID: {
+    type: Sequelize.STRING,
+  },
+}, {timestamps: false})
 
 module.exports = People
