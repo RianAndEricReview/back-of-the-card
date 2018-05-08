@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//currently removed timestamps to allow for data import. 
-//Would like research how to keep timestamps and import csv data that doesn't have those two columns.
-
 const People = db.define('people', {
   playerID: {
     type: Sequelize.STRING,
@@ -78,6 +75,16 @@ const People = db.define('people', {
   bbrefID: {
     type: Sequelize.STRING,
   },
-}, {timestamps: false})
+  createdAt: {
+    type: Sequelize.DATE,
+    field: 'created_at',
+    defaultValue: Sequelize.fn('NOW')
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    field: 'updated_at',
+    defaultValue: Sequelize.fn('NOW')
+  }
+}, {timestamps: true})
 
 module.exports = People
