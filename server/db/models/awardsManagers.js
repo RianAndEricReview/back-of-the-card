@@ -5,13 +5,13 @@ const AwardsManagers = db.define('awardsManagers', {
   playerID: {
     type: Sequelize.STRING
   },
-  awardID: {
+  award: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
-  lgID: {
+  leauge: {
     type: Sequelize.STRING
   },
   tie: {
