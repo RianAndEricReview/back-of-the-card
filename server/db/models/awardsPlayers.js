@@ -5,13 +5,13 @@ const AwardsPlayers = db.define('awardsPlayers', {
   playerID: {
     type: Sequelize.STRING
   },
-  awardID: {
+  award: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
   tie: {
