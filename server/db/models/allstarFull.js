@@ -3,8 +3,7 @@ const db = require('../db')
 
 const AllstarFull = db.define('allstarFull', {
   playerID: {
-    type: Sequelize.STRING,
-    primaryKey: true,
+    type: Sequelize.STRING
   },
   yearID: {
     type: Sequelize.INTEGER

@@ -3,8 +3,7 @@ const db = require('../db')
 
 const AwardsManagers = db.define('awardsManagers', {
   playerID: {
-    type: Sequelize.STRING,
-    primaryKey: true,
+    type: Sequelize.STRING
   },
   awardID: {
     type: Sequelize.STRING
