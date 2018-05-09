@@ -2,67 +2,67 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Appearances = db.define('appearances', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
   playerID: {
     type: Sequelize.STRING
   },
-  G_all: {
+  totalGamesPlayed: {
     type: Sequelize.INTEGER
   },
-  GS: {
+  gamesStarted: {
     type: Sequelize.INTEGER
   },
-  G_batting: {
+  gamesPlayerBatted: {
     type: Sequelize.INTEGER
   },
-  G_defense: {
+  gamesPlayedDefense: {
     type: Sequelize.INTEGER
   },
-  G_p: {
+  gamesAsPitcher: {
     type: Sequelize.INTEGER
   },
-  G_c: {
+  gamesAsCatcher: {
     type: Sequelize.INTEGER
   },
-  G_1b: {
+  gamesAs1B: {
     type: Sequelize.INTEGER
   },
-  G_2b: {
+  gamesAs2B: {
     type: Sequelize.INTEGER
   },
-  G_3b: {
+  gamesAs3B: {
     type: Sequelize.INTEGER
   },
-  G_ss: {
+  gamesAsSS: {
     type: Sequelize.INTEGER
   },
-  G_lf: {
+  gamesAsLF: {
     type: Sequelize.INTEGER
   },
-  G_cf: {
+  gamesAsCF: {
     type: Sequelize.INTEGER
   },
-  G_rf: {
+  gamesAsRF: {
     type: Sequelize.INTEGER
   },
-  G_of: {
+  gamesAsOF: {
     type: Sequelize.INTEGER
   },
-  G_dh: {
+  gamesAsDH: {
     type: Sequelize.INTEGER
   },
-  G_ph: {
+  gamesAsPH: {
     type: Sequelize.INTEGER
   },
-  G_pr: {
+  gamesAsPR: {
     type: Sequelize.INTEGER
   },
   createdAt: {

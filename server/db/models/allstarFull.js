@@ -5,7 +5,7 @@ const AllstarFull = db.define('allstarFull', {
   playerID: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   gameNum: {
@@ -17,10 +17,10 @@ const AllstarFull = db.define('allstarFull', {
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
-  GP: {
+  playedInGame: {
     type: Sequelize.INTEGER
   },
   startingPos: {
