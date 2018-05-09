@@ -1,25 +1,23 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//do we want to update the '.' formatted names? Would need to update the CSV as well.
-
 const HomeGames = db.define('homeGames', {
-  'year.key': {
+  year: {
     type: Sequelize.INTEGER,
   },
-  'league.key': {
+  league: {
     type: Sequelize.STRING,
   },
-  'team.key': {
+  teamID: {
     type: Sequelize.STRING,
   },
-  'park.key': {
+  parkID: {
     type: Sequelize.STRING,
   },
-  'span.first': {
+  spanFirst: {
     type: Sequelize.DATEONLY,
   },
-  'span.last': {
+  spanLast: {
     type: Sequelize.DATEONLY,
   },
   games: {

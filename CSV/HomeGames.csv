@@ -1,4 +1,4 @@
-year.key,league.key,team.key,park.key,span.first,span.last,games,openings,attendance
+year,league,teamID,parkID,spanFirst,spanLast,games,openings,attendance
 1871,NA,BS1,BOS01,1871-05-16,1871-10-07,16,16,32600
 1871,NA,BS1,NYC01,1871-05-27,1871-05-27,1,1,3000
 1871,NA,CH1,CHI01,1871-05-08,1871-09-29,16,15,85500
