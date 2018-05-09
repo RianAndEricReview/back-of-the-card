@@ -2,13 +2,13 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const AwardsShareManagers = db.define('awardsShareManagers', {
-  awardID: {
+  award: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
   playerID: {

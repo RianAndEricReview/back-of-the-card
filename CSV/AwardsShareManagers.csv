@@ -1,4 +1,4 @@
-awardID,yearID,lgID,playerID,pointsWon,pointsMax,votesFirst
+award,year,league,playerID,pointsWon,pointsMax,votesFirst,createdAt,updatedAt
 BBWAA Manager of the Year,1983,AL,altobjo01,7,28,7
 BBWAA Manager of the Year,1983,AL,coxbo01,4,28,4
 BBWAA Manager of the Year,1983,AL,larusto01,17,28,17
