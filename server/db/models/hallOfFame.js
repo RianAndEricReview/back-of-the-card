@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//changed yearid to yearID for consistency, need to update CSV
-
 const HallOfFame = db.define('hallOfFame', {
   playerID: {
     type: Sequelize.STRING,
@@ -28,7 +26,7 @@ const HallOfFame = db.define('hallOfFame', {
   category: {
     type: Sequelize.STRING,
   },
-  needed_note: {
+  neededNote: {
     type: Sequelize.STRING,
   },
   createdAt: {
