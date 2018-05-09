@@ -4,7 +4,7 @@ const db = require('../db')
 
 const Schools = db.define('schools', {
   schoolID: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     primaryKey: true,
   },
   name_full: {
