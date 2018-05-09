@@ -11,6 +11,7 @@ const BattingPost = require('./battingPost')
 const CollegePlaying = require('./collegePlaying')
 const Fielding = require('./fielding')
 const FieldingOF = require('./fieldingOF')
+const FieldingOFsplit = require('./fieldingOFsplit')
 
 module.exports = {
   User,
@@ -25,5 +26,6 @@ module.exports = {
   BattingPost,
   CollegePlaying,
   Fielding,
-  FieldingOF
+  FieldingOF,
+  FieldingOFsplit
 }
