@@ -64,7 +64,17 @@ const Appearances = db.define('appearances', {
   },
   G_pr: {
     type: Sequelize.INTEGER
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    field: 'created_at',
+    defaultValue: Sequelize.fn('NOW')
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    field: 'updated_at',
+    defaultValue: Sequelize.fn('NOW')
   }
-})
+}, {timestamps: true})
 
 module.exports = Appearances
