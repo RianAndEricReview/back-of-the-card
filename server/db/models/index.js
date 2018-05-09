@@ -4,6 +4,8 @@ const AllstarFull = require('./allstarFull')
 const Appearances = require('./appearances')
 const AwardsManagers = require('./awardsManagers')
 const AwardsPlayers = require('./awardsPlayers')
+const AwardsShareManagers = require('./awardsShareManagers')
+const AwardsSharePlayers = require('./awardsSharePlayers')
 
 module.exports = {
   User,
@@ -11,5 +13,7 @@ module.exports = {
   AllstarFull,
   Appearances,
   AwardsManagers,
-  AwardsPlayers
+  AwardsPlayers,
+  AwardsShareManagers,
+  AwardsSharePlayers
 }
