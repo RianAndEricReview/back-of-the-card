@@ -54,7 +54,7 @@ const Teams = db.define('teams', {
   H: {
     type: Sequelize.INTEGER,
   },
-  '2b': {
+  '2B': {
     type: Sequelize.INTEGER,
   },
   '3B': {
