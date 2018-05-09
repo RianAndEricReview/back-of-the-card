@@ -7,6 +7,7 @@ const AwardsPlayers = require('./awardsPlayers')
 const AwardsShareManagers = require('./awardsShareManagers')
 const AwardsSharePlayers = require('./awardsSharePlayers')
 const Batting = require('./batting')
+const BattingPost = require('./battingPost')
 
 module.exports = {
   User,
@@ -17,5 +18,6 @@ module.exports = {
   AwardsPlayers,
   AwardsShareManagers,
   AwardsSharePlayers,
-  Batting
+  Batting,
+  BattingPost
 }
