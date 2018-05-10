@@ -5,7 +5,7 @@ const Fielding = db.define('fielding', {
   playerID: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   stint: {
@@ -14,28 +14,28 @@ const Fielding = db.define('fielding', {
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
-  Pos: {
+  postition: {
     type: Sequelize.STRING
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER
   },
   GS: {
     type: Sequelize.INTEGER
   },
-  InnOuts: {
+  innOuts: {
     type: Sequelize.INTEGER
   },
   PO: {
     type: Sequelize.INTEGER
   },
-  A: {
+  assists: {
     type: Sequelize.INTEGER
   },
-  E: {
+  errors: {
     type: Sequelize.INTEGER
   },
   DP: {
