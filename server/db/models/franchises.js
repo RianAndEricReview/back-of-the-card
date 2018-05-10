@@ -2,12 +2,12 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 
-const TeamsFranchises = db.define('teamsFranchises', {
+const Franchises = db.define('franchises', {
   franchID: {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-  franchName: {
+  name: {
     type: Sequelize.STRING,
   },
   active: {
@@ -28,4 +28,4 @@ const TeamsFranchises = db.define('teamsFranchises', {
   }
 }, {timestamps: true})
 
-module.exports = TeamsFranchises
+module.exports = Franchises
