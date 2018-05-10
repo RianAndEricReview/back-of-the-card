@@ -3,10 +3,10 @@ const db = require('../db')
 
 
 const TeamsHalf = db.define('teamsHalf', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING,
   },
   teamID: {
@@ -24,13 +24,13 @@ const TeamsHalf = db.define('teamsHalf', {
   Rank: {
     type: Sequelize.INTEGER,
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER,
   },
-  W: {
+  wins: {
     type: Sequelize.INTEGER,
   },
-  L: {
+  loses: {
     type: Sequelize.INTEGER,
   },
   createdAt: {
