@@ -1,4 +1,4 @@
-awardID,yearID,lgID,playerID,pointsWon,pointsMax,votesFirst
+award,year,league,playerID,pointsWon,pointsMax,votesFirst,createdAt,updatedAt
 Cy Young,1956,ML,fordwh01,1,16,1
 Cy Young,1956,ML,maglisa01,4,16,4
 Cy Young,1956,ML,newcodo01,10,16,10

@@ -1,4 +1,4 @@
-playerID,awardID,yearID,lgID,tie,notes
+playerID,award,year,league,tie,notes,createdAt,updatedAt
 larusto01,BBWAA Manager of the Year,1983,AL,,
 lasorto01,BBWAA Manager of the Year,1983,NL,,
 andersp01,BBWAA Manager of the Year,1984,AL,,
@@ -176,5 +176,5 @@ showabu99,BBWAA Manager of the Year,2014,AL,,
 willima04,BBWAA Manager of the Year,2014,NL,,
 banisje01,BBWAA Manager of the Year,2015,AL,,
 maddojo99,BBWAA Manager of the Year,2015,NL,,
-francte01,BBWAA Manager of the Year,2016,AL,,	
+francte01,BBWAA Manager of the Year,2016,AL,,
 roberda07,BBWAA Manager of the Year,2016,NL,,

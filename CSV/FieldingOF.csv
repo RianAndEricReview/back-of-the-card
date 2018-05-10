@@ -1,4 +1,4 @@
-playerID,yearID,stint,Glf,Gcf,Grf
+playerID,yearID,stint,GLF,GCF,GRF,createdAt,updatedAt
 allisar01,1871,1,0,29,0
 ansonca01,1871,1,1,0,0
 armstbo01,1871,1,0,11,1

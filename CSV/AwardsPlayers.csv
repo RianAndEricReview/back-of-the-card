@@ -1,4 +1,4 @@
-playerID,awardID,yearID,lgID,tie,notes
+playerID,award,year,league,tie,notes,createdAt,updatedAt
 bondto01,Pitching Triple Crown,1877,NL,,
 hinespa01,Triple Crown,1878,NL,,
 heckegu01,Pitching Triple Crown,1884,AA,,

@@ -1,4 +1,4 @@
-playerID,schoolID,yearID
+playerID,schoolID,year,createdAt,updatedAt
 aardsda01,pennst,2001
 aardsda01,rice,2002
 aardsda01,rice,2003
