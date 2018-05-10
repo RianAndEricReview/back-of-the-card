@@ -1,4 +1,4 @@
-franchID,name,active,NAassoc
+franchID,name,active,NAassoc,createdAt,updatedAt
 ALT,Altoona Mountain City,N,
 ANA,Los Angeles Angels of Anaheim,Y,
 ARI,Arizona Diamondbacks,Y,

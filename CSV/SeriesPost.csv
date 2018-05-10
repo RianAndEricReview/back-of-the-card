@@ -1,4 +1,4 @@
-year,round,teamIDWinner,lgWinner,teamIDLoser,lgLoser,wins,losses,ties
+year,round,teamIDWinner,lgWinner,teamIDLoser,lgLoser,wins,losses,ties,createdAt,updatedAt
 1884,WS,PRO,NL,NY4,AA,3,0,0
 1885,WS,CHN,NL,SL4,AA,3,3,1
 1886,WS,SL4,AA,CHN,NL,4,2,0
