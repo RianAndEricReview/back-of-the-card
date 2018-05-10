@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const BattingPost = db.define('battingPost', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   round: {
@@ -14,25 +14,25 @@ const BattingPost = db.define('battingPost', {
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER
   },
   AB: {
     type: Sequelize.INTEGER
   },
-  R: {
+  runs: {
     type: Sequelize.INTEGER
   },
-  H: {
+  hits: {
     type: Sequelize.INTEGER
   },
-  _2B: {
+  '2B': {
     type: Sequelize.INTEGER
   },
-  _3B: {
+  '3B': {
     type: Sequelize.INTEGER
   },
   HR: {

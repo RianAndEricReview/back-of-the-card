@@ -1,4 +1,4 @@
-yearID,round,playerID,teamID,lgID,G,AB,R,H,2B,3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP
+year,round,playerID,teamID,league,games,AB,runs,hits,2B,3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP,createdAt,updatedAt
 1884,WS,becanbu01,NY4,AA,1,2,0,1,0,0,0,0,0,,0,0,0,,,,
 1884,WS,bradyst01,NY4,AA,3,10,1,0,0,0,0,0,0,,0,1,0,,,,
 1884,WS,carrocl01,PRO,NL,3,10,2,1,0,0,0,1,0,,1,1,0,,,,
