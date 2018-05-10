@@ -3,14 +3,14 @@ const db = require('../db')
 
 
 const Parks = db.define('parks', {
-  'park.key': {
+  parkID: {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-  'park.name': {
+  name: {
     type: Sequelize.STRING,
   },
-  'park.alias': {
+  alias: {
     type: Sequelize.STRING,
   },
   city: {
