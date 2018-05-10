@@ -7,7 +7,7 @@ const Schools = db.define('schools', {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-  name_full: {
+  name: {
     type: Sequelize.STRING,
   },
   city: {
