@@ -1,4 +1,4 @@
-park.key,park.name,park.alias,city,state,country
+parkID,name,alias,city,state,country,createdAt,updatedAt
 ALB01,Riverside Park,,Albany,NY,US
 ALT01,Columbia Park,,Altoona,PA,US
 ANA01,Angel Stadium of Anaheim,Edison Field; Anaheim Stadium,Anaheim,CA,US
