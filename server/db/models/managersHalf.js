@@ -6,13 +6,13 @@ const ManagersHalf = db.define('managersHalf', {
   playerID: {
     type: Sequelize.STRING,
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
   teamID: {
     type: Sequelize.STRING,
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING,
   },
   inseason: {
@@ -21,13 +21,13 @@ const ManagersHalf = db.define('managersHalf', {
   half: {
     type: Sequelize.INTEGER,
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER,
   },
-  W: {
+  wins: {
     type: Sequelize.INTEGER,
   },
-  L: {
+  loses: {
     type: Sequelize.INTEGER,
   },
   rank: {
