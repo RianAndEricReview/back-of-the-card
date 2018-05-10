@@ -1,4 +1,4 @@
-year,league,teamID,Half,divID,DivWin,Rank,games,wins,loses,createdAt,updatedAt,createdAt,updatedAt
+year,league,teamID,Half,div,DivWin,Rank,games,wins,loses,createdAt,updatedAt
 1981,NL,ATL,1,W,N,4,54,25,29
 1981,NL,ATL,2,W,N,5,52,25,27
 1981,AL,BAL,1,E,N,2,54,31,23

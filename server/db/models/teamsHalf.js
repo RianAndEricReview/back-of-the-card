@@ -15,7 +15,7 @@ const TeamsHalf = db.define('teamsHalf', {
   half: {
     type: Sequelize.INTEGER,
   },
-  divID: {
+  div: {
     type: Sequelize.STRING,
   },
   divWin: {
