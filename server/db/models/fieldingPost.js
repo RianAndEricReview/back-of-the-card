@@ -5,22 +5,22 @@ const FieldingPost = db.define('fieldingPost', {
   playerID: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
   round: {
     type: Sequelize.STRING
   },
-  Pos: {
+  position: {
     type: Sequelize.STRING
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER
   },
   GS: {
@@ -32,10 +32,10 @@ const FieldingPost = db.define('fieldingPost', {
   PO: {
     type: Sequelize.INTEGER
   },
-  A: {
+  assists: {
     type: Sequelize.INTEGER
   },
-  E: {
+  errors: {
     type: Sequelize.INTEGER
   },
   DP: {

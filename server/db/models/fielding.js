@@ -26,7 +26,7 @@ const Fielding = db.define('fielding', {
   GS: {
     type: Sequelize.INTEGER
   },
-  innOuts: {
+  InnOuts: {
     type: Sequelize.INTEGER
   },
   PO: {
