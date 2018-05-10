@@ -11,7 +11,7 @@ const AwardsManagers = db.define('awardsManagers', {
   year: {
     type: Sequelize.INTEGER
   },
-  leauge: {
+  league: {
     type: Sequelize.STRING
   },
   tie: {
