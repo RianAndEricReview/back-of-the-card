@@ -3,22 +3,22 @@ const db = require('../db')
 
 
 const SeriesPost = db.define('seriesPost', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
   round: {
     type: Sequelize.STRING,
   },
-  teamIDwinner: {
+  teamIDWinner: {
     type: Sequelize.STRING,
   },
-  lgIDwinner: {
+  lgWinner: {
     type: Sequelize.STRING,
   },
-  teamIDloser: {
+  teamIDLoser: {
     type: Sequelize.STRING,
   },
-  lgIDloser: {
+  lgLoser: {
     type: Sequelize.STRING,
   },
   wins: {
