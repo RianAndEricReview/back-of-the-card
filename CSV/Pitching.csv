@@ -1,4 +1,4 @@
-playerID,yearID,stint,teamID,lgID,W,L,G,GS,CG,SHO,SV,IPouts,H,ER,HR,BB,SO,BAOpp,ERA,IBB,WP,HBP,BK,BFP,GF,R,SH,SF,GIDP
+playerID,year,stint,teamID,league,wins,loses,games,GS,CG,SHO,SV,IPouts,hits,ER,HR,BB,SO,BAOpp,ERA,IBB,WP,HBP,BK,BFP,GF,runs,SH,SF,GIDP,createdAt,updatedAt
 bechtge01,1871,1,PH1,NA,1,2,3,3,2,0,0,78,43,23,0,11,1,,7.96,,7,,0,146,0,42,,,
 brainas01,1871,1,WS3,NA,12,15,30,30,30,0,0,792,361,132,4,37,13,,4.50,,7,,0,1291,0,292,,,
 fergubo01,1871,1,NY2,NA,0,0,1,0,0,0,0,3,8,3,0,0,0,,27.00,,2,,0,14,0,9,,,
