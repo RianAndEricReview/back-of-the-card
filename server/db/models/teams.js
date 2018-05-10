@@ -3,10 +3,10 @@ const db = require('../db')
 
 
 const Teams = db.define('teams', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING,
   },
   teamID: {
@@ -15,22 +15,22 @@ const Teams = db.define('teams', {
   franchID: {
     type: Sequelize.STRING,
   },
-  divID: {
+  div: {
     type: Sequelize.STRING,
   },
-  Rank: {
+  rank: {
     type: Sequelize.INTEGER,
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER,
   },
   Ghome: {
     type: Sequelize.INTEGER,
   },
-  W: {
+  wins: {
     type: Sequelize.INTEGER,
   },
-  L: {
+  loses: {
     type: Sequelize.INTEGER,
   },
   DivWin: {
@@ -45,13 +45,13 @@ const Teams = db.define('teams', {
   WSWin: {
     type: Sequelize.STRING,
   },
-  R: {
+  runs: {
     type: Sequelize.INTEGER,
   },
   AB: {
     type: Sequelize.INTEGER,
   },
-  H: {
+  hits: {
     type: Sequelize.INTEGER,
   },
   '2B': {
@@ -111,7 +111,7 @@ const Teams = db.define('teams', {
   SOA: {
     type: Sequelize.INTEGER,
   },
-  E: {
+  errors: {
     type: Sequelize.INTEGER,
   },
   DP: {
