@@ -5,7 +5,7 @@ const HallOfFame = db.define('hallOfFame', {
   playerID: {
     type: Sequelize.STRING,
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
   votedBy: {
