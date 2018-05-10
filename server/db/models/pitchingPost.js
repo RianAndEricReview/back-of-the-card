@@ -6,7 +6,7 @@ const PitchingPost = db.define('pitchingPost', {
   playerID: {
     type: Sequelize.STRING,
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
   round: {
@@ -15,16 +15,16 @@ const PitchingPost = db.define('pitchingPost', {
   teamID: {
     type: Sequelize.STRING,
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING,
   },
-  W: {
+  wins: {
     type: Sequelize.INTEGER,
   },
-  L: {
+  loses: {
     type: Sequelize.INTEGER,
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER,
   },
   GS: {
@@ -42,7 +42,7 @@ const PitchingPost = db.define('pitchingPost', {
   IPouts: {
     type: Sequelize.INTEGER,
   },
-  H: {
+  hits: {
     type: Sequelize.INTEGER,
   },
   ER: {
@@ -81,7 +81,7 @@ const PitchingPost = db.define('pitchingPost', {
   GF: {
     type: Sequelize.INTEGER,
   },
-  R: {
+  runs: {
     type: Sequelize.INTEGER,
   },
   SH: {
