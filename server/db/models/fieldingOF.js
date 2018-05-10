@@ -5,19 +5,19 @@ const FieldingOF = db.define('fieldingOF', {
   playerID: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   stint: {
     type: Sequelize.INTEGER
   },
-  Glf: {
+  GLF: {
     type: Sequelize.INTEGER
   },
-  Gcf: {
+  GCF: {
     type: Sequelize.INTEGER
   },
-  Grf: {
+  GRF: {
     type: Sequelize.INTEGER
   },
   createdAt: {
