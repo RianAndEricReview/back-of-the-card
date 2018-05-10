@@ -5,7 +5,7 @@ const FieldingOFsplit = db.define('fieldingOFsplit', {
   playerID: {
     type: Sequelize.STRING
   },
-  yearID: {
+  year: {
     type: Sequelize.INTEGER
   },
   stint: {
@@ -14,13 +14,13 @@ const FieldingOFsplit = db.define('fieldingOFsplit', {
   teamID: {
     type: Sequelize.STRING
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING
   },
-  Pos: {
+  position: {
     type: Sequelize.STRING
   },
-  G: {
+  games: {
     type: Sequelize.INTEGER
   },
   GS: {
@@ -32,10 +32,10 @@ const FieldingOFsplit = db.define('fieldingOFsplit', {
   PO: {
     type: Sequelize.INTEGER
   },
-  A: {
+  assists: {
     type: Sequelize.INTEGER
   },
-  E: {
+  errors: {
     type: Sequelize.INTEGER
   },
   DP: {
