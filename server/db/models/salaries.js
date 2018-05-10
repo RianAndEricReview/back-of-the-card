@@ -3,13 +3,13 @@ const db = require('../db')
 
 
 const Salaries = db.define('salaries', {
-  yearID: {
+  year: {
     type: Sequelize.INTEGER,
   },
   teamID: {
     type: Sequelize.STRING,
   },
-  lgID: {
+  league: {
     type: Sequelize.STRING,
   },
   playerID: {
