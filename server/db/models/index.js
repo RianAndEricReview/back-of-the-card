@@ -27,6 +27,77 @@ const SeriesPost = require('./seriesPost')
 const Teams = require('./teams')
 const TeamsHalf = require('./teamsHalf')
 
+// Associations
+
+// AllstarFull
+AllstarFull.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AllstarFull)
+AllstarFull.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(AllstarFull)
+
+// Appearances
+Appearances.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Appearances)
+Appearances.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Appearances)
+
+// AwardsManagers
+AwardsManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsManagers)
+
+// AwardsPlayers
+AwardsPlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsPlayers)
+
+// AwardsShareManagers
+AwardsShareManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsShareManagers)
+
+// AwardsSharePlayers
+AwardsSharePlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsSharePlayers)
+
+// Batting
+Batting.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Batting)
+Batting.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Batting)
+
+// BattingPost
+BattingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(BattingPost)
+BattingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(BattingPost)
+
+// CollegePlaying
+CollegePlaying.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(CollegePlaying)
+CollegePlaying.belongsTo(Schools, {as: 'team', foreignKey: 'teamID'})
+Schools.hasMany(CollegePlaying)
+
+// Fielding
+Fielding.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Fielding)
+Fielding.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Fielding)
+
+// FieldingOF
+FieldingOF.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(FieldingOF)
+
+// FieldingOFsplit
+FieldingOFsplit.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(FieldingOFsplit)
+FieldingOFsplit.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(FieldingOFsplit)
+
+// Fielding
+FieldingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(FieldingPost)
+FieldingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(FieldingPost)
+
+
 module.exports = {
   User,
   People,
