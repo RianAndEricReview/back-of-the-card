@@ -11,6 +11,7 @@ const Teams = db.define('teams', {
   },
   teamID: {
     type: Sequelize.STRING,
+    primaryKey: true,
   },
   franchID: {
     type: Sequelize.STRING,

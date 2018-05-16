@@ -91,12 +91,65 @@ People.hasMany(FieldingOFsplit)
 FieldingOFsplit.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
 Teams.hasMany(FieldingOFsplit)
 
-// Fielding
+// FieldingPost
 FieldingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
 People.hasMany(FieldingPost)
 FieldingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
 Teams.hasMany(FieldingPost)
 
+// Franchises
+Teams.belongsTo(Franchises, {as: 'franchise', foreignKey: 'franchID'})
+Franchises.hasMany(Teams)
+
+// HallOfFame
+HallOfFame.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(HallOfFame)
+
+//HomeGames
+HomeGames.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(HomeGames)
+HomeGames.belongsTo(Parks, {as: 'park', foreignKey: 'parkID'})
+Parks.hasMany(HomeGames)
+
+//Managers
+Managers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Managers)
+Managers.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Managers)
+
+//ManagersHalf
+ManagersHalf.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(ManagersHalf)
+ManagersHalf.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(ManagersHalf)
+
+//Pitching
+Pitching.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Pitching)
+Pitching.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Pitching)
+
+//PitchingPost
+PitchingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(PitchingPost)
+PitchingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(PitchingPost)
+
+//Salaries
+Salaries.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Salaries)
+Salaries.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Salaries)
+
+//SeriesPost
+SeriesPost.belongsTo(Teams, {as: 'winningTeam', foreignKey: 'teamIDWinner'})
+Teams.hasMany(SeriesPost)
+SeriesPost.belongsTo(Teams, {as: 'losingTeam', foreignKey: 'teamIDLoser'})
+Teams.hasMany(SeriesPost)
+
+//TeamsHalf
+TeamsHalf.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(TeamsHalf)
 
 module.exports = {
   User,
