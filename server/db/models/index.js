@@ -27,6 +27,37 @@ const SeriesPost = require('./seriesPost')
 const Teams = require('./teams')
 const TeamsHalf = require('./teamsHalf')
 
+// Associations
+
+// AllstarFull
+AllstarFull.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AllstarFull)
+AllstarFull.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(AllstarFull)
+
+// Appearances
+Appearances.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(Appearances)
+Appearances.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Teams.hasMany(Appearances)
+
+// AwardsManagers
+AwardsManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsManagers)
+
+// AwardsPlayers
+AwardsPlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsPlayers)
+
+// AwardsShareManagers
+AwardsShareManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsShareManagers)
+
+// AwardsSharePlayers
+AwardsSharePlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+People.hasMany(AwardsSharePlayers)
+
+
 module.exports = {
   User,
   People,
