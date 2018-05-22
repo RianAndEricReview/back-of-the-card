@@ -36,14 +36,14 @@ AllstarFull.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
 Teams.hasMany(AllstarFull)
 
 // Appearances
-Appearances.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
+Appearances.belongsTo(People, {foreignKey: 'playerID'})
 People.hasMany(Appearances)
-Appearances.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
+Appearances.belongsTo(Teams, {foreignKey: 'teamID'})
 Teams.hasMany(Appearances)
 
 // AwardsManagers
-AwardsManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(AwardsManagers)
+AwardsManagers.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(AwardsManagers, {foreignKey: 'playerID'})
 
 // AwardsPlayers
 AwardsPlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})

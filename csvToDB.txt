@@ -1,9 +1,15 @@
 How to copy and update a csv file to a pg db:
 
-back_of_the_card=# COPY People FROM '/Users/eeegee/Desktop/People2.csv'
+//connect to db
+\c back_of_the_card
+
+
+
+back_of_the_card=# COPY "People" FROM '/Users/eeegee/Desktop/People2.csv'
 
 back_of_the_card-# DELIMITER ',' CSV HEADER;
 
-back_of_the_card=# UPDATE People SET created_at = NOW();
+back_of_the_card=# UPDATE "People" SET created_at = NOW();
 
-back_of_the_card=# UPDATE People SET updated_at = NOW();
+back_of_the_card=# UPDATE "People" SET updated_at = NOW();
+
