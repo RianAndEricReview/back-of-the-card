@@ -30,126 +30,126 @@ const TeamsHalf = require('./teamsHalf')
 // Associations
 
 // AllstarFull
-AllstarFull.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(AllstarFull)
-AllstarFull.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(AllstarFull)
+AllstarFull.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(AllstarFull, {foreignKey: 'playerID'})
+AllstarFull.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(AllstarFull, {foreignKey: 'teamID'})
 
 // Appearances
 Appearances.belongsTo(People, {foreignKey: 'playerID'})
-People.hasMany(Appearances)
+People.hasMany(Appearances, {foreignKey: 'playerID'})
 Appearances.belongsTo(Teams, {foreignKey: 'teamID'})
-Teams.hasMany(Appearances)
+Teams.hasMany(Appearances, {foreignKey: 'teamID'})
 
 // AwardsManagers
 AwardsManagers.belongsTo(People, {foreignKey: 'playerID'})
 People.hasMany(AwardsManagers, {foreignKey: 'playerID'})
 
 // AwardsPlayers
-AwardsPlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(AwardsPlayers)
+AwardsPlayers.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(AwardsPlayers, {foreignKey: 'playerID'})
 
 // AwardsShareManagers
-AwardsShareManagers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(AwardsShareManagers)
+AwardsShareManagers.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(AwardsShareManagers, {foreignKey: 'playerID'})
 
 // AwardsSharePlayers
-AwardsSharePlayers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(AwardsSharePlayers)
+AwardsSharePlayers.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(AwardsSharePlayers, {foreignKey: 'playerID'})
 
 // Batting
-Batting.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(Batting)
-Batting.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(Batting)
+Batting.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(Batting, {foreignKey: 'playerID'})
+Batting.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(Batting, {foreignKey: 'teamID'})
 
 // BattingPost
-BattingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(BattingPost)
-BattingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(BattingPost)
+BattingPost.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(BattingPost, {foreignKey: 'playerID'})
+BattingPost.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(BattingPost, {foreignKey: 'teamID'})
 
 // CollegePlaying
-CollegePlaying.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(CollegePlaying)
-CollegePlaying.belongsTo(Schools, {as: 'team', foreignKey: 'teamID'})
-Schools.hasMany(CollegePlaying)
+CollegePlaying.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(CollegePlaying, {foreignKey: 'playerID'})
+CollegePlaying.belongsTo(Schools, {foreignKey: 'schoolID'})
+Schools.hasMany(CollegePlaying, {foreignKey: 'schoolID'})
 
 // Fielding
-Fielding.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(Fielding)
-Fielding.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(Fielding)
+Fielding.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(Fielding, {foreignKey: 'playerID'})
+Fielding.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(Fielding, {foreignKey: 'teamID'})
 
 // FieldingOF
-FieldingOF.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(FieldingOF)
+FieldingOF.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(FieldingOF, {foreignKey: 'playerID'})
 
 // FieldingOFsplit
-FieldingOFsplit.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(FieldingOFsplit)
-FieldingOFsplit.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(FieldingOFsplit)
+FieldingOFsplit.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(FieldingOFsplit, {foreignKey: 'playerID'})
+FieldingOFsplit.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(FieldingOFsplit, {foreignKey: 'teamID'})
 
 // FieldingPost
-FieldingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(FieldingPost)
-FieldingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(FieldingPost)
+FieldingPost.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(FieldingPost, {foreignKey: 'playerID'})
+FieldingPost.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(FieldingPost, {foreignKey: 'teamID'})
 
 // Franchises
-Teams.belongsTo(Franchises, {as: 'franchise', foreignKey: 'franchID'})
-Franchises.hasMany(Teams)
+Teams.belongsTo(Franchises, {foreignKey: 'franchID'})
+Franchises.hasMany(Teams, {foreignKey: 'franchID'})
 
 // HallOfFame
-HallOfFame.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(HallOfFame)
+HallOfFame.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(HallOfFame, {foreignKey: 'playerID'})
 
 //HomeGames
-HomeGames.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(HomeGames)
-HomeGames.belongsTo(Parks, {as: 'park', foreignKey: 'parkID'})
-Parks.hasMany(HomeGames)
+HomeGames.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(HomeGames, {foreignKey: 'teamID'})
+HomeGames.belongsTo(Parks, {foreignKey: 'parkID'})
+Parks.hasMany(HomeGames, {foreignKey: 'parkID'})
 
 //Managers
-Managers.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(Managers)
-Managers.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(Managers)
+Managers.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(Managers, {foreignKey: 'playerID'})
+Managers.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(Managers, {foreignKey: 'teamID'})
 
 //ManagersHalf
-ManagersHalf.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(ManagersHalf)
-ManagersHalf.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(ManagersHalf)
+ManagersHalf.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(ManagersHalf, {foreignKey: 'playerID'})
+ManagersHalf.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(ManagersHalf, {foreignKey: 'teamID'})
 
 //Pitching
-Pitching.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(Pitching)
-Pitching.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(Pitching)
+Pitching.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(Pitching, {foreignKey: 'playerID'})
+Pitching.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(Pitching, {foreignKey: 'teamID'})
 
 //PitchingPost
-PitchingPost.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(PitchingPost)
-PitchingPost.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(PitchingPost)
+PitchingPost.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(PitchingPost, {foreignKey: 'playerID'})
+PitchingPost.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(PitchingPost, {foreignKey: 'teamID'})
 
 //Salaries
-Salaries.belongsTo(People, {as: 'player', foreignKey: 'playerID'})
-People.hasMany(Salaries)
-Salaries.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(Salaries)
+Salaries.belongsTo(People, {foreignKey: 'playerID'})
+People.hasMany(Salaries, {foreignKey: 'playerID'})
+Salaries.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(Salaries, {foreignKey: 'teamID'})
 
 //SeriesPost
-SeriesPost.belongsTo(Teams, {as: 'winningTeam', foreignKey: 'teamIDWinner'})
-Teams.hasMany(SeriesPost)
-SeriesPost.belongsTo(Teams, {as: 'losingTeam', foreignKey: 'teamIDLoser'})
-Teams.hasMany(SeriesPost)
+SeriesPost.belongsTo(Teams, {foreignKey: 'teamIDWinner'})
+Teams.hasMany(SeriesPost, {foreignKey: 'teamIDWinner'})
+SeriesPost.belongsTo(Teams, {foreignKey: 'teamIDLoser'})
+Teams.hasMany(SeriesPost, {foreignKey: 'teamIDLoser'})
 
 //TeamsHalf
-TeamsHalf.belongsTo(Teams, {as: 'team', foreignKey: 'teamID'})
-Teams.hasMany(TeamsHalf)
+TeamsHalf.belongsTo(Teams, {foreignKey: 'teamID'})
+Teams.hasMany(TeamsHalf, {foreignKey: 'teamID'})
 
 module.exports = {
   User,
