@@ -8,6 +8,9 @@ const HomeGames = db.define('homeGames', {
   league: {
     type: Sequelize.STRING,
   },
+  team: {
+    type: Sequelize.STRING,
+  },
   teamID: {
     type: Sequelize.STRING,
   },

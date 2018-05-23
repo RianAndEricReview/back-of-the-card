@@ -9,10 +9,16 @@ const SeriesPost = db.define('seriesPost', {
   round: {
     type: Sequelize.STRING,
   },
+  teamWinner: {
+    type: Sequelize.STRING,
+  },
   teamIDWinner: {
     type: Sequelize.STRING,
   },
   lgWinner: {
+    type: Sequelize.STRING,
+  },
+  teamLoser: {
     type: Sequelize.STRING,
   },
   teamIDLoser: {

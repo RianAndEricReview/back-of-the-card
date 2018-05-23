@@ -9,6 +9,9 @@ const ManagersHalf = db.define('managersHalf', {
   year: {
     type: Sequelize.INTEGER,
   },
+  team: {
+    type: Sequelize.STRING,
+  },
   teamID: {
     type: Sequelize.STRING,
   },
