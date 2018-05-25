@@ -8,7 +8,7 @@ const FieldingPost = db.define('fieldingPost', {
   year: {
     type: Sequelize.INTEGER
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING
   },
   teamID: {

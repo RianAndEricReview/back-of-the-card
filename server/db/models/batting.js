@@ -11,7 +11,7 @@ const Batting = db.define('batting', {
   stint: {
     type: Sequelize.INTEGER
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {

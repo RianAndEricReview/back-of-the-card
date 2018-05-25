@@ -6,7 +6,7 @@ const Salaries = db.define('salaries', {
   year: {
     type: Sequelize.INTEGER,
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {

@@ -1,4 +1,4 @@
-id,year,league,team,teamID,franchID,div,rank,games,Ghome,wins,loses,DivWin,WCWin,LgWin,WSWin,runs,AB,hits,2B,3B,HR,BB,SO,SB,CS,HBP,SF,RA,ER,ERA,CG,SHO,SV,IPouts,HA,HRA,BBA,SOA,errors,DP,FP,name,park,attendance,BPF,PPF,teamIDBR,teamIDlahman45,teamIDretro,createdAt,updatedAt
+id,year,league,teamName,teamID,franchID,div,rank,games,Ghome,wins,loses,DivWin,WCWin,LgWin,WSWin,runs,AB,hits,2B,3B,HR,BB,SO,SB,CS,HBP,SF,RA,ER,ERA,CG,SHO,SV,IPouts,HA,HRA,BBA,SOA,errors,DP,FP,name,park,attendance,BPF,PPF,teamIDBR,teamIDlahman45,teamIDretro,createdAt,updatedAt
 1871BS1,1871,NA,BS1,1871BS1,BNA,,3,31,,20,10,,,N,,401,1372,426,70,37,3,60,19,73,16,,,303,109,3.55,22,1,3,828,367,2,42,23,243,24,0.834,Boston Red Stockings,South End Grounds I,,103,98,BOS,BS1,BS1,,
 1871CH1,1871,NA,CH1,1871CH1,CNA,,2,28,,19,9,,,N,,302,1196,323,52,21,10,60,22,69,21,,,241,77,2.76,25,0,1,753,308,6,28,22,229,16,0.829,Chicago White Stockings,Union Base-Ball Grounds,,104,102,CHI,CH1,CH1,,
 1871CL1,1871,NA,CL1,1871CL1,CFC,,8,29,,10,19,,,N,,249,1186,328,35,40,7,26,25,18,8,,,341,116,4.11,23,0,0,762,346,13,53,34,234,15,0.818,Cleveland Forest Citys,National Association Grounds,,96,100,CLE,CL1,CL1,,

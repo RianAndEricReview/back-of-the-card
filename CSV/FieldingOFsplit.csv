@@ -1,4 +1,4 @@
-id,playerID,year,stint,team,teamID,league,position,games,GS,InnOuts,PO,assists,errors,DP,PB,WP,SB,CS,ZR,createdAt,updatedAt
+id,playerID,year,stint,teamName,teamID,league,position,games,GS,InnOuts,PO,assists,errors,DP,PB,WP,SB,CS,ZR,createdAt,updatedAt
 1,aaronha01,1954,1,ML1,1954ML1,NL,LF,105,102,2773,205,4,6,0,,,,,,,
 2,aaronha01,1954,1,ML1,1954ML1,NL,RF,11,11,320,12,1,1,1,,,,,,,
 3,abramca01,1954,1,PIT,1954PIT,NL,LF,5,5,120,12,2,0,0,,,,,,,

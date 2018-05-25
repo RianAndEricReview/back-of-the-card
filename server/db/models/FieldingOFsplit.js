@@ -11,7 +11,7 @@ const FieldingOFsplit = db.define('fieldingOFsplit', {
   stint: {
     type: Sequelize.INTEGER
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING
   },
   teamID: {

@@ -1,4 +1,4 @@
-id,playerID,year,team,teamID,league,inseason,games,wins,loses,rank,plyrMgr,createdAt,updatedAt
+id,playerID,year,teamName,teamID,league,inseason,games,wins,loses,rank,plyrMgr,createdAt,updatedAt
 1,wrighha01,1871,BS1,1871BS1,NA,1,31,20,10,3,Y,,
 2,woodji01,1871,CH1,1871CH1,NA,1,28,19,9,2,Y,,
 3,paborch01,1871,CL1,1871CL1,NA,1,29,10,19,8,Y,,

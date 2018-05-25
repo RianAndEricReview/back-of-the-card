@@ -11,7 +11,7 @@ const BattingPost = db.define('battingPost', {
   playerID: {
     type: Sequelize.STRING
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {

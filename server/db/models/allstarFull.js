@@ -14,7 +14,7 @@ const AllstarFull = db.define('allstarFull', {
   gameID: {
     type: Sequelize.STRING
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {

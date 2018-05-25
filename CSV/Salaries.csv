@@ -1,4 +1,4 @@
-id,year,team,teamID,league,playerID,salary,createdAt,updatedAt
+id,year,teamName,teamID,league,playerID,salary,createdAt,updatedAt
 1,1985,ATL,1985ATL,NL,barkele01,870000,,
 2,1985,ATL,1985ATL,NL,bedrost01,550000,,
 3,1985,ATL,1985ATL,NL,benedbr01,545000,,

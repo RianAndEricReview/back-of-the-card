@@ -1,4 +1,4 @@
-id,playerID,year,team,teamID,league,inseason,half,games,wins,loses,rank,createdAt,updatedAt
+id,playerID,year,teamName,teamID,league,inseason,half,games,wins,loses,rank,createdAt,updatedAt
 1,hanlone01,1892,BLN,1892BLN,NL,3,1,56,17,39,12,,
 2,hanlone01,1892,BLN,1892BLN,NL,3,2,77,26,46,10,,
 3,vanhage01,1892,BLN,1892BLN,NL,1,1,11,1,10,12,,

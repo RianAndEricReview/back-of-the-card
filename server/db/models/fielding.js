@@ -11,7 +11,7 @@ const Fielding = db.define('fielding', {
   stint: {
     type: Sequelize.INTEGER
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {
