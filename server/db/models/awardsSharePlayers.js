@@ -15,13 +15,13 @@ const AwardsSharePlayers = db.define('awardsSharePlayers', {
     type: Sequelize.STRING
   },
   pointsWon: {
-    type: Sequelize.INTEGER
+    type: Sequelize.FLOAT
   },
   pointsMax: {
     type: Sequelize.INTEGER
   },
   votesFirst: {
-    type: Sequelize.INTEGER
+    type: Sequelize.FLOAT
   },
   createdAt: {
     type: Sequelize.DATE,

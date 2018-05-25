@@ -109,6 +109,9 @@ const Teams = db.define('teams', {
   HA: {
     type: Sequelize.INTEGER,
   },
+  HRA: {
+    type: Sequelize.INTEGER,
+  },
   BBA: {
     type: Sequelize.INTEGER,
   },

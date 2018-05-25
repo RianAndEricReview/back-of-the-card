@@ -87,7 +87,7 @@ const startListening = () => {
 }
 
 // Sync DB
-const syncDB = () => db.sync({force: true})
+const syncDB = () => db.sync()
 
 
 if (require.main === module) {
