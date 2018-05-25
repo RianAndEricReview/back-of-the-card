@@ -9,7 +9,7 @@ const Managers = db.define('managers', {
   year: {
     type: Sequelize.INTEGER,
   },
-  team: {
+  teamName: {
     type: Sequelize.STRING,
   },
   teamID: {

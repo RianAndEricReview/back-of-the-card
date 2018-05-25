@@ -1,4 +1,4 @@
-id,playerID,year,gameNum,gameID,team,teamID,league,playedInGame,startingPos, createdAt, updatedAt
+id,playerID,year,gameNum,gameID,teamName,teamID,league,playedInGame,startingPos, createdAt, updatedAt
 1,gomezle01,1933,0,ALS193307060,NYA,1933NYA,AL,1,1,,
 2,ferreri01,1933,0,ALS193307060,BOS,1933BOS,AL,1,2,,
 3,gehrilo01,1933,0,ALS193307060,NYA,1933NYA,AL,1,3,,

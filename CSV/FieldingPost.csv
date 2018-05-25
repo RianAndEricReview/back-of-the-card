@@ -1,4 +1,4 @@
-id,playerID,year,team,teamID,league,round,position,games,GS,InnOuts,PO,assists,errors,DP,TP,PB,SB,CS,createdAt,updatedAt
+id,playerID,year,teamName,teamID,league,round,position,games,GS,InnOuts,PO,assists,errors,DP,TP,PB,SB,CS,createdAt,updatedAt
 1,beaumgi01,1903,PIT,1903PIT,NL,WS,CF,8,8,210,21,0,0,0,0,,,,,
 2,branski01,1903,PIT,1903PIT,NL,WS,1B,8,8,210,81,6,3,5,0,,,,,
 3,clarkfr01,1903,PIT,1903PIT,NL,WS,LF,8,8,210,18,0,1,0,0,,,,,

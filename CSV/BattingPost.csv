@@ -1,4 +1,4 @@
-id,year,round,playerID,team,teamID,league,games,AB,runs,hits,2B,3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP,createdAt,updatedAt
+id,year,round,playerID,teamName,teamID,league,games,AB,runs,hits,2B,3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP,createdAt,updatedAt
 1,1884,WS,becanbu01,NY4,1884NY4,AA,1,2,0,1,0,0,0,0,0,,0,0,0,,,,,,
 2,1884,WS,bradyst01,NY4,1884NY4,AA,3,10,1,0,0,0,0,0,0,,0,1,0,,,,,,
 3,1884,WS,carrocl01,PRO,1884PRO,NL,3,10,2,1,0,0,0,1,0,,1,1,0,,,,,,
