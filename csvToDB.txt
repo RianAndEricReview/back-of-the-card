@@ -5,7 +5,7 @@ How to copy and update a csv file to a pg db:
 
 
 
-back_of_the_card=# COPY "People" FROM '/Users/eeegee/Desktop/People2.csv'
+back_of_the_card=# COPY People FROM '/Users/eeegee/Desktop/People.csv'
 
 back_of_the_card-# DELIMITER ',' CSV HEADER;
 
@@ -13,3 +13,32 @@ back_of_the_card=# UPDATE "People" SET created_at = NOW();
 
 back_of_the_card=# UPDATE "People" SET updated_at = NOW();
 
+----------------------------------------------------------
+
+back_of_the_card=# COPY People FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/People.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Franchises FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Franchises.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Teams FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Teams.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Parks FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Parks.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Schools FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Schools.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "allstarFulls" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/AllstarFull.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Appearances FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Appearances.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "awardsManagers" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/AwardsManagers.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "awardsPlayers" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/AwardsPlayers.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "awardsShareManagers" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/AwardsShareManagers.csv'DELIMITER ',' CSVHEADER;
+back_of_the_card=# COPY "awardsSharePlayers" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/AwardsSharePlayers.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY battings FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Batting.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "battingPosts" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/BattingPost.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "collegePlayings" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/CollegePlaying.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY Fieldings FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Fielding.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "fieldingOFs" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/FieldingOF.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "fieldingOFsplits" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/FieldingOFsplit.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "fieldingPosts" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/FieldingPost.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "hallOfFames" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/HallOfFame.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "homeGames" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/HomeGames.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY managers FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Managers.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "managersHalves" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/ManagersHalf.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY pitchings FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Pitching.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "pitchingPosts" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/PitchingPost.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY salaries FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Salaries.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "seriesPosts" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/SeriesPost.csv'DELIMITER ',' CSV HEADER;
+back_of_the_card=# COPY "teamsHalves" FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/TeamsHalf.csv'DELIMITER ',' CSV HEADER;
