@@ -14,7 +14,8 @@ const PitchingPost = db.define('pitchingPost', {
   },
   team: {
     type: Sequelize.STRING,
-  },  teamID: {
+  },
+  teamID: {
     type: Sequelize.STRING,
   },
   league: {

@@ -5,6 +5,9 @@ const Appearances = db.define('appearances', {
   year: {
     type: Sequelize.INTEGER
   },
+  team: {
+    type: Sequelize.STRING,
+  },
   teamID: {
     type: Sequelize.STRING
   },
