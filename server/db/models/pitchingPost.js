@@ -12,7 +12,9 @@ const PitchingPost = db.define('pitchingPost', {
   round: {
     type: Sequelize.STRING,
   },
-  teamID: {
+  team: {
+    type: Sequelize.STRING,
+  },  teamID: {
     type: Sequelize.STRING,
   },
   league: {

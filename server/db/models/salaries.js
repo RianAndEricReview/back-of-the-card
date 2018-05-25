@@ -12,6 +12,9 @@ const Salaries = db.define('salaries', {
   league: {
     type: Sequelize.STRING,
   },
+  player: {
+    type: Sequelize.STRING,
+  },
   playerID: {
     type: Sequelize.STRING,
   },

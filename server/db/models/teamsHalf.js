@@ -9,6 +9,9 @@ const TeamsHalf = db.define('teamsHalf', {
   league: {
     type: Sequelize.STRING,
   },
+  team: {
+    type: Sequelize.STRING,
+  },
   teamID: {
     type: Sequelize.STRING,
   },
