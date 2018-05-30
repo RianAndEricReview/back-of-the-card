@@ -18,7 +18,7 @@ const Navbar = props => {
             <div className="loggedin-nav-items">
               <a id="player-profile" href="#">
                 <img id="player-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1hOEbZ3m_xze6kXPTgqbeSFAKDcu_ujcmFzT-2tI3jI0-DXI0" />
-                <p id="player-name"><h4>PlayerName</h4></p>
+                <h4>PlayerName</h4>
               </a>
               <a id="logout-link" href="/" onClick={handleClick}><h4>Logout</h4></a>
             </div>
