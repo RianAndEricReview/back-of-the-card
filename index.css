@@ -13,9 +13,25 @@ label {
 nav a {
   display: inline-block;
   margin: 1em;
+  color: white;
 }
 
 form div {
   margin: 1em;
   display: inline-block;
 }
+
+.nav-container {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.loggedout-nav-item {
+  margin-right: 1em;
+}
+
+.loggedout-home {
+  margin-left: 2em;
+}
+

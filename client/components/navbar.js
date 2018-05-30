@@ -10,13 +10,16 @@ const Navbar = props => {
     <div>
       <nav>
         {isLoggedIn ? (
-          <div>
-            <NavLink to="/home">Home</NavLink>
+          <div className="nav-container">
+            <NavLink to="/">Home</NavLink>
             <a href="/" onClick={handleClick}>Logout</a>
           </div>) : (
-            <div>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/signup">Sign Up</NavLink>
+            <div className="nav-container">
+              <NavLink className="loggedout-home" to="/">Home</NavLink>
+              <div className="loggedout-nav-item">
+                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/signup">Sign Up</NavLink>
+              </div>
             </div>
           )}
       </nav>
