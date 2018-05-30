@@ -10,13 +10,25 @@ const Navbar = props => {
     <div>
       <nav>
         {isLoggedIn ? (
-          <div>
-            <NavLink to="/home">Home</NavLink>
-            <a href="/" onClick={handleClick}>Logout</a>
+          <div className="nav-container">
+            <div className="loggedin-nav-items">
+              <NavLink className="home" to="/"><h4>BackOfTheCard</h4></NavLink>
+              <a id="player-statistics" href="#"><h4>Stats</h4></a>
+            </div>
+            <div className="loggedin-nav-items">
+              <a id="player-profile" href="#">
+                <img id="player-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1hOEbZ3m_xze6kXPTgqbeSFAKDcu_ujcmFzT-2tI3jI0-DXI0" />
+                <h4>PlayerName</h4>
+              </a>
+              <a id="logout-link" href="/" onClick={handleClick}><h4>Logout</h4></a>
+            </div>
           </div>) : (
-            <div>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/signup">Sign Up</NavLink>
+            <div className="nav-container">
+              <NavLink className="home" to="/"><h4>BackOfTheCard</h4></NavLink>
+              <div className="loggedout-nav-item">
+                <NavLink to="/login"><h4>Login</h4></NavLink>
+                <NavLink to="/signup"><h4>Sign Up</h4></NavLink>
+              </div>
             </div>
           )}
       </nav>

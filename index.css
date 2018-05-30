@@ -13,9 +13,47 @@ label {
 nav a {
   display: inline-block;
   margin: 1em;
+  color: white;
 }
 
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.nav-container {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 120%;
+  height: 3em;
+  font-family: Palantino;
+}
+
+.loggedout-nav-item {
+  margin-right: 1em;
+}
+
+.home {
+  margin-left: 2em;
+}
+
+#player-icon {
+  height: 2em;
+  width: 2em;
+}
+
+#player-profile {
+  display: flex;
+  align-items: center;
+}
+
+#logout-link {
+  margin-right: 2em;
+}
+
+.loggedin-nav-items {
+  display: flex;
+  align-items: center;
 }
