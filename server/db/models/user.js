@@ -4,6 +4,27 @@ const crypto = require('crypto')
 const _ = require('lodash')
 
 const User = db.define('user', {
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  screenName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  playerImage: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'https://i.pinimg.com/originals/50/45/bc/5045bcee09efb8b9f3281eb3c70e7914.jpg',
+  },
+  totalScores: {
+    type: Sequelize.TEXT,
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -23,6 +44,20 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  }
+}, {
+  getterMethods: {
+    totalScoresObject() {
+      return JSON.parse(this.totalScores)
+    },
+    fullName() {
+      return `${this.firstName} ${this.lastName}`
+    }
+  },
+  setterMethods: {
+    totalScores(value) {
+      this.setDataValue('totalScores', JSON.stringify(value))
+    }
   }
 })
 
