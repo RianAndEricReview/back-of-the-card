@@ -55,7 +55,7 @@ const User = db.define('user', {
     }
   },
   setterMethods: {
-    totalScores: function(value) {
+    totalScores(value) {
       this.setDataValue('totalScores', JSON.stringify(value))
     }
   }
