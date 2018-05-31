@@ -49,11 +49,14 @@ const User = db.define('user', {
   getterMethods: {
     totalScoresObject() {
       return JSON.parse(this.totalScores)
+    },
+    fullName() {
+      return `${this.firstName} ${this.lastName}`
     }
   },
   setterMethods: {
-    totalScores(value) {
-      this.totalScores = JSON.stringify(value)
+    totalScores: function(value) {
+      this.setDataValue('totalScores', JSON.stringify(value))
     }
   }
 })
