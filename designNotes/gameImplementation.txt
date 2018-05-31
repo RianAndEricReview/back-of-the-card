@@ -1,0 +1,58 @@
+Server Side - Joining a game
+
+Game:
+Open: true/false, default is open.
+Type: string with game type, 2, 4, 8. 1?
+Players: array with player objects
+
+One game for each type open at all times. 
+Once a game starts, delete from server and open a new game for that type.
+
+When player clicks on join, they go to the game page (url has game id) with loading animation and display of each player in the game.  Once game is full, loading will go away and gameplay starts.
+
+————————————————
+
+Client Side - Joining a game
+
+
+Player clicks join. They are taken to the game lobby. 
+
+  If they are the only player in game lobby their client creates a new game object (with game id). 
+
+  If there is already another player(s) in the game lobby the following happens via sockets:
+	-They should receive the game object from player 1.
+	-Their player id should be added to the game object for all players in the lobby.
+	-After their id has been added to game object, check to see if game is full. If so close game, and redirect all players in game to game page using the game id.
+
+————————————————-
+User
+Total Score: {1 player: 82085, 2 player: 7, 4 player: 537697, 16 player: 73057}
+Total Score All Games - virtual
+Current Win streak?
+Longest Win streak?
+
+Player Stats Table:
+- each row is a game for one player
+
+FIELDS
+Game Type: string
+Score: float
+Number of question answered: int
+Total time to answer all questions: float
+Questions correct: int
+Finish position: int
+
+DERIVED STATS
+Games played - calculation
+Avg Score per game type - calculated.
+Avg time per question - calculation
+High score per game type. - calculation, object?
+Highest Score - calculation
+Games won.
+Games won per game type.
+Avg finish per game type.
+
+
+Stretches
+Longest correct streak.
+Longest incorrect streak.
