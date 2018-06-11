@@ -18,6 +18,16 @@ export const meThunk = () =>
     .then(res => dispatch(getUser(res.data || defaultUser)))
     .catch(err => console.log(err))
 
+export const signUpThunk = (email, password, firstName, lastName, screenName) =>
+  dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName, screenName})
+    .then(res => {
+      dispatch(getUser(res.data))
+      history.push('/home')
+    }, authError => {
+      dispatch(getUser({ error: authError }))
+    })
+    .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
+
 export const authThunk = (email, password, formName) =>
   dispatch => axios.post(`/auth/${formName}`, { email, password })
     .then(res => {
@@ -37,7 +47,7 @@ export const logOutThunk = () =>
     .catch(err => console.log(err))
 
 //REDUCERS
-export default function ingredientReducer(state = defaultUser, action) {
+export default function userReducer(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
       return action.user

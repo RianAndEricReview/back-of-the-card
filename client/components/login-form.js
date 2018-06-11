@@ -5,7 +5,6 @@ import { authThunk } from '../store'
 
 const Login = props => {
   const { name, displayName, handleSubmit, error } = props
-  console.log('auth-form', props)
   return (
     <div>
       <form onSubmit={handleSubmit} name={name}>
