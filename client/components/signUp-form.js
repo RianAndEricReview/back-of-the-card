@@ -7,6 +7,10 @@ const SignUp = props => {
   const { handleSubmit, error } = props
   return (
     <div>
+      <div>
+        <a href="/auth/google" className="btn btn-danger btn-sm">Sign Up with Google</a>
+        <a href="/auth/google" className="btn btn-primary btn-sm">Sign Up with Facebook</a>
+      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email"><small>Email</small></label>
@@ -33,13 +37,13 @@ const SignUp = props => {
           <input name="screenName" type="screenName" />
         </div>
         <div>
-          <button type="submit">SIGN UP</button>
+          <button type="submit" className="btn btn-success">SIGN UP</button>
         </div>
         {
           error && error.response && <div>{error.response.data}</div>
         }
       </form>
-      <a href="/auth/google">SIGN UP with Google</a>
+      
     </div>
   )
 }
