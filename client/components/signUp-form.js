@@ -5,8 +5,6 @@ import { signUpThunk, getUser } from '../store'
 
 const SignUp = props => {
   const { handleSubmit, error } = props
-  // console.log('error', error)
-  // error ? console.log('error.response', error.response) : console.log('no error yet')
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -56,6 +54,7 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(event) {
       event.preventDefault()
+      //matching the format of the errors coming from the db, as a response object, to render with the error conditionals
       const passwordError = {response: {data: 'Passwords do not match'}}
       const email = event.target.email.value
       const password = event.target.password.value
@@ -65,7 +64,7 @@ const mapDispatch = dispatch => {
       const screenName = event.target.screenName.value
       if (password === passwordConf){
         dispatch(signUpThunk(email, password, firstName, lastName, screenName))
-      } else {dispatch(getUser({passwordError}))}
+      } else {dispatch(getUser({error: passwordError}))}
     }
   }
 }
