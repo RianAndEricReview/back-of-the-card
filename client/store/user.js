@@ -29,8 +29,8 @@ export const signUpThunk = (email, password, firstName, lastName, screenName) =>
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
-export const authThunk = (email, password, formName) =>
-  dispatch => axios.post(`/auth/${formName}`, { email, password })
+export const authThunk = (email, password) =>
+  dispatch => axios.post(`/auth/login`, { email, password })
     .then(res => {
       dispatch(getUser(res.data))
       history.push('/home')

@@ -4,10 +4,14 @@ import PropTypes from 'prop-types'
 import { authThunk } from '../store'
 
 const Login = props => {
-  const { name, displayName, handleSubmit, error } = props
+  const { handleSubmit, error } = props
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <div>
+        <a href="/auth/google" className="btn btn-danger btn-sm">Sign Up with Google</a>
+        <a href="/auth/google" className="btn btn-primary btn-sm">Sign Up with Facebook</a>
+      </div>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email"><small>Email</small></label>
           <input name="email" type="email" />
@@ -17,21 +21,18 @@ const Login = props => {
           <input name="password" type="password" />
         </div>
         <div>
-          <button type="submit">{displayName}</button>
+          <button type="submit" className="btn btn-success">LOGIN</button>
         </div>
         {
           error && error.response && <div>{error.response.data}</div>
         }
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
     </div>
   )
 }
 
 const mapLogin = state => {
   return {
-    name: 'login',
-    displayName: 'LOGIN',
     error: state.user.error
   }
 }
@@ -42,18 +43,14 @@ const mapDispatch = dispatch => {
       event.preventDefault()
       const email = event.target.email.value
       const password = event.target.password.value
-      const formName = event.target.name
-      dispatch(authThunk(email, password, formName))
+      dispatch(authThunk(email, password))
     }
   }
 }
 
 export default connect(mapLogin, mapDispatch)(Login)
 
-
 Login.propTypes = {
-  name: PropTypes.string.isRequired,
-  displayName: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.object
 }
