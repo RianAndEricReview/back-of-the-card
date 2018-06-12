@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { signUpThunk } from '../store'
+import { signUpThunk, getUser } from '../store'
 
 const SignUp = props => {
   const { handleSubmit, error } = props
@@ -15,6 +15,10 @@ const SignUp = props => {
         <div>
           <label htmlFor="password"><small>Password</small></label>
           <input name="password" type="password" />
+        </div>
+        <div>
+          <label htmlFor="passwordConf"><small>Password Confirmation</small></label>
+          <input name="passwordConf" type="passwordConf" />
         </div>
         <div>
           <label htmlFor="firstName"><small>First Name</small></label>
@@ -50,12 +54,17 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(event) {
       event.preventDefault()
+      //matching the format of the errors coming from the db, as a response object, to render with the error conditionals
+      const passwordError = {response: {data: 'Passwords do not match'}}
       const email = event.target.email.value
       const password = event.target.password.value
+      const passwordConf = event.target.passwordConf.value
       const firstName = event.target.firstName.value
       const lastName = event.target.lastName.value
       const screenName = event.target.screenName.value
-      dispatch(signUpThunk(email, password, firstName, lastName, screenName))
+      if (password === passwordConf){
+        dispatch(signUpThunk(email, password, firstName, lastName, screenName))
+      } else {dispatch(getUser({error: passwordError}))}
     }
   }
 }
