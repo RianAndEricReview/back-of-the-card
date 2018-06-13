@@ -6,10 +6,10 @@ import { signUpThunk, getUser } from '../store'
 const SignUp = props => {
   const { handleSubmit, error } = props
   return (
-    <div>
+    <div id="signup-form">
       <div className="auth-button-container">
-        <a href="/auth/google" className="btn btn-danger btn-sm auth-button">Sign Up with Google</a>
-        <a href="/auth/google" className="btn btn-primary btn-sm auth-button">Sign Up with Facebook</a>
+        <a href="/auth/google" className="btn btn-danger btn-sm google-button">Sign Up with Google</a>
+        <a href="/auth/google" className="btn btn-primary btn-sm facebook-button">Sign Up with Facebook</a>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="name-input-container">
@@ -34,14 +34,13 @@ const SignUp = props => {
           <label htmlFor="passwordConf"><small>Password Confirmation</small></label>
           <input name="passwordConf" type="password" />
         </div>
-        <div>
+        <div id="signup-button">
           <button type="submit" className="btn btn-success">SIGN UP</button>
         </div>
         {
           error && error.response && <div>{error.response.data}</div>
         }
       </form>
-
     </div>
   )
 }
