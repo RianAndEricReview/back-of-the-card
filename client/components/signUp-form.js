@@ -22,19 +22,19 @@ const SignUp = props => {
         </div>
         <div>
           <label htmlFor="passwordConf"><small>Password Confirmation</small></label>
-          <input name="passwordConf" type="passwordConf" />
+          <input name="passwordConf" type="password" />
         </div>
         <div>
           <label htmlFor="firstName"><small>First Name</small></label>
-          <input name="firstName" type="firstName" />
+          <input name="firstName" type="text" />
         </div>
         <div>
           <label htmlFor="lastName"><small>Last Name</small></label>
-          <input name="lastName" type="lastName" />
+          <input name="lastName" type="text" />
         </div>
         <div>
           <label htmlFor="screenName"><small>Screen Name</small></label>
-          <input name="screenName" type="screenName" />
+          <input name="screenName" type="color" />
         </div>
         <div>
           <button type="submit" className="btn btn-success">SIGN UP</button>
@@ -43,7 +43,7 @@ const SignUp = props => {
           error && error.response && <div>{error.response.data}</div>
         }
       </form>
-      
+
     </div>
   )
 }
