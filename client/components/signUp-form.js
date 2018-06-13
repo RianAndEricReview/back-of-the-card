@@ -7,34 +7,32 @@ const SignUp = props => {
   const { handleSubmit, error } = props
   return (
     <div>
-      <div>
-        <a href="/auth/google" className="btn btn-danger btn-sm">Sign Up with Google</a>
-        <a href="/auth/google" className="btn btn-primary btn-sm">Sign Up with Facebook</a>
+      <div className="auth-button-container">
+        <a href="/auth/google" className="btn btn-danger btn-sm auth-button">Sign Up with Google</a>
+        <a href="/auth/google" className="btn btn-primary btn-sm auth-button">Sign Up with Facebook</a>
       </div>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="name-input-container">
+          <div className="name-input">
+            <label htmlFor="firstName"><small>First Name</small></label>
+            <input name="firstName" type="text" />
+          </div>
+          <div className="name-input">
+            <label htmlFor="lastName"><small>Last Name</small></label>
+            <input name="lastName" type="text" />
+          </div>
+        </div>
+        <div className="signup-fields">
           <label htmlFor="email"><small>Email</small></label>
           <input name="email" type="email" />
         </div>
-        <div>
+        <div className="signup-fields">
           <label htmlFor="password"><small>Password</small></label>
           <input name="password" type="password" />
         </div>
-        <div>
+        <div className="signup-fields">
           <label htmlFor="passwordConf"><small>Password Confirmation</small></label>
           <input name="passwordConf" type="password" />
-        </div>
-        <div>
-          <label htmlFor="firstName"><small>First Name</small></label>
-          <input name="firstName" type="text" />
-        </div>
-        <div>
-          <label htmlFor="lastName"><small>Last Name</small></label>
-          <input name="lastName" type="text" />
-        </div>
-        <div>
-          <label htmlFor="screenName"><small>Screen Name</small></label>
-          <input name="screenName" type="color" />
         </div>
         <div>
           <button type="submit" className="btn btn-success">SIGN UP</button>
@@ -59,16 +57,16 @@ const mapDispatch = dispatch => {
     handleSubmit(event) {
       event.preventDefault()
       //matching the format of the errors coming from the db, as a response object, to render with the error conditionals
-      const passwordError = {response: {data: 'Passwords do not match'}}
+      const passwordError = { response: { data: 'Passwords do not match' } }
       const email = event.target.email.value
       const password = event.target.password.value
       const passwordConf = event.target.passwordConf.value
       const firstName = event.target.firstName.value
       const lastName = event.target.lastName.value
       const screenName = event.target.screenName.value
-      if (password === passwordConf){
+      if (password === passwordConf) {
         dispatch(signUpThunk(email, password, firstName, lastName, screenName))
-      } else {dispatch(getUser({error: passwordError}))}
+      } else { dispatch(getUser({ error: passwordError })) }
     }
   }
 }

@@ -57,3 +57,31 @@ form div {
   display: flex;
   align-items: center;
 }
+
+.auth-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-button {
+  margin: 0.5em 4em;
+}
+
+.name-input-container {
+  display: flex;
+}
+
+.name-input input{
+  width: 20em;
+}
+
+.signup-fields {
+  display: block;
+  width: 20em;
+  margin-left: 2em;
+}
+
+.signup-fields input{
+  width: 42em;
+}
+
