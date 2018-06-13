@@ -57,3 +57,47 @@ form div {
   display: flex;
   align-items: center;
 }
+
+.auth-button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.google-button {
+  margin: 0.5em 0em 0.5em 3em;
+}
+
+.facebook-button {
+  margin: 0.5em 17em 0.5em 0;
+}
+.name-input-container {
+  display: flex;
+  margin-bottom: -1em;
+}
+
+.name-input input{
+  width: 20em;
+}
+
+.signup-fields {
+  display: block;
+  width: 20em;
+  margin-left: 2em;
+}
+
+.signup-fields input{
+  width: 42em;
+}
+
+#signup-form {
+  display: block;
+  margin: 0 auto;
+  width: 55em;
+  font-size: 22px;
+}
+
+#signup-button {
+  display: flex;
+  margin-left: 2em;
+  margin-top: 2em;
+}

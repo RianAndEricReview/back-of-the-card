@@ -19,8 +19,8 @@ export const meThunk = () =>
     .then(res => dispatch(getUser(res.data || defaultUser)))
     .catch(err => console.log(err))
 
-export const signUpThunk = (email, password, firstName, lastName, screenName) =>
-  dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName, screenName})
+export const signUpThunk = (email, password, firstName, lastName) =>
+  dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName})
     .then(res => {
       dispatch(getUser(res.data))
       history.push('/home')
