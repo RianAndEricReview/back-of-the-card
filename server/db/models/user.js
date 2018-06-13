@@ -14,7 +14,6 @@ const User = db.define('user', {
   },
   screenName: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
   },
   playerImage: {

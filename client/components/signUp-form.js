@@ -62,9 +62,8 @@ const mapDispatch = dispatch => {
       const passwordConf = event.target.passwordConf.value
       const firstName = event.target.firstName.value
       const lastName = event.target.lastName.value
-      const screenName = event.target.screenName.value
       if (password === passwordConf) {
-        dispatch(signUpThunk(email, password, firstName, lastName, screenName))
+        dispatch(signUpThunk(email, password, firstName, lastName))
       } else { dispatch(getUser({ error: passwordError })) }
     }
   }
