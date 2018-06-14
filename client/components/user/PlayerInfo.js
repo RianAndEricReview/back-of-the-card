@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { signUpThunk } from '../../store'
+import { playerInfoThunk } from '../../store'
 
 const PlayerInfo = props => {
-  const { handleSubmit, error } = props
+  const { handleSubmit, error, userId } = props
   return (
     <div id="player-info-form">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => handleSubmit(event, userId)}>
       <div>
         <h3>Choose Player Name & Image</h3>
       </div>
@@ -26,15 +26,18 @@ const PlayerInfo = props => {
 
 const mapState = state => {
   return {
+    userId: state.user.id,
     error: state.user.error
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(event) {
+    handleSubmit(event, userId) {
+      console.log('THE ID!!!!!', userId)
       event.preventDefault()
-      dispatch(signUpThunk(email, password, firstName, lastName))
+      const screenName = event.target.screenName.value
+      dispatch(playerInfoThunk(userId, screenName))
     }
   }
 }

@@ -20,10 +20,20 @@ export const meThunk = () =>
     .catch(err => console.log(err))
 
 export const signUpThunk = (email, password, firstName, lastName) =>
-  dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName})
+  dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName })
     .then(res => {
       dispatch(getUser(res.data))
-      history.push('/player-info')
+      history.push(`/player-info/${res.data.id}`)
+    }, authError => {
+      dispatch(getUser({ error: authError }))
+    })
+    .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
+
+export const playerInfoThunk = (userId, screenName) =>
+  dispatch => axios.put(`/api/users/${userId}`, { screenName })
+    .then(res => {
+      dispatch(getUser(res.data))
+      history.push('/')
     }, authError => {
       dispatch(getUser({ error: authError }))
     })
