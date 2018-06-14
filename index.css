@@ -112,3 +112,9 @@ form div {
 #player-info-form h3{
   margin: -.5em 0em 0em .7em;
 }
+
+#player-info-submit {
+  display: flex;
+  margin-left: 2em;
+  margin-top: 2em;
+}

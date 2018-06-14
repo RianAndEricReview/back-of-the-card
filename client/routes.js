@@ -20,7 +20,7 @@ class Routes extends Component {
         {
           isLoggedIn &&
           <Switch>
-            <Route path="/player-info" component={PlayerInfo} />
+            <Route path="/player-info/:userId" component={PlayerInfo} />
             <Route path="/" component={Landing} />
           </Switch>
         }

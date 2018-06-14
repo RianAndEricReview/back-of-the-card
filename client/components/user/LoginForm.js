@@ -21,7 +21,7 @@ const Login = props => {
           <input name="password" type="password" />
         </div>
         <div>
-          <button type="submit" className="btn btn-success">LOGIN</button>
+          <button type="submit" className="btn btn-success">Login</button>
         </div>
         {
           error && error.response && <div>{error.response.data}</div>

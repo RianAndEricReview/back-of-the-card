@@ -15,6 +15,9 @@ const PlayerInfo = props => {
           <label htmlFor="screenName"><small>Screen Name</small></label>
           <input name="screenName" type="text" />
         </div>
+        <div id="player-info-submit">
+          <button type="submit" className="btn btn-success">Submit</button>
+        </div>
         {error && error.response && <div>{error.response.data}</div>}
       </form>
     </div>
