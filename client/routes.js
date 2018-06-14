@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {withRouter, Route, Switch} from 'react-router-dom'
+import { withRouter, Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Login, SignUp, Landing } from './components'
+import { Login, SignUp, PlayerInfo, Landing } from './components'
 import { meThunk } from './store'
 
 class Routes extends Component {
@@ -11,7 +11,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const { isLoggedIn } = this.props
 
     return (
       <Switch>
@@ -20,6 +20,7 @@ class Routes extends Component {
         {
           isLoggedIn &&
           <Switch>
+            <Route path="/player-info" component={PlayerInfo} />
             <Route path="/" component={Landing} />
           </Switch>
         }

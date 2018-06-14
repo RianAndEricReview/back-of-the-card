@@ -101,3 +101,14 @@ form div {
   margin-left: 2em;
   margin-top: 2em;
 }
+
+#player-info-form {
+  display: block;
+  margin: 0 auto;
+  width: 55em;
+  font-size: 22px;
+}
+
+#player-info-form h3{
+  margin: -.5em 0em 0em .7em;
+}
