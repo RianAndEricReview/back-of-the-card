@@ -34,7 +34,6 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     handleSubmit(event, userId) {
-      console.log('THE ID!!!!!', userId)
       event.preventDefault()
       const screenName = event.target.screenName.value
       dispatch(playerInfoThunk(userId, screenName))
