@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { authThunk } from '../store'
+import { authThunk } from '../../store'
 
 const Login = props => {
   const { handleSubmit, error } = props

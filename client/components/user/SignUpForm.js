@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { signUpThunk, getUser } from '../store'
+import { signUpThunk, getUser } from '../../store'
 
 const SignUp = props => {
   const { handleSubmit, error } = props
