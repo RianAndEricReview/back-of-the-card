@@ -35,7 +35,7 @@ const SignUp = props => {
           <input name="passwordConf" type="password" />
         </div>
         <div id="signup-button">
-          <button type="submit" className="btn btn-success">SIGN UP</button>
+          <button type="submit" className="btn btn-success">Sign Up</button>
         </div>
         {
           error && error.response && <div>{error.response.data}</div>
