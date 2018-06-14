@@ -23,7 +23,7 @@ export const signUpThunk = (email, password, firstName, lastName) =>
   dispatch => axios.post(`/auth/signup`, { email, password, firstName, lastName})
     .then(res => {
       dispatch(getUser(res.data))
-      history.push('/home')
+      history.push('/')
     }, authError => {
       dispatch(getUser({ error: authError }))
     })
@@ -33,7 +33,7 @@ export const authThunk = (email, password) =>
   dispatch => axios.post(`/auth/login`, { email, password })
     .then(res => {
       dispatch(getUser(res.data))
-      history.push('/home')
+      history.push('/')
     }, authError => {
       dispatch(getUser({ error: authError }))
     })
