@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { playerInfoThunk } from '../../store'
+import { setPlayerInfoThunk } from '../../store'
 
 const PlayerInfo = props => {
   const { handleSubmit, error, userId } = props
@@ -36,7 +36,7 @@ const mapDispatch = dispatch => {
     handleSubmit(event, userId) {
       event.preventDefault()
       const screenName = event.target.screenName.value
-      dispatch(playerInfoThunk(userId, screenName))
+      dispatch(setPlayerInfoThunk(userId, screenName))
     }
   }
 }

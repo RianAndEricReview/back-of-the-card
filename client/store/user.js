@@ -7,10 +7,13 @@ const defaultUser = {}
 //ACTION TYPES
 export const GET_USER = 'GET_USER'
 export const REMOVE_USER = 'REMOVE_USER'
+export const HANDLE_DUPLICATE_ERROR = 'HANDLE_DUPLICATE_ERROR'
+
 
 //ACTION CREATORS
 export const getUser = user => ({ type: GET_USER, user })
 export const removeUser = () => ({ type: REMOVE_USER })
+export const handleDuplicateError = err => ({type: HANDLE_DUPLICATE_ERROR, err})
 
 
 //THUNK CREATORS
@@ -25,17 +28,17 @@ export const signUpThunk = (email, password, firstName, lastName) =>
       dispatch(getUser(res.data))
       history.push(`/player-info/${res.data.id}`)
     }, authError => {
-      dispatch(getUser({ error: authError }))
+      dispatch(handleDuplicateError({ error: authError }))
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
-export const playerInfoThunk = (userId, screenName) =>
+export const setPlayerInfoThunk = (userId, screenName) =>
   dispatch => axios.put(`/api/users/${userId}`, { screenName })
     .then(res => {
       dispatch(getUser(res.data))
       history.push('/')
     }, authError => {
-      dispatch(getUser({ error: authError }))
+      dispatch(handleDuplicateError({ error: authError }))
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
@@ -64,6 +67,8 @@ export default function userReducer(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case HANDLE_DUPLICATE_ERROR:
+      return {...state, ...action.err}
     default:
       return state
   }
