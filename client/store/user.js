@@ -7,13 +7,13 @@ const defaultUser = {}
 //ACTION TYPES
 export const GET_USER = 'GET_USER'
 export const REMOVE_USER = 'REMOVE_USER'
-export const HANDLE_DUPLICATE_ERROR = 'HANDLE_DUPLICATE_ERROR'
+export const HANDLE_ERROR = 'HANDLE_ERROR'
 
 
 //ACTION CREATORS
 export const getUser = user => ({ type: GET_USER, user })
 export const removeUser = () => ({ type: REMOVE_USER })
-export const handleDuplicateError = err => ({type: HANDLE_DUPLICATE_ERROR, err})
+export const handleError = err => ({type: HANDLE_ERROR, err})
 
 
 //THUNK CREATORS
@@ -28,7 +28,7 @@ export const signUpThunk = (email, password, firstName, lastName) =>
       dispatch(getUser(res.data))
       history.push(`/player-info/${res.data.id}`)
     }, authError => {
-      dispatch(handleDuplicateError({ error: authError }))
+      dispatch(handleError({ error: authError }))
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
@@ -38,7 +38,7 @@ export const setPlayerInfoThunk = (userId, screenName) =>
       dispatch(getUser(res.data))
       history.push('/')
     }, authError => {
-      dispatch(handleDuplicateError({ error: authError }))
+      dispatch(handleError({ error: authError }))
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
@@ -67,7 +67,7 @@ export default function userReducer(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
-    case HANDLE_DUPLICATE_ERROR:
+    case HANDLE_ERROR:
       return {...state, ...action.err}
     default:
       return state
