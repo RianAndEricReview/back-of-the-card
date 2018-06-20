@@ -14,6 +14,7 @@ const User = db.define('user', {
   },
   screenName: {
     type: Sequelize.STRING,
+    allowNull: false,
     unique: true,
   },
   playerImage: {
@@ -45,25 +46,33 @@ const User = db.define('user', {
     type: Sequelize.STRING
   }
 }, {
-  getterMethods: {
-    totalScoresObject() {
-      return JSON.parse(this.totalScores)
+    getterMethods: {
+      totalScoresObject() {
+        return JSON.parse(this.totalScores)
+      },
+      fullName() {
+        return `${this.firstName} ${this.lastName}`
+      }
     },
-    fullName() {
-      return `${this.firstName} ${this.lastName}`
+    setterMethods: {
+      totalScores(value) {
+        this.setDataValue('totalScores', JSON.stringify(value))
+      }
+    },
+    hooks: {
+      beforeValidate: (instance) => {
+        console.log('!!!!instance!!!!', instance)
+        if (!instance.screenName){
+          instance.screenName = `${instance.firstName}${instance.lastName}`
+        }
+      }
     }
-  },
-  setterMethods: {
-    totalScores(value) {
-      this.setDataValue('totalScores', JSON.stringify(value))
-    }
-  }
-})
+  })
 
 module.exports = User
 
 //Instance methods
-User.prototype.correctPassword = function(attemptedPassword) {
+User.prototype.correctPassword = function (attemptedPassword) {
   return User.encryptPassword(attemptedPassword, this.salt()) === this.password()
 }
 
@@ -72,11 +81,11 @@ User.prototype.sanitize = function () {
 }
 
 //Class methods
-User.generateSalt = function() {
+User.generateSalt = function () {
   return crypto.randomBytes(16).toString('base64')
 }
 
-User.encryptPassword = function(plainText, salt) {
+User.encryptPassword = function (plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
     .update(plainText)

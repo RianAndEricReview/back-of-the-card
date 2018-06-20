@@ -26,8 +26,25 @@ router.post('/signup', (req, res, next) => {
         req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
       })
     .catch(err => {
-      if (err.name === 'SequelizeUniqueConstraintError') {
+      console.log('in error', req.body, err)
+      if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
+        console.log('in if')
         res.status(401).send('User already exists.')
+      }
+      else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
+        console.log('in else if')
+        User.create({...req.body, screenName: `${req.body.firstName}${req.body.lastName}${Math.floor(Math.random() * 100000)}`})
+        .then(user => {
+          req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
+        })
+        .catch(err => {
+          if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
+            console.log('in if')
+            res.status(401).send('User already exists.')
+          } else {
+            next(err)
+          }
+        })
       } else {
         next(err)
       }
