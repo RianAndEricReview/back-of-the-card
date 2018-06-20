@@ -61,7 +61,6 @@ const User = db.define('user', {
     },
     hooks: {
       beforeValidate: (instance) => {
-        console.log('!!!!instance!!!!', instance)
         if (!instance.screenName){
           instance.screenName = `${instance.firstName}${instance.lastName}`
         }
