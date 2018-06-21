@@ -33,6 +33,7 @@ router.post('/signup', (req, res, next) => {
         res.status(401).send('User already exists.')
       }
       //checks to see if error is unique screenName validation error, if so creates a new screenName with a random number on end.
+      //Might need class methods and recursion???
       else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
         User.create({...req.body, screenName: `${req.body.firstName}${req.body.lastName}${Math.floor(Math.random() * 100000)}`})
         .then(user => {
