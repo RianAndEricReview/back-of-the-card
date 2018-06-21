@@ -92,18 +92,22 @@ User.encryptPassword = function (plainText, salt) {
     .digest('hex')
 }
 
-User.signUpUser = function (req, res, next) {
-  this.create(req.body)
+//class method to be used when signing up a new user
+User.signUpUser = function (reqBody, req, res, next) {
+  this.create(reqBody)
     .then(user => {
       req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
     })
     .catch(err => {
+      //checks to see if error is unique email validation error, if so sends message to client
       if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
-        console.log('User already exists: ', req.body.email)
+        console.log('User already exists: ', reqBody.email)
         res.status(401).send('User already exists.')
       }
+      //checks to see if error is unique screenName validation error, if so it calls signUpUser recusively and creates a new screenName with a random number on end which it passes in as the new reqBody value.
       else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
-        this.signUpUser({...req.body, screenName: `${req.body.firstName}${req.body.lastName}${Math.floor(Math.random() * 100000)}`}, res, next)
+        console.log('NAME!!!!!!', reqBody.screenName)
+        this.signUpUser({...reqBody, screenName: `${reqBody.firstName}${reqBody.lastName}${Math.floor(Math.random() * 10)}`}, req, res, next)
       } else {
         next(err)
       }
