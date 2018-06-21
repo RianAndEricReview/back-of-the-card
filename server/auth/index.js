@@ -26,8 +26,27 @@ router.post('/signup', (req, res, next) => {
         req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
       })
     .catch(err => {
-      if (err.name === 'SequelizeUniqueConstraintError') {
+      //We are using the error handling to create a unique screenName if there isn't one.  Code is not dry and feels a little hacky. Making a ticket to see if we can accomplish this is a better way.
+      //checks to see if error is unique email validation error, if so sends message to client
+      if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
+        console.log('User already exists: ', req.body.email)
         res.status(401).send('User already exists.')
+      }
+      //checks to see if error is unique screenName validation error, if so creates a new screenName with a random number on end.
+      //Might need class methods and recursion???
+      else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
+        User.create({...req.body, screenName: `${req.body.firstName}${req.body.lastName}${Math.floor(Math.random() * 100000)}`})
+        .then(user => {
+          req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
+        })
+        .catch(err => {
+          if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
+            console.log('User already exists(screenName updated): ', req.body.email)
+            res.status(401).send('User already exists.')
+          } else {
+            next(err)
+          }
+        })
       } else {
         next(err)
       }
