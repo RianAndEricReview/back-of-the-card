@@ -59,13 +59,6 @@ const User = db.define('user', {
         this.setDataValue('totalScores', JSON.stringify(value))
       }
     },
-    hooks: {
-      beforeValidate: (instance) => {
-        if (!instance.screenName){
-          instance.screenName = `${instance.firstName}${instance.lastName}`
-        }
-      }
-    }
   })
 
 module.exports = User
@@ -92,7 +85,7 @@ User.encryptPassword = function (plainText, salt) {
     .digest('hex')
 }
 
-//class method to be used when signing up a new user
+//class method to be used when signing  a new user
 User.signUpUser = function (reqBody, req, res, next) {
   this.create(reqBody)
     .then(user => {
@@ -121,6 +114,12 @@ const setSaltAndPassword = user => {
     user.password = User.encryptPassword(user.password(), user.salt())
   }
 }
+const setDefaultScreenName = instance => {
+  if (!instance.screenName){
+    instance.screenName = `${instance.firstName}${instance.lastName}`
+  }
+}
 
+User.beforeValidate(setDefaultScreenName)
 User.beforeCreate(setSaltAndPassword)
 User.beforeUpdate(setSaltAndPassword)
