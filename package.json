@@ -38,7 +38,6 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.37.6",
-    "sequelize-isunique-validator": "^1.1.1",
     "socket.io": "^2.1.0"
   },
   "devDependencies": {
