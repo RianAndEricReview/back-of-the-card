@@ -99,7 +99,6 @@ User.signUpUser = function (reqBody, req, res, next) {
       }
       //checks to see if error is unique screenName validation error, if so it calls signUpUser recusively and creates a new screenName with a random number on end which it passes in as the new reqBody value.
       else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
-        console.log('NAME!!!!!!', reqBody.screenName)
         this.signUpUser({...reqBody, screenName: `${reqBody.firstName}${reqBody.lastName}${Math.floor(Math.random() * 100000)}`}, req, res, next)
       } else {
         next(err)
