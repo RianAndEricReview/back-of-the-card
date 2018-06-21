@@ -92,6 +92,24 @@ User.encryptPassword = function (plainText, salt) {
     .digest('hex')
 }
 
+User.signUpUser = function (req, res, next) {
+  this.create(req.body)
+    .then(user => {
+      req.login(user, err => (err ? next(err) : res.json(user.sanitize())))
+    })
+    .catch(err => {
+      if (err.name === 'SequelizeUniqueConstraintError' && err.fields.email) {
+        console.log('User already exists: ', req.body.email)
+        res.status(401).send('User already exists.')
+      }
+      else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
+        this.signUpUser({...req.body, screenName: `${req.body.firstName}${req.body.lastName}${Math.floor(Math.random() * 100000)}`}, res, next)
+      } else {
+        next(err)
+      }
+    })
+}
+
 // Hooks
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
