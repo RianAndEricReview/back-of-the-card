@@ -6,8 +6,8 @@ import { setPlayerInfoThunk } from '../../store'
 const PlayerInfo = props => {
   const { handleSubmit, error, userId, screenName } = props
   const imageArray = []
-  for (let i = 1; i <= 3; i++) {
-    imageArray.push({ path: `../../../playerImages/playerImage_${i}.jpg`, key: i, name: `image${i}` })
+  for (let i = 0; i <= 2; i++) {
+    imageArray.push({ path: `../../../playerImages/playerImage_${i}.jpg`, key: i})
   }
   return (
     <div id="player-info-form">
@@ -21,11 +21,11 @@ const PlayerInfo = props => {
         </div>
 
 
-        <div className="form-group">
+        <div className="form-group row">
           {
             imageArray.map(image => (
               <div className="form-check" key={image.key}>
-                <input className="form-check-input" type="radio" name={image.name} value={image.path} />
+                <input className="form-check-input col-md-6" type="radio" name="image" value={image.path} />
                 <label className="form-check-label">
                   <img src={image.path} className="img-thumbnail" />
                 </label>
