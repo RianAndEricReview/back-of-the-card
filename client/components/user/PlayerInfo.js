@@ -5,6 +5,10 @@ import { setPlayerInfoThunk } from '../../store'
 
 const PlayerInfo = props => {
   const { handleSubmit, error, userId, screenName } = props
+  const imageArray = []
+  for (let i = 1; i <= 3; i++) {
+    imageArray.push({ path: `../../../playerImages/playerImage_${i}.jpg`, key: i, name: `image${i}` })
+  }
   return (
     <div id="player-info-form">
       <form onSubmit={(event) => handleSubmit(event, userId)}>
@@ -16,8 +20,19 @@ const PlayerInfo = props => {
           <input name="screenName" type="text" placeholder={screenName} />
         </div>
 
-        <div>
-          <img src="../../../playerImages/playerImage_1.jpg" />
+
+        <div className="form-group">
+          {
+            imageArray.map(image => (
+              <div className="form-check" key={image.key}>
+                <input className="form-check-input" type="radio" name={image.name} value={image.path} />
+                <label className="form-check-label">
+                  <img src={image.path} className="img-thumbnail" />
+                </label>
+              </div>
+            ))
+          }
+
         </div>
 
         <div id="player-info-submit">
