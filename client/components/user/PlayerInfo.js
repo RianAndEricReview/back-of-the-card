@@ -19,22 +19,18 @@ const PlayerInfo = props => {
           <label htmlFor="screenName"><small>Screen Name</small></label>
           <input name="screenName" type="text" placeholder={screenName} />
         </div>
-
-
         <div className="form-group row">
           {
             imageArray.map(image => (
               <div className="form-check" key={image.key}>
-                <input className="form-check-input col-md-3" type="radio" name="image" value={image.path} />
+                <input className="form-check-input col-md-3" type="radio" name="playerImage" value={image.path} />
                 <label className="form-check-label">
                   <img src={image.path} className="img-thumbnail player-image" />
                 </label>
               </div>
             ))
           }
-
         </div>
-
         <div id="player-info-submit">
           <button type="submit" className="btn btn-success">Submit</button>
         </div>
@@ -57,7 +53,8 @@ const mapDispatch = dispatch => {
     handleSubmit(event, userId) {
       event.preventDefault()
       const screenName = event.target.screenName.value
-      dispatch(setPlayerInfoThunk(userId, screenName))
+      const playerImage = event.target.playerImage.value
+      dispatch(setPlayerInfoThunk(userId, screenName, playerImage))
     }
   }
 }

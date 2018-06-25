@@ -5,7 +5,7 @@ import { logOutThunk } from '../store'
 import { connect } from 'react-redux'
 
 const Navbar = props => {
-  const { handleClick, isLoggedIn, screenName } = props
+  const { handleClick, isLoggedIn, screenName, playerImage } = props
   return (
     <div>
       <nav>
@@ -17,7 +17,7 @@ const Navbar = props => {
             </div>
             <div className="loggedin-nav-items">
               <a id="player-profile" href="#">
-                <img id="player-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1hOEbZ3m_xze6kXPTgqbeSFAKDcu_ujcmFzT-2tI3jI0-DXI0" />
+                <img id="player-icon" src={playerImage} />
                 <h4>{screenName}</h4>
               </a>
               <a id="logout-link" href="/" onClick={handleClick}><h4>Logout</h4></a>
@@ -39,7 +39,8 @@ const Navbar = props => {
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    screenName: state.user.screenName
+    screenName: state.user.screenName,
+    playerImage: state.user.playerImage
   }
 }
 
