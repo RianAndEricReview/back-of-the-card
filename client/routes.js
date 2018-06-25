@@ -17,6 +17,7 @@ class Routes extends Component {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
+
         {
           isLoggedIn &&
           <Switch>
@@ -24,6 +25,8 @@ class Routes extends Component {
             <Route path="/" component={Landing} />
           </Switch>
         }
+
+        <Route path="/" component={Landing} />
 
       </Switch>
     )
