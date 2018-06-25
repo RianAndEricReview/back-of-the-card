@@ -9,7 +9,7 @@ export default class Landing extends Component {
     this.state = store.getState()
   }
 
-  render(){
+  render() {
     return (
       <div>
         <LandingPres />
