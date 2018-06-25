@@ -118,3 +118,8 @@ form div {
   margin-left: 2em;
   margin-top: 2em;
 }
+
+.player-image {
+  height: 10em;
+  width: 10em;
+}
