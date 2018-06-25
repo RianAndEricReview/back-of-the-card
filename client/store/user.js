@@ -32,8 +32,8 @@ export const signUpThunk = (email, password, firstName, lastName) =>
     })
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr))
 
-export const setPlayerInfoThunk = (userId, screenName) =>
-  dispatch => axios.put(`/api/users/${userId}`, { screenName })
+export const setPlayerInfoThunk = (userId, screenName, playerImage) =>
+  dispatch => axios.put(`/api/users/${userId}`, { screenName, playerImage })
     .then(res => {
       dispatch(getUser(res.data))
       history.push('/')
