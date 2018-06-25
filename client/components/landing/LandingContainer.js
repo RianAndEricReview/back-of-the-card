@@ -1,25 +1,19 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import store from '../../store'
+import LandingPres from './LandingPres'
 
-export const Landing = props => {
-  const {email} = props
-  return (
-    <div>
-      <h3>Welcome, {email}</h3>
-    </div>
-  )
-}
+export default class Landing extends Component {
+  constructor(props){
+    super(props)
 
-const mapState = state => {
-  return {
-    email: state.user.email
+    this.state = store.getState()
+  }
+
+  render(){
+    return (
+      <div>
+        <LandingPres />
+      </div>
+    )
   }
 }
-
-export default connect(mapState)(Landing)
-
-Landing.propTypes = {
-  email: PropTypes.string
-}
-

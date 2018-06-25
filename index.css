@@ -123,3 +123,30 @@ form div {
   height: 10em;
   width: 10em;
 }
+
+#landing-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#landing-content-container {
+  margin: 1em;
+  border: .15em solid black;
+  background-color:  rgb(247, 236, 217)
+}
+
+#landing-content {
+ border: 1em solid rgb(247, 236, 217);
+}
+
+#landing-content div {
+  border: .05em solid rgba(0, 0, 0, 0.335);
+  background-color: white;
+ }
+
+#landing-content p {
+  margin: 1em 0em 0em .1em;
+  width: 37em;
+  text-align: justify;
+}
