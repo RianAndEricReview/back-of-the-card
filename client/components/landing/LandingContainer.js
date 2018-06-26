@@ -14,7 +14,9 @@ export default class Landing extends Component {
     return (
       <div>
         <LandingPres />
-        <LoginToPlayPres />
+        {
+          !this.state.user.id && <LoginToPlayPres />
+        }
       </div>
     )
   }
