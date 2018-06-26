@@ -124,7 +124,7 @@ form div {
   width: 10em;
 }
 
-#landing-page-container {
+.landing-page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,4 +149,36 @@ form div {
   margin: 1em 0em 0em .1em;
   width: 37em;
   text-align: justify;
+}
+
+#login-signup-container {
+  border: .1em solid black;
+  margin-bottom: 1em;
+  width: 40em;
+  text-align: center;
+}
+
+#login-signup-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: .5em;
+  padding-bottom: 2em;
+}
+
+.landing-login-button {
+  background-color: rgb(69, 110, 171);
+  color: white;
+  width: 7.5em;
+}
+
+.landing-signup-button {
+  background-color: rgb(115, 180, 118);
+  color: white;
+  width: 7.5em;
+}
+
+#login-signup-container h2 {
+  padding-top: 1em;
+  font-weight: bold;
+  margin-bottom: .5em;
 }

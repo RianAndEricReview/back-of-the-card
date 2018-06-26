@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import store from '../../store'
 import LandingPres from './LandingPres'
+import LoginToPlayPres from './LoginToPlayPres'
 
 export default class Landing extends Component {
   constructor(props){
@@ -13,6 +14,9 @@ export default class Landing extends Component {
     return (
       <div>
         <LandingPres />
+        {
+          !this.state.user.id && <LoginToPlayPres />
+        }
       </div>
     )
   }
