@@ -2,7 +2,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 export default () => {
   return (
-    <div id="landing-page-container">
+    <div className="landing-page-container">
       <h1>Welcome to Back of The Card Baseball Trivia!</h1>
       <div id="landing-content-container">
         <div id="landing-content">
