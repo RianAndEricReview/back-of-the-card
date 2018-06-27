@@ -6,27 +6,31 @@ import { authThunk } from '../../store'
 const Login = props => {
   const { handleSubmit, error } = props
   return (
-    <div>
-      <div>
-        <a href="/auth/google" className="btn btn-danger btn-sm">Sign Up with Google</a>
-        <a href="/auth/google" className="btn btn-primary btn-sm">Sign Up with Facebook</a>
+    <div className="auth-form">
+      <div className="auth-button-container">
+        <a href="/auth/google" className="btn btn-danger btn-sm google-button">Login with Google</a>
+        <a href="/auth/google" className="btn btn-primary btn-sm facebook-button">Login with Facebook</a>
       </div>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email"><small>Email</small></label>
-          <input name="email" type="email" />
+        <div id="login-form">
+          <div className="login-fields">
+            <label htmlFor="email"><small>Email</small></label>
+            <input name="email" type="email" />
+          </div>
+          <div className="login-fields">
+            <label htmlFor="password"><small>Password</small></label>
+            <input name="password" type="password" />
+          </div>
+          <div>
+            <button type="submit" className="btn btn-success">Login</button>
+          </div>
+          {
+            error && error.response && <div>{error.response.data}</div>
+          }
         </div>
-        <div>
-          <label htmlFor="password"><small>Password</small></label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit" className="btn btn-success">Login</button>
-        </div>
-        {
-          error && error.response && <div>{error.response.data}</div>
-        }
       </form>
+
     </div>
   )
 }

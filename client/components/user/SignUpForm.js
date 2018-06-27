@@ -6,7 +6,7 @@ import { signUpThunk, getUser } from '../../store'
 const SignUp = props => {
   const { handleSubmit, error } = props
   return (
-    <div id="signup-form">
+    <div className="auth-form">
       <div className="auth-button-container">
         <a href="/auth/google" className="btn btn-danger btn-sm google-button">Sign Up with Google</a>
         <a href="/auth/google" className="btn btn-primary btn-sm facebook-button">Sign Up with Facebook</a>
