@@ -1,3 +1,4 @@
+
 Server Side - Joining a game
 
 Game:
@@ -5,15 +6,24 @@ Open: true/false, default is open.
 Type: string with game type, 2, 4, 8. 1?
 Players: array with player objects
 
-One game for each type open at all times. 
-Once a game starts, delete from server and open a new game for that type.
+Once a game starts, (eventually game delete from server, need to decide when).
 
-When player clicks on join, they go to the game page (url has game id) with loading animation and display of each player in the game.  Once game is full, loading will go away and gameplay starts.
+When player clicks on join, the server checks to see if there is an open game of that type.
+If there is no open game instance, we will create a new game instance of that type.
+
+Once we have found or created an open game instance of that type, we add the player to the Players array in that game instance. 
+After adding that player, we check to see if the game instance is now full.
+If the game instance is full, we close the game instance.
+
+When the player is added to a game instance, we send the player to the game page (url has game id) with loading animation and display of each player in the game. 
+Once game is full, loading will go away and gameplay starts.
 
 ————————————————
 
+/* 
+WE ARE GOING WITH THE SERVER SIDE METHOD OF STARTING/JOINING A GAME.
+LEAVING THIS IN HERE FOR NOW FOR FUTURE REFERENCE
 Client Side - Joining a game
-
 
 Player clicks join. They are taken to the game lobby. 
 
@@ -23,7 +33,7 @@ Player clicks join. They are taken to the game lobby.
 	-They should receive the game object from player 1.
 	-Their player id should be added to the game object for all players in the lobby.
 	-After their id has been added to game object, check to see if game is full. If so close game, and redirect all players in game to game page using the game id.
-
+*/
 ————————————————-
 User
 Total Score: {1 player: 82085, 2 player: 7, 4 player: 537697, 16 player: 73057}
