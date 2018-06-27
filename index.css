@@ -89,7 +89,16 @@ form div {
   width: 42em;
 }
 
-#signup-form {
+.login-fields {
+  display: block;
+  width: 20em;
+}
+
+.login-fields input{
+  width: 42em;
+}
+
+.auth-form {
   display: block;
   margin: 0 auto;
   width: 55em;
@@ -182,3 +191,4 @@ form div {
   font-weight: bold;
   margin-bottom: .5em;
 }
+
