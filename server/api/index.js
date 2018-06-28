@@ -2,6 +2,7 @@ const router = require('express').Router()
 
 router.use('/placeholder', require('./placeholder'))
 router.use('/users', require('./users'))
+router.use('/games', require('./games'))
 
 router.use((req, res, next) => {
   const err = new Error('Not found.')
