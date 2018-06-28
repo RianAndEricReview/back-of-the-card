@@ -24,4 +24,3 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
     .catch(next)
 })
 
-// Can i push this to protected master?
