@@ -26,6 +26,7 @@ const Schools = require('./schools')
 const SeriesPost = require('./seriesPost')
 const Teams = require('./teams')
 const TeamsHalf = require('./teamsHalf')
+const Game = require('./game')
 
 // Associations
 
@@ -179,5 +180,6 @@ module.exports = {
   Schools,
   SeriesPost,
   Teams,
-  TeamsHalf
+  TeamsHalf,
+  Game
 }
