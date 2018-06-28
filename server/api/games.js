@@ -14,7 +14,11 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
   Game.findById(req.params.gameId)
     .then(game => {
       const playersArray = [...game.players, req.body.id]
-      return game.update({players: playersArray})
+      if (playersArray.length === game.maxPlayers) {
+        return game.update({players: playersArray, open: false})
+      } else {
+        return game.update({players: playersArray})
+      }
     })
     .then(game => res.status(201).json(game))
     .catch(next)
