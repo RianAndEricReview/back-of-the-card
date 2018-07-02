@@ -133,7 +133,7 @@ form div {
   width: 10em;
 }
 
-.landing-page-container {
+.landing-pres-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -190,5 +190,30 @@ form div {
   padding-top: 1em;
   font-weight: bold;
   margin-bottom: .5em;
+}
+
+#join-signup-container h2 {
+  padding-top: 1em;
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+
+#landing-game-container {
+  margin: 1em;
+  border: .15em solid black;
+  background-color:  rgb(247, 236, 217);
+  position: relative;
+}
+
+#landing-game-content {
+ border: 1em solid rgb(247, 236, 217);
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: yellow
 }
 
