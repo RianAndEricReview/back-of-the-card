@@ -27,6 +27,7 @@ const SeriesPost = require('./seriesPost')
 const Teams = require('./teams')
 const TeamsHalf = require('./teamsHalf')
 const Game = require('./game')
+const Gametype = require('./gametype')
 
 // Associations
 
@@ -152,6 +153,10 @@ Teams.hasMany(SeriesPost, {foreignKey: 'teamIDLoser'})
 TeamsHalf.belongsTo(Teams, {foreignKey: 'teamID'})
 Teams.hasMany(TeamsHalf, {foreignKey: 'teamID'})
 
+//Game to Gametype
+Game.belongsTo(Gametype)
+Gametype.hasMany(Game)
+
 module.exports = {
   User,
   People,
@@ -181,5 +186,6 @@ module.exports = {
   SeriesPost,
   Teams,
   TeamsHalf,
-  Game
+  Game,
+  Gametype
 }
