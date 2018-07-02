@@ -7,6 +7,9 @@ const Gametype = db.define('gametype', {
     allowNull: false,
     unique: true
   },
+  image: {
+    type: Sequelize.STRING,
+  },
   maxPlayers: {
     type: Sequelize.INTEGER,
     allowNull: false
