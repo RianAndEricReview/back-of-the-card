@@ -6,9 +6,9 @@ export default (props) => {
       <div id="landing-game-container">
         <div id="landing-game-content">
           <div>
-          <img src="https://media.istockphoto.com/photos/baseball-player-picture-id502862639?k=6&m=502862639&s=612x612&w=0&h=VN9GeJiJYZcJFoboDg5trQk8_0EwTgTQGq6ij_2xv5I=" />
+          <img src={props.gametypeImage} />
             <h2 className="centered"> {props.gametypeName} </h2>
-            <p>Want to go it alone? Challenge your high score in single player!</p>
+            <p> {props.gametypeDescription} </p>
           </div>
         </div>
       </div>

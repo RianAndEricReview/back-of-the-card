@@ -35,7 +35,6 @@ export class LandingContainerClass extends Component {
   }
 
   render() {
-    console.log('STATE', this.state)
     return (
       <div>
         <LandingPres />
@@ -43,7 +42,7 @@ export class LandingContainerClass extends Component {
           !this.props.user.id ? <LoginToPlayPres /> : this.state.gametypes.map(gametype => {
             return (
               <div key={gametype.id}>
-                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} />
+                {gametype.enabled && <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} />}
               </div>)
           })
         }

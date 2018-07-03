@@ -14,6 +14,10 @@ const Gametype = db.define('gametype', {
   description: {
     type: Sequelize.TEXT,
   },
+  enabled: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
   maxPlayers: {
     type: Sequelize.INTEGER,
     allowNull: false
