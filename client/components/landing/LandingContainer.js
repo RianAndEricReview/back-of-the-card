@@ -38,13 +38,18 @@ export class LandingContainerClass extends Component {
     return (
       <div>
         <LandingPres />
+
         {
-          !this.props.user.id ? <LoginToPlayPres /> : this.state.gametypes.map(gametype => {
+          !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (
-              <div key={gametype.id}>
-                {gametype.enabled && <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} />}
-              </div>)
+              gametype.enabled && <div key={gametype.id} className="col-4 landing-gametype">
+                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} />
+              </div>
+            )
           })
+          }
+          </div>
+          </div>
         }
 
       </div>
@@ -56,41 +61,5 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-// const mapDispatchToProps = (dispatch, ownProps) => ({
-//   addRecipeIngredient(recipeId, recipeIngredient) {
-//     event.preventDefault()
-//     dispatch(postToRecipeIngredients(recipeId, recipeIngredient, ownProps.history))
-//   }
-// })
-
 const LandingContainer = withRouter(connect(mapStateToProps)(LandingContainerClass))
 export default LandingContainer
-
-
-
-
-
-
-
-// import React, {Component} from 'react'
-// import store from '../../store'
-// import LandingPres from './LandingPres'
-// import LoginToPlayPres from './LoginToPlayPres'
-// import JoinGamePres from './JoinGamePres'
-
-// export class LandingContainerClass extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <LandingPres />
-//         {
-//           !this.state.user.id ? <LoginToPlayPres /> : <JoinGamePres />
-//         }
-
-//       </div>
-//     )
-//   }
-// }
-
-
-
