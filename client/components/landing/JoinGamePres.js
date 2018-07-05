@@ -7,8 +7,11 @@ export default (props) => {
         <div id="landing-game-content">
           <div>
             <img src={props.gametypeImage} className="landing-gametype-image" />
-            <h3 className="centered"> {props.gametypeName} </h3>
+            <p className="centered"> {props.gametypeName} </p>
             <p> {props.gametypeDescription} </p>
+            <div className="play-button-container">
+              <button className="btn play-button">PLAY</button>
+            </div>
           </div>
         </div>
       </div>

@@ -211,10 +211,13 @@ form div {
 
 .centered {
   position: absolute;
-  top: 50%;
-  left: 40%;
+  text-align: center;
+  top: 30%;
+  left: 50%;
+  width: 90%;
   transform: translate(-50%, -50%);
-  color: yellow
+  color: yellow;
+  font-size: 2vw;
 }
 
 #landing-gametype-container {
@@ -226,3 +229,19 @@ form div {
   height: 100%;
  }
 
+.play-button-container {
+  display: flex;
+  justify-content: center;
+ }
+
+ .play-button {
+  background-color: rgb(126, 226, 233);
+  font-weight: bold;
+  width: 7.5em;
+ }
+
+ .play-button:hover {
+  background-color: rgb(109, 198, 204);
+  font-weight: bold;
+  width: 7.5em;
+ }
