@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 export default () => {
   return (
-    <div className="landing-page-container">
+    <div className="landing-pres-container">
       <div id="login-signup-container">
         <h2>Please Log In To Play!</h2>
         <div id="login-signup-buttons">
