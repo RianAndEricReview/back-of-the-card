@@ -11,11 +11,13 @@ router.get('/gametypes', (req, res, next) => {
     .catch(next)
 })
 
-// Will be edited to a find one game instance get route
-router.get('/', (req, res, next) => {
-  Game.findAll()
-    .then(games => {
-      res.status(201).json(games)
+// Used to find open game instance for particular game type
+router.get('/:gametypeId', (req, res, next) => {
+  Game.findOne({
+    where: {open: true, gametypeId: req.params.gametypeId}
+  })
+    .then(game => {
+      res.status(201).json(game)
     })
     .catch(next)
 })
