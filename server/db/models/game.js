@@ -6,8 +6,7 @@ const Game = db.define('game', {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
   open: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: true
+    type: Sequelize.BOOLEAN
   }
 }, {
   defaultScope: {
