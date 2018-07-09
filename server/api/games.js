@@ -2,6 +2,7 @@ const router = require('express').Router()
 const { Game, Gametype } = require('../db/models')
 module.exports = router
 
+// Initially set up for testing gametypes
 router.get('/gametypes', (req, res, next) => {
   Gametype.findAll()
     .then(gametypes => {
@@ -10,6 +11,7 @@ router.get('/gametypes', (req, res, next) => {
     .catch(next)
 })
 
+// Will be edited to a find one game instance get route
 router.get('/', (req, res, next) => {
   Game.findAll()
     .then(games => {
@@ -18,6 +20,7 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+// Used to create a new game instance
 router.post('/', (req, res, next) => {
   Game.create(req.body)
     .then(game => {
@@ -26,6 +29,7 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
+// Used to add a player to a game instance
 router.put('/:gameId/addNewPlayer', (req, res, next) => {
   Game.findById(req.params.gameId)
     .then(game => {
