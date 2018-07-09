@@ -45,10 +45,6 @@ export default function gameReducer(state = defaultGame, action) {
   switch (action.type) {
     case GET_GAME:
       return action.game
-    // case CREATE_GAME:
-    //   return action.game
-    // case ADD_PLAYER:
-    //   return action.game
     default:
       return state
   }
