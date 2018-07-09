@@ -22,6 +22,7 @@ router.get('/:gametypeId', (req, res, next) => {
     .catch(next)
 })
 
+
 // Used to create a new game instance
 router.post('/', (req, res, next) => {
   Game.create(req.body)
@@ -35,7 +36,7 @@ router.post('/', (req, res, next) => {
 router.put('/:gameId/addNewPlayer', (req, res, next) => {
   Game.findById(req.params.gameId)
     .then(game => {
-      const playersArray = [...game.players, req.body.id]
+      const playersArray = [...game.players, req.body.playerId]
       if (playersArray.length === game.gametype.maxPlayers) {
         return game.update({ players: playersArray, open: false })
       } else {

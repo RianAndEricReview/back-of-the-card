@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Login, SignUp, PlayerInfo, Landing } from './components'
+import { Login, SignUp, PlayerInfo, Landing, GameContainerClass } from './components'
 import { meThunk } from './store'
 
 class Routes extends Component {
@@ -22,6 +22,7 @@ class Routes extends Component {
           isLoggedIn &&
           <Switch>
             <Route path="/player-info/:userId" component={PlayerInfo} />
+            <Route path="/game/:gameId" component={GameContainerClass} />
             <Route path="/" component={Landing} />
           </Switch>
         }
