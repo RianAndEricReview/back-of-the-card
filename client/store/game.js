@@ -15,7 +15,7 @@ export const createGame = game => ({ type: CREATE_GAME, game })
 export const addPlayer = game => ({ type: ADD_PLAYER, game })
 
 //THUNK CREATORS
-export const gameThunk = (gametypeId) =>
+export const getGameThunk = (gametypeId) =>
   dispatch => axios.get(`/api/games/:${gametypeId}`)
     .then(res => dispatch(getGame(res.data)))
     .catch(err => console.log(err))
@@ -35,8 +35,6 @@ export const addPlayerThunk = (playerId, gameId) =>
       history.push(`/game/${res.data.id}`)
     })
     .catch(err => console.log(err))
-
-
 
 //REDUCERS
 export default function gameReducer(state = defaultGame, action) {

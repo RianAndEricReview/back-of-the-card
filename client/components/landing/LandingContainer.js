@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
+import { getGameThunk, createGameThunk, addPlayerThunk } from '../../store'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {
@@ -43,7 +44,7 @@ export class LandingContainerClass extends Component {
           !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (
               gametype.enabled && <div key={gametype.id} className="col-4 landing-gametype">
-                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} />
+                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} userId={this.props.user.id} joinGameClick={this.props.joinGameClick} />
               </div>
             )
           })
@@ -61,5 +62,25 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-const LandingContainer = withRouter(connect(mapStateToProps)(LandingContainerClass))
+const mapDispatchToProps = dispatch => {
+  return {
+    joinGameClick(event, gametypeId, userId) {
+      event.preventDefault()
+      const playerId = userId
+      console.log('gametypeId', gametypeId, 'playerId', playerId, '!!!!!!!')
+      dispatch(getGameThunk(gametypeId))
+        .then(game => {
+          console.log('GAMEEEEEE', game)
+          if (!game) {
+            dispatch(createGameThunk(playerId, gametypeId))
+          } else {
+            dispatch(addPlayerThunk(playerId, game.id))
+          }
+        })
+        .catch(err => console.error(err))
+    }
+  }
+}
+
+const LandingContainer = withRouter(connect(mapStateToProps, mapDispatchToProps)(LandingContainerClass))
 export default LandingContainer
