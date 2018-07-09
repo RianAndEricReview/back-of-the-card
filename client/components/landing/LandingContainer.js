@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
-import { getGameThunk, createGameThunk, addPlayerThunk } from '../../store'
+import { getGameThunk } from '../../store'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {
@@ -44,7 +44,7 @@ export class LandingContainerClass extends Component {
           !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (
               gametype.enabled && <div key={gametype.id} className="col-4 landing-gametype">
-                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} userId={this.props.user.id} joinGameClick={this.props.joinGameClick} />
+                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} playerId={this.props.user.id} joinGameClick={this.props.joinGameClick} gametypes={this.state.gametypes} />
               </div>
             )
           })
@@ -64,20 +64,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    joinGameClick(event, gametypeId, userId) {
+    joinGameClick(event, gametypeId, playerId, gametypes) {
       event.preventDefault()
-      const playerId = userId
-      console.log('gametypeId', gametypeId, 'playerId', playerId, '!!!!!!!')
-      dispatch(getGameThunk(gametypeId))
-        .then(game => {
-          console.log('GAMEEEEEE', game)
-          if (!game) {
-            dispatch(createGameThunk(playerId, gametypeId))
-          } else {
-            dispatch(addPlayerThunk(playerId, game.id))
-          }
-        })
-        .catch(err => console.error(err))
+      // Find the maxPlayers associated with the current gametype from the overall list of gametypes
+      const maxPlayers = gametypes.find(gametype => {
+        return gametype.id === gametypeId
+      }).maxPlayers
+      // For a one player game, set the open field to be false because the game is full. For all other games set to true.
+      // This is because we are adding the current player to the game on click.
+      const open = maxPlayers !== 1
+      dispatch(getGameThunk(gametypeId, playerId, open))
     }
   }
 }

@@ -10,7 +10,7 @@ export default (props) => {
             <p className="centered"> {props.gametypeName} </p>
             <p> {props.gametypeDescription} </p>
             <div className="play-button-container">
-              <button className="btn play-button" onClick={(e) => props.joinGameClick(e, props.gametypeId, props.userId)} >PLAY</button>
+              <button className="btn play-button" onClick={(e) => props.joinGameClick(e, props.gametypeId, props.userId, props.gametypes)}>PLAY</button>
             </div>
           </div>
         </div>

@@ -15,36 +15,40 @@ export const createGame = game => ({ type: CREATE_GAME, game })
 export const addPlayer = game => ({ type: ADD_PLAYER, game })
 
 //THUNK CREATORS
-export const getGameThunk = (gametypeId) =>
-  dispatch => axios.get(`/api/games/:${gametypeId}`)
-    .then(res => dispatch(getGame(res.data)))
-    .catch(err => console.log(err))
-
-export const createGameThunk = (player, gametypeId) =>
-  dispatch => axios.post(`/api/games`, { players: {player}, gametypeId })
-    .then(res => {
-      dispatch(createGame(res.data))
-      history.push(`/game/${res.data.id}`)
+export const getGameThunk = (gametypeId, playerId, open) =>
+  dispatch => axios.get(`/api/games/${gametypeId}`)
+  .then(res => res.data)
+  .then(game => {
+      if (!game) {
+        // Creates a new game with the current player added to that game instance.
+        axios.post(`/api/games`, { players: [playerId], gametypeId, open })
+          .then(newGame => {
+            dispatch(createGame(newGame.data))
+            history.push(`/game/${newGame.data.id}`)
+          })
+          .catch(err => console.log(err))
+      } else {
+        // Add the current player to the open game instance
+        axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
+          .then(openGame => {
+            dispatch(addPlayer(openGame.data))
+            history.push(`/game/${openGame.data.id}`)
+          })
+          .catch(err => console.log(err))
+      }
     })
     .catch(err => console.log(err))
 
-export const addPlayerThunk = (playerId, gameId) =>
-  dispatch => axios.put(`/api/games/${gameId}/addNewPlayer`, { playerId })
-    .then(res => {
-      dispatch(addPlayer(res.data))
-      history.push(`/game/${res.data.id}`)
-    })
-    .catch(err => console.log(err))
 
 //REDUCERS
 export default function gameReducer(state = defaultGame, action) {
   switch (action.type) {
     case GET_GAME:
       return action.game
-    case CREATE_GAME:
-      return action.game
-    case ADD_PLAYER:
-      return action.game
+    // case CREATE_GAME:
+    //   return action.game
+    // case ADD_PLAYER:
+    //   return action.game
     default:
       return state
   }

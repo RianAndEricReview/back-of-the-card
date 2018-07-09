@@ -2,7 +2,7 @@ const router = require('express').Router()
 const { Game, Gametype } = require('../db/models')
 module.exports = router
 
-// Initially set up for testing gametypes
+// Used to find all currently enabled gametypes
 router.get('/gametypes', (req, res, next) => {
   Gametype.findAll()
     .then(gametypes => {
@@ -37,6 +37,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
   Game.findById(req.params.gameId)
     .then(game => {
       const playersArray = [...game.players, req.body.playerId]
+      // Check to see if adding the player filled the game. If so, close that game instance.
       if (playersArray.length === game.gametype.maxPlayers) {
         return game.update({ players: playersArray, open: false })
       } else {
