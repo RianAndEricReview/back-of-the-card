@@ -18,7 +18,13 @@ export class GameContainerClass extends Component {
       <div>
         {(this.props.game.open) ? <LoadingPres /> : <GameBoardPres />}
         <div>
-          <IndividualPlayerPres />
+          {this.props.game.players.map(player => {
+            return (
+              <div key={player}>
+                <IndividualPlayerPres player={player} />
+              </div>)
+          })}
+
         </div>
       </div>
     )
