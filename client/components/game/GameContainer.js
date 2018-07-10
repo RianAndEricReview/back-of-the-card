@@ -12,16 +12,8 @@ export class GameContainerClass extends Component {
 
   }
 
-
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
-
   render() {
+    console.log('USER', this.props.user, 'PROPS', this.props)
     return (
       <div>
         <LoadingPres />

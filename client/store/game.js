@@ -2,17 +2,13 @@ import axios from 'axios'
 import history from '../history'
 
 //Initial State
-const defaultGame = {}
+const defaultGame = {default: true}
 
 //ACTION TYPES
 export const GET_GAME = 'GET_GAME'
-export const CREATE_GAME = 'CREATE_GAME'
-export const ADD_PLAYER = 'ADD_PLAYER'
 
 //ACTION CREATORS
 export const getGame = game => ({ type: GET_GAME, game })
-export const createGame = game => ({ type: CREATE_GAME, game })
-export const addPlayer = game => ({ type: ADD_PLAYER, game })
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
@@ -23,7 +19,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
         // Creates a new game with the current player added to that game instance.
         axios.post(`/api/games`, { players: [playerId], gametypeId, open })
           .then(newGame => {
-            dispatch(createGame(newGame.data))
+            dispatch(getGame(newGame.data))
             history.push(`/game/${newGame.data.id}`)
           })
           .catch(err => console.log(err))
@@ -31,7 +27,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
         // Add the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
           .then(openGame => {
-            dispatch(addPlayer(openGame.data))
+            dispatch(getGame(openGame.data))
             history.push(`/game/${openGame.data.id}`)
           })
           .catch(err => console.log(err))
