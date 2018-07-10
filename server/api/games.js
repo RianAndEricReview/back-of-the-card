@@ -36,7 +36,7 @@ router.post('/', (req, res, next) => {
 router.put('/:gameId/addNewPlayer', (req, res, next) => {
   Game.findById(req.params.gameId)
     .then(game => {
-      const playersArray = [...game.players, req.body.playerId]
+      const playersArray = [...game.players, req.body.playerId.toString()]
       // Check to see if adding the player filled the game. If so, close that game instance.
       if (playersArray.length === game.gametype.maxPlayers) {
         return game.update({ players: playersArray, open: false })
