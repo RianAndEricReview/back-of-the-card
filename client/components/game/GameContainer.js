@@ -13,7 +13,6 @@ export class GameContainerClass extends Component {
   }
 
   render() {
-    console.log('GAME', this.props.game)
     return (
       <div>
         {(this.props.game.open) ? <LoadingPres /> : <GameBoardPres />}
@@ -24,7 +23,6 @@ export class GameContainerClass extends Component {
                 <IndividualPlayerPres player={player} />
               </div>)
           })}
-
         </div>
       </div>
     )
