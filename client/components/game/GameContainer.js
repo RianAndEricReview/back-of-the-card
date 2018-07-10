@@ -13,10 +13,10 @@ export class GameContainerClass extends Component {
   }
 
   render() {
-    console.log('USER', this.props.user, 'PROPS', this.props)
+    console.log('GAME', this.props.game)
     return (
       <div>
-        <LoadingPres />
+        {(this.props.game.open) ? <LoadingPres /> : <GameBoardPres />}
         <div>
           <IndividualPlayerPres />
         </div>
