@@ -2,7 +2,7 @@ import axios from 'axios'
 import history from '../history'
 
 //Initial State
-const defaultGame = {default: true}
+const defaultGame = {}
 
 //ACTION TYPES
 export const GET_GAME = 'GET_GAME'
