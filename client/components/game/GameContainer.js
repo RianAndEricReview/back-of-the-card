@@ -14,13 +14,13 @@ export class GameContainerClass extends Component {
 
   render() {
     return (
-      <div>
+      <div className="game-container">
         {(this.props.game.open) ? <LoadingPres /> : <GameBoardPres />}
-        <div>
+        <div className="player-sidebar">
           {this.props.game.players.map(player => {
             return (
               <div key={player}>
-                <IndividualPlayerPres player={player} />
+                <IndividualPlayerPres user={this.props.user} />
               </div>)
           })}
         </div>
