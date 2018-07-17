@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import socket from '../socket'
 
 //Initial State
 const defaultGame = {}
@@ -16,11 +17,13 @@ export const getGameThunk = (gametypeId, playerId, open) =>
   .then(res => res.data)
   .then(game => {
       if (!game) {
-        // Creates a new game with the current player added to that game instance.
+        // Creates a new game with the current player added to that game instance
         axios.post(`/api/games`, { players: [playerId], gametypeId, open })
           .then(newGame => {
             dispatch(getGame(newGame.data))
             history.push(`/game/${newGame.data.id}`)
+            //Adds player to socket room for that game.
+            socket.joinGameRoomClick(newGame.data.id)
           })
           .catch(err => console.log(err))
       } else {
@@ -29,6 +32,8 @@ export const getGameThunk = (gametypeId, playerId, open) =>
           .then(openGame => {
             dispatch(getGame(openGame.data))
             history.push(`/game/${openGame.data.id}`)
+            //Adds player to socket room for that game.
+            socket.joinGameRoomClick(openGame.data.id)
           })
           .catch(err => console.log(err))
       }
