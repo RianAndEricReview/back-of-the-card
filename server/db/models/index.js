@@ -30,6 +30,7 @@ const Game = require('./game')
 const Gametype = require('./gametype')
 const Question = require('./question')
 const GamePlayer = require('./gamePlayer')
+const PlayerQuestionResult = require('./playerQuestionResult')
 // Associations
 
 // AllstarFull
@@ -190,5 +191,6 @@ module.exports = {
   Game,
   Gametype,
   Question,
-  GamePlayer
+  GamePlayer,
+  PlayerQuestionResult
 }
