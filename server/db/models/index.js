@@ -31,6 +31,7 @@ const Gametype = require('./gametype')
 const Question = require('./question')
 const GamePlayer = require('./gamePlayer')
 const PlayerQuestionResult = require('./playerQuestionResult')
+
 // Associations
 
 // AllstarFull
@@ -158,6 +159,22 @@ Teams.hasMany(TeamsHalf, {foreignKey: 'teamID'})
 //Game to Gametype
 Game.belongsTo(Gametype)
 Gametype.hasMany(Game)
+
+//Game to Question
+Question.belongsTo(Game)
+Game.hasMany(Question)
+
+//User to Game
+GamePlayer.belongsTo(User)
+User.hasMany(GamePlayer, {cascade: true})
+GamePlayer.belongsTo(Game)
+Game.hasMany(GamePlayer, {cascade: true})
+
+//User to Question
+PlayerQuestionResult.belongsTo(User)
+User.hasMany(PlayerQuestionResult, {cascade: true})
+PlayerQuestionResult.belongsTo(Game)
+Game.hasMany(PlayerQuestionResult, {cascade: true})
 
 module.exports = {
   User,
