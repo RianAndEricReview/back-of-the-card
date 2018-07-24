@@ -28,6 +28,7 @@ const Teams = require('./teams')
 const TeamsHalf = require('./teamsHalf')
 const Game = require('./game')
 const Gametype = require('./gametype')
+const Question = require('./question')
 
 // Associations
 
@@ -187,5 +188,6 @@ module.exports = {
   Teams,
   TeamsHalf,
   Game,
-  Gametype
+  Gametype,
+  Question
 }
