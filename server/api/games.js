@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Game, Gametype } = require('../db/models')
+const { Game, Gametype, GamePlayer } = require('../db/models')
 module.exports = router
 
 // Used to find all currently enabled gametypes
@@ -34,16 +34,15 @@ router.post('/', (req, res, next) => {
 
 // Used to add a player to a game instance
 router.put('/:gameId/addNewPlayer', (req, res, next) => {
-  Game.findById(req.params.gameId)
-    .then(game => {
-      const playersArray = [...game.players, req.body.playerId.toString()]
-      // Check to see if adding the player filled the game. If so, close that game instance.
-      if (playersArray.length === game.gametype.maxPlayers) {
-        return game.update({ players: playersArray, open: false })
-      } else {
-        return game.update({ players: playersArray })
+  const gamePromise = Game.findById(req.params.gameId)
+  const gamePlayerPromise = GamePlayer.create({gameId: req.params.gameId, userId: req.body.playerId.toString()})
+  const findPlayersPromise = GamePlayer.findAll({where: {gameId: req.params.gameId}})
+  Promise.map([gamePromise, gamePlayerPromise, findPlayersPromise], result => result)
+  .then((game, newPlayer, players) => {
+    res.status(200).json(players)
+    if (players.length === game.gametype.maxPlayers){
+      game.update({ open: false })
       }
-    })
-    .then(game => res.status(201).json(game))
-    .catch(next)
+  })
+  .catch(next)
 })
