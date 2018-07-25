@@ -2,8 +2,8 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Game = db.define('game', {
-  players: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+  currentQuestion: {
+    type: Sequelize.INTEGER
   },
   open: {
     type: Sequelize.BOOLEAN
