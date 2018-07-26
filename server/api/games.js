@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Bluebird = require('bluebird')
-const { Game, Gametype, GamePlayer } = require('../db/models')
+const { Game, Gametype, GamePlayer, User } = require('../db/models')
 module.exports = router
 
 // Used to find all currently enabled gametypes
@@ -25,7 +25,12 @@ router.get('/:gametypeId', (req, res, next) => {
 
 // Used to fetch all players in a specific game instanace
 router.get('/:gameId/players', (req, res, next) => {
-  GamePlayer.findAll({where: {gameId: req.params.gameId}})
+  GamePlayer.findAll({
+    where: { gameId: req.params.gameId },
+    include: [{
+      model: User,
+    }]
+  })
     .then(players => {
       res.status(200).json(players)
     })
@@ -34,7 +39,7 @@ router.get('/:gameId/players', (req, res, next) => {
 
 // Used to create a new game instance
 router.post('/', (req, res, next) => {
-  Game.create({open: req.body.open, gametypeId: req.body.gametypeId})
+  Game.create({ open: req.body.open, gametypeId: req.body.gametypeId })
     .then(game => {
       res.status(201).json(game)
       return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
