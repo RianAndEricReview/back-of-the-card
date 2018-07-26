@@ -3,7 +3,8 @@ const db = require('../db')
 
 const Game = db.define('game', {
   currentQuestion: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
   },
   open: {
     type: Sequelize.BOOLEAN
