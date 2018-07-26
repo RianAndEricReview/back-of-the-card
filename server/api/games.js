@@ -7,7 +7,7 @@ module.exports = router
 router.get('/gametypes', (req, res, next) => {
   Gametype.findAll()
     .then(gametypes => {
-      res.status(201).json(gametypes)
+      res.status(200).json(gametypes)
     })
     .catch(next)
 })
@@ -18,7 +18,7 @@ router.get('/:gametypeId', (req, res, next) => {
     where: { open: true, gametypeId: req.params.gametypeId }
   })
     .then(game => {
-      res.status(201).json(game)
+      res.status(200).json(game)
     })
     .catch(next)
 })
@@ -26,9 +26,10 @@ router.get('/:gametypeId', (req, res, next) => {
 
 // Used to create a new game instance
 router.post('/', (req, res, next) => {
-  Game.create(req.body)
+  Game.create({open: req.body.open, gametypeId: req.body.gametypeId})
     .then(game => {
       res.status(201).json(game)
+      return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
     })
     .catch(next)
 })
@@ -45,7 +46,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
           if (players.length === game.gametype.maxPlayers) {
             game.update({ open: false })
           }
-          res.status(200).json(players)
+          res.status(200).json(game)
         })
     })
     .catch(next)

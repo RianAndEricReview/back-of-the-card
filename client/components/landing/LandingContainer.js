@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
-import { getGameThunk } from '../../store'
+import { getGameThunk} from '../../store'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {
