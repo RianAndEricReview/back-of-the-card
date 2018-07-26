@@ -17,7 +17,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
   .then(res => res.data)
   .then(game => {
       if (!game) {
-        // Creates a new game with the current player added to that game instance
+        // Creates a new game with the current player associated with the game instance
         axios.post(`/api/games`, { playerId, gametypeId, open })
           .then(newGame => {
             dispatch(getGame(newGame.data))
@@ -27,7 +27,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
           })
           .catch(err => console.log(err))
       } else {
-        // Add the current player to the open game instance
+        // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
           .then(openGame => {
             dispatch(getGame(openGame.data))

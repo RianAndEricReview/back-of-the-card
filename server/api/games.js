@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const Bluebird = require('bluebird')
 const { Game, Gametype, GamePlayer, User } = require('../db/models')
 module.exports = router
 

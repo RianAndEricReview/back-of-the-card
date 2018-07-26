@@ -1,6 +1,6 @@
 import axios from 'axios'
-import history from '../history'
-import socket from '../socket'
+
+//GET_PLAYER action is not currently being used. The idea is to use it when a new socket is added to the room.
 
 //Initial State
 const defaultPlayers = []
