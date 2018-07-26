@@ -23,6 +23,14 @@ router.get('/:gametypeId', (req, res, next) => {
     .catch(next)
 })
 
+// Used to fetch all players in a specific game instanace
+router.get('/:gameId/players', (req, res, next) => {
+  GamePlayer.findAll({where: {gameId: req.params.gameId}})
+    .then(players => {
+      res.status(200).json(players)
+    })
+    .catch(next)
+})
 
 // Used to create a new game instance
 router.post('/', (req, res, next) => {
