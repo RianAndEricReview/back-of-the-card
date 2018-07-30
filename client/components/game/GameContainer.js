@@ -13,7 +13,7 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
-    this.props.getAllPlayers(this.props.game.id)
+    this.props.getAllPlayers(this.props.game.id, this.props.user.id)
   }
 
   render() {
@@ -41,8 +41,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllPlayers(gameId) {
-      dispatch(getAllPlayersThunk(gameId))
+    getAllPlayers(gameId, playerId) {
+      dispatch(getAllPlayersThunk(gameId, playerId))
     }
   }
 }
