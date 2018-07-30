@@ -7,9 +7,11 @@ const defaultGame = {}
 
 //ACTION TYPES
 export const GET_GAME = 'GET_GAME'
+export const UPDATE_GAME = 'UPDATE_GAME'
 
 //ACTION CREATORS
 export const getGame = game => ({ type: GET_GAME, game })
+export const updateGame = gameStatus => ({ type: UPDATE_GAME, gameStatus })
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
@@ -31,6 +33,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
             dispatch(getGame(joinedGame.data))
             history.push(`/game/${joinedGame.data.id}`)
             if (!joinedGame.data.open) {
+              console.log('in if', joinedGame)
               socket.emit('closeGame')
             }
           })
@@ -45,6 +48,9 @@ export default function gameReducer(state = defaultGame, action) {
   switch (action.type) {
     case GET_GAME:
       return action.game
+    case UPDATE_GAME:
+      console.log(action.gameStatus, state)
+      return {...state, ...action.gameStatus}
     default:
       return state
   }

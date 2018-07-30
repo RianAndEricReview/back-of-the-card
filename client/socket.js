@@ -17,7 +17,8 @@ socket.on('newPlayerJoin', (newPlayer) => {
 })
 
 // receive game close notification
-socket.on('closedGame', () => {
+socket.on('gameClosed', () => {
+  console.log('in gameClosed on frontend')
   store.dispatch(updateGame({open: false}))
 })
 
