@@ -1,8 +1,6 @@
 import axios from 'axios'
 import socket from '../socket'
 
-//GET_PLAYER action is not currently being used. The idea is to use it when a new socket is added to the room.
-
 //Initial State
 const defaultPlayers = []
 
@@ -20,13 +18,10 @@ export const getAllPlayersThunk = (gameId, playerId) =>
     .then(res => res.data)
     .then(players => {
       dispatch(getAllPlayers(players))
-      const newPlayer = players.find(player =>
-        {
-          console.log('thenewguy!!!!!!!', player)
-          return player.user.id === playerId
-        }
-      )
-      socket.joinGameRoomClick(gameId, newPlayer)
+      // isolate newly joined player from the list of players in the game
+      const newPlayer = players.find(player => player.user.id === playerId)
+      // join the game room via sockets and pass your player info to each player in the room
+      socket.joinGameRoom(gameId, newPlayer)
     })
     .catch(err => console.log(err))
 

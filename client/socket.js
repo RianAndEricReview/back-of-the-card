@@ -11,16 +11,14 @@ socket.on('welcome', (message) => {
   console.log('Message', message)
 })
 
-// receive new player info when they join
+// receive new player info when the new player joins
 socket.on('newPlayerJoin', (newPlayer) => {
   store.dispatch(getPlayer(newPlayer))
 })
 
 //function for joining a game room.
-socket.joinGameRoomClick = (roomId, newPlayer) => {
-  //console.log to be removed after rooms fully complete.
-  console.log('roomId', roomId)
-  socket.emit('joinGameRoomClick', roomId, newPlayer)
+socket.joinGameRoom = (roomId, newPlayer) => {
+  socket.emit('joinGameRoom', roomId, newPlayer)
 }
 
 export default socket
