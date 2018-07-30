@@ -53,7 +53,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
         .then((result) => {
           const [game, players] = result
           // isolate new player's object from players array. This object will be sent to all players via sockets
-          const newPlayer = players.find(player => player.user.id === req.body.playerId)
+          // const newPlayer = players.find(player => player.dataValues.user.id === req.body.playerId)
           if (players.length === game.gametype.maxPlayers) {
             game.update({ open: false })
           }
