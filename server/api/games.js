@@ -25,10 +25,7 @@ router.get('/:gametypeId', (req, res, next) => {
 // Used to fetch all players in a specific game instanace
 router.get('/:gameId/players', (req, res, next) => {
   GamePlayer.findAll({
-    where: { gameId: req.params.gameId },
-    include: [{
-      model: User,
-    }]
+    where: { gameId: req.params.gameId }
   })
     .then(players => {
       res.status(200).json(players)
@@ -55,6 +52,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
       return Promise.all([Game.findById(req.params.gameId), GamePlayer.findAll({ where: { gameId: req.params.gameId } })])
         .then((result) => {
           const [game, players] = result
+          const newPlayer = players.find(player => player.user.id === req.body.playerId)
           if (players.length === game.gametype.maxPlayers) {
             game.update({ open: false })
           }
