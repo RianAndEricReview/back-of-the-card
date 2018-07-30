@@ -7,6 +7,9 @@ module.exports = (io) => {
       io.in(`GameRoom${roomId}`).emit('welcome', `placeholder welcome message for room ${roomId}`)
       // send new player object to players already registered to the game
       socket.to(`GameRoom${roomId}`).emit('newPlayerJoin', newPlayer)
+      socket.on('closeGame', () => {
+        socket.to(`GameRoom${roomId}`).emit('gameClosed')
+      })
     })
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)

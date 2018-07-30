@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import socket from '../socket'
 
 //Initial State
 const defaultGame = {}
@@ -26,9 +27,12 @@ export const getGameThunk = (gametypeId, playerId, open) =>
       } else {
         // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
-          .then(openGame => {
-            dispatch(getGame(openGame.data))
-            history.push(`/game/${openGame.data.id}`)
+          .then(joinedGame => {
+            dispatch(getGame(joinedGame.data))
+            history.push(`/game/${joinedGame.data.id}`)
+            if (!joinedGame.data.open) {
+              socket.emit('closeGame')
+            }
           })
           .catch(err => console.log(err))
       }
