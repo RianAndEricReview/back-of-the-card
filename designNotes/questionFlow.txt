@@ -1,0 +1,36 @@
+Overall Game Flow
+-Last player joins
+-Welcome message followed by count down to first question.
+-When countdown ends question displays and question timer starts.
+-Current question ends either when all players have submitted their answer or timer has ended.
+-Question score for all players are displayed on screen
+-Timer expires or next question button for all players has been clicked
+-Next question starts
+-repeat until backend says game ends.
+-display final standings
+
+Component needs Question
+-sends request to backend
+-backend calls the Question Constructor
+-Question Constructor creates question object with:
+  * question text
+  * correct answer
+  * incorrect answers
+-backend saves question object to question table in db
+-backend sends question object without correct answer to all players in socket room
+-frontend saves question info in store
+-frontend displays question data on game component for players
+-question timer starts for players
+-players click to answer
+-frontend sends the answer chosen by player and the time taken to answer to the backend (this happens for all players in the game)
+-backend calculates question score by checking if player was right, and if so, turns time taken into score.
+-backend adds question score to total score for each GamePlayer.
+-after round ends, backend checks to see if game has ended.
+-backend sends score for each player to all players on frontend and notifies them if the game has ended.
+-frontend displays score of each player for that question (if giant game, display ___ number top players scores)
+-frontend needs to store:
+  * total score for all players
+  * array of scores for each question for THAT player
+-frontend displays total score for each player in the sidebar (this could be sorted by score)
+
+
