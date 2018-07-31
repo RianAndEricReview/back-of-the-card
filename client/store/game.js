@@ -33,7 +33,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
             dispatch(getGame(joinedGame.data))
             history.push(`/game/${joinedGame.data.id}`)
             if (!joinedGame.data.open) {
-              console.log('in the IF in the thunk', joinedGame)
+              //let server know that the game is closed, passing game id so that the socket room name can be recreated.
               socket.emit('closeGame', joinedGame.data.id)
             }
           })
