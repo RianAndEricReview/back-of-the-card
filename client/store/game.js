@@ -33,8 +33,8 @@ export const getGameThunk = (gametypeId, playerId, open) =>
             dispatch(getGame(joinedGame.data))
             history.push(`/game/${joinedGame.data.id}`)
             if (!joinedGame.data.open) {
-              console.log('in if', joinedGame)
-              socket.emit('closeGame')
+              console.log('in the IF in the thunk', joinedGame)
+              socket.emit('closeGame', joinedGame.data.id)
             }
           })
           .catch(err => console.log(err))
