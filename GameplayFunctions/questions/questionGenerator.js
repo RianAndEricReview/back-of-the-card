@@ -39,60 +39,88 @@ export class Question {
 //class to create an object with a list of question pieces
 export class QuestionChoices {
   constructor() {
-    this.questionFinderArray = []
+    this.questionSelectorArray = []
   }
 
-  questionChoiceGenerator(optionsArray, optionKey){
+  questionChoiceGenerator(optionsArray){
     const chosenOption = randomValueSelector(optionsArray)
-    this[optionKey] = chosenOption.option
-    if (chosenOption.neededToFindQuestion) {
-      this.questionFinderArray.push(chosenOption.option)
-    }
+    chosenOption.whatToSet.forEach((curr) => {
+      //set property on questionChoices object
+      this[curr.key] = curr.value
+      //push to question selector array to later decide on question text
+      if (curr.neededToSelectQuestion) {
+        this.questionSelectorArray.push(curr.key)
+      }
+    })
+    //recursively run generator on next array of choices, if there is one
     if (chosenOption.nextChoice) {
-      const keyOfNextChoiceArray = chosenOption.nextChoice.nextKey
-      this.questionChoiceGenerator(chosenOption.nextChoice[keyOfNextChoiceArray], chosenOption.nextChoice.nextKey)
+      this.questionChoiceGenerator(chosenOption.nextChoice)
     }
-    // else {
-    //   return chosenOption
-    // }
-    // Thinking this is not necessary for the recursion to end. The base case happens when there is no nextChoice, at which time there will be no more calls to the questionChoiceGenerator and the new QuestionChoices object will have been built out with all necessary fields added.
   }
 }
 
 // QUESTION OPTION ARRAYS
 
-const quantifier = [
-  {option: 'most', weight: 4, neededToFindQuestion: true},
-  {option: 'least', weight: 1, neededToFindQuestion: true}
+const mostOrLeast = [
+  {whatToSet: [{key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'mostOrLeast', value: 'least', neededToSelectQuestion: true}], weight: 1}
 ]
 
-const statCategory = [
-  {option: 'HOMERUNS', weight: 8, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'BASEHITS', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'DOUBLES', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'TRIPLES', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'XTRABASEHITS', weight: 2, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'RBI', weight: 5, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'ATBATS', weight: 2, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'WALKS', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'RUNS', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'TOTALBASES', weight: 2, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'STOLENBASES', weight: 3, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'STRIKINGOUT', weight: 2, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'HITBYPITCH', weight: 1, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true},
-  {option: 'INTENTIONALWALKS', weight: 1, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true}, {option: 'DOUBLEPLAYS', weight: 1, nextChoice: {quantifier, nextKey: 'quantifier'}, neededToFindQuestion: true}
+const overallBattingStats = [
+  {whatToSet: [{key: 'statCategory', value: 'HOMERUNS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 8},
+  {whatToSet: [{key: 'statCategory', value: 'BASEHITS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'statCategory', value: 'DOUBLES', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'statCategory', value: 'TRIPLES', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'statCategory', value: 'XTRABASEHITS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 2},
+  {whatToSet: [{key: 'statCategory', value: 'RBI', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 5},
+  {whatToSet: [{key: 'statCategory', value: 'ATBATS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 2},
+  {whatToSet: [{key: 'statCategory', value: 'WALKS', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'RUNS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'statCategory', value: 'TOTALBASES', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 2},
+  {whatToSet: [{key: 'statCategory', value: 'STOLENBASES', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 3},
+  {whatToSet: [{key: 'statCategory', value: 'STRIKINGOUT', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'HITBYPITCH', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 1},
+  {whatToSet: [{key: 'statCategory', value: 'INTENTIONALWALKS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 1},
+  {whatToSet: [{key: 'statCategory', value: 'DOUBLEPLAYS', neededToSelectQuestion: true}], weight: 1, nextChoice: mostOrLeast},
+]
+
+const comparisonBattingStats = [
+  {whatToSet: [{key: 'statCategory', value: 'HOMERUNS', neededToSelectQuestion: true}], weight: 8, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'BASEHITS', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'DOUBLES', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'TRIPLES', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'XTRABASEHITS', neededToSelectQuestion: true}], weight: 2, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'RBI', neededToSelectQuestion: true}], weight: 5, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'ATBATS', neededToSelectQuestion: true}], weight: 2, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'WALKS', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'RUNS', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'TOTALBASES', neededToSelectQuestion: true}], weight: 2, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'STOLENBASES', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'STRIKINGOUT', neededToSelectQuestion: true}], weight: 3, nextChoice: mostOrLeast},
+  {whatToSet: [{key: 'statCategory', value: 'HITBYPITCH', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 1},
+  {whatToSet: [{key: 'statCategory', value: 'INTENTIONALWALKS', neededToSelectQuestion: true}, {key: 'mostOrLeast', value: 'most', neededToSelectQuestion: true}], weight: 1},
+  {whatToSet: [{key: 'statCategory', value: 'DOUBLEPLAYS', neededToSelectQuestion: true}], weight: 1, nextChoice: mostOrLeast},
+]
+
+const questionType = [
+  {whatToSet: [{key: 'questionType', value: 'comparison', neededToSelectQuestion: true}], weight: 1, nextChoice: comparisonBattingStats},
+  {whatToSet: [{key: 'questionType', value: 'overall', neededToSelectQuestion: true}], weight: 1, nextChoice: overallBattingStats}
+]
+
+const teamTimeFrame = [
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', neededToSelectQuestion: true}], weight: 2, nextChoice: questionType},
+  {whatToSet: [{key: 'timeFrame', value: 'franchiseHistory', neededToSelectQuestion: true}], weight: 1, nextChoice: questionType}
+]
+
+const playerTimeFrame = [
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', neededToSelectQuestion: true}], weight: 3, nextChoice: questionType},
+  {whatToSet: [{key: 'timeFrame', value: 'wholeCareer', neededToSelectQuestion: true}], weight: 1, nextChoice: questionType}
 ]
 
 const teamOrPlayer = [
-  {option: 'wholeTeam', weight: 1, nextChoice: {statCategory, nextKey: 'statCategory'}, neededToFindQuestion: true},
-  {option: 'singlePlayer', weight: 3, nextChoice: {statCategory, nextKey: 'statCategory'}, neededToFindQuestion: true}
+  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', neededToSelectQuestion: true}], weight: 4, nextChoice: playerTimeFrame},
+  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', neededToSelectQuestion: true}], weight: 2, nextChoice: teamTimeFrame}
 ]
-
-const seasonOrCareer = [
-  {option: 'singleSeason', weight: 1, nextChoice: {teamOrPlayer, nextKey: 'teamOrPlayer'}, neededToFindQuestion: true},
-  {option: 'wholeCareer', weight: 1, nextChoice: {teamOrPlayer, nextKey: 'teamOrPlayer'}, neededToFindQuestion: true}
-]
-
 
 // // QUESTION OPTION OBJECTS
 // const quantifier = {
