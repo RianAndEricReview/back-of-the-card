@@ -1,12 +1,23 @@
-//very rough, placeholder question skeletons. Probably won't need phrasing array.
-const questionCat1 = {
-  phrasing: ['homerun', 'player', 'singleYear', 'most', 'league'],
-  text: [`who led the ${this.league} in homeruns in ${this.year}?`, `In ${this.year}, which player smacked the most dingers in the ${this.league}`]
-}
+//THIS FILE CONTAINS THE SKELTONS OF THE QUESTION TEXT
 
-const question2 = {
-  phrasing: ['homeruns', 'yearRange', 'most']
-}
+//These skeletons will use the data from the QuestionChoices object to create the question text for the Question objects.
+
+
+
+
+
+
+
+//THOUGHT SPACE AS DESIGNS EVOLVED
+//very rough, placeholder question skeletons. Probably won't need phrasing array.
+// const questionCat1 = {
+//   phrasing: ['homerun', 'player', 'singleYear', 'most', 'league'],
+//   text: [`who led the ${this.league} in homeruns in ${this.year}?`, `In ${this.year}, which player smacked the most dingers in the ${this.league}`]
+// }
+
+// const question2 = {
+//   phrasing: ['homeruns', 'yearRange', 'most']
+// }
 
 // text: [`What manager led the ${this.team} to the ${this.title} title in ${this.year}?`, `In ${this.year}, who skippered the ${this.team} to win the ${this.title} crown?`, `The ${this.year} manager of the ${this.team} captained them to the ${this.title} championship. Name him.`]
 // phrasing: ['title', 'league', 'specificYear']
