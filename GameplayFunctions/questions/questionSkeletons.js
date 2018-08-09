@@ -1,7 +1,7 @@
 //THIS FILE CONTAINS THE SKELTONS OF THE QUESTION TEXT
 
 //These skeletons will use the data from the QuestionChoices object to create the question text for the Question objects.
-
+const statQuestionSkeleton = `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun} ${timeFrame}?`
 
 
 
