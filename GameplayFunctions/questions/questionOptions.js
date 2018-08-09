@@ -59,6 +59,6 @@ const playerTimeFrame = [
 ]
 
 export const teamOrPlayer = [
-  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', neededToSelectQuestion: true}], weight: 4, nextChoice: playerTimeFrame},
-  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', neededToSelectQuestion: true}], weight: 2, nextChoice: teamTimeFrame}
+  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: {stat: {subjectNoun: ['player']}}}], weight: 4, nextChoice: playerTimeFrame},
+  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: {stat: {subjectNoun: ['team']}}}], weight: 2, nextChoice: teamTimeFrame}
 ]
