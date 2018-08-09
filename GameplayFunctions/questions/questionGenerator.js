@@ -17,7 +17,6 @@ export class QuestionChoices {
     this.questionSkeletonKey = {}
   }
 
-  //[{key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: {stat: {subjectNoun: ['player']}}}]
   questionChoiceGenerator(optionsArray){
     const chosenOption = randomValueSelector(optionsArray)
     chosenOption.whatToSet.forEach((curr) => {
