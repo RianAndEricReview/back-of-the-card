@@ -44,12 +44,12 @@ const comparisonBattingStats = [
 ]
 
 const overallTimeFrame = [
-  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${year}`]}}}], weight: 2, nextChoice: overallBattingStats},
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${this.questionChoices.year}`]}}}], weight: 2, nextChoice: overallBattingStats},
   {whatToSet: [{key: 'timeFrame', value: 'allTime', skeletonType: {stat: {timeFrame: [`all time`]}}}], weight: 1, nextChoice: overallBattingStats}
 ]
 
 const comparisonTimeFrame = [
-  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${year}`]}}}], weight: 3, nextChoice: comparisonBattingStats},
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${this.questionChoices.year}`]}}}], weight: 3, nextChoice: comparisonBattingStats},
   {whatToSet: [{key: 'timeFrame', value: 'allTime'}], weight: 1, nextChoice: comparisonBattingStats}
 ]
 
@@ -61,6 +61,6 @@ const questionType = [
 
 
 export const teamOrPlayer = [
-  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: {stat: {subjectNoun: [`player`]}}}], weight: 4, nextChoice: questionType},
-  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: {stat: {subjectNoun: [`team`]}}}], weight: 2, nextChoice: questionType}
+  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', skeletonName: 'statQuestionSkeleton', skeletonType: {stat: {subjectNoun: [`player`]}}}], weight: 4, nextChoice: questionType},
+  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', skeletonName: 'statQuestionSkeleton', skeletonType: {stat: {subjectNoun: [`team`]}}}], weight: 2, nextChoice: questionType}
 ]

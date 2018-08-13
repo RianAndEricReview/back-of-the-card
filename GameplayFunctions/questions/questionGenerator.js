@@ -1,4 +1,5 @@
-import {randomValueSelector} from './questionHelperFuncs'
+import {randomValueSelector, randomYearSelector} from './questionHelperFuncs'
+import {questionSkeletons} from './content/questionContent'
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
@@ -12,7 +13,7 @@ export class Question {
   }
 
   questionTextGenerator(){
-
+    this.questionText = questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
   }
 }
 
@@ -22,7 +23,7 @@ export class QuestionChoices {
     this.questionSkeletonKey = {}
   }
 
-  questionChoiceGenerator(optionsArray){
+  questionChoiceGenerator(optionsArray, yearRange){
     const chosenOption = randomValueSelector(optionsArray)
     chosenOption.whatToSet.forEach((curr) => {
       //set questionChoice properties
@@ -47,6 +48,10 @@ export class QuestionChoices {
     //recursively run generator on next array of choices, if there is one
     if (chosenOption.nextChoice) {
       this.questionChoiceGenerator(chosenOption.nextChoice)
+    }
+    //set the year, if it needs one
+    if (this.timeFrame === 'singleSeason'){
+      this.year = randomYearSelector(yearRange)
     }
   }
 }

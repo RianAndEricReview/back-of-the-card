@@ -16,7 +16,9 @@ export const defaultYearRangesArr = [
 //This object will contain all question skeletons.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
 export const questionSkeletons = {
-  statQuestionSkeleton: `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun} ${timeFrame}?`
+  statQuestionSkeleton: function(skeletonKey){
+    return `Which ${skeletonKey.comparativePhrasing} ${skeletonKey.subjectNoun}${skeletonKey.pluralization} ${skeletonKey.verb} the ${skeletonKey.ordinal} ${skeletonKey.mostOrLeast} ${skeletonKey.objectNoun} ${skeletonKey.timeFrame}?`
+  }
 }
 
 //THOUGHT SPACE AS DESIGNS EVOLVED
@@ -38,4 +40,3 @@ export const questionSkeletons = {
 
 // text: [`Who is Xth position all time in doubles for a career?`, `What player holds the all-time record for most two-baggers over the course of their career?`, `This player is Xth in MLB history with Y doubles over the course of his career.`]
 // phrasing: ['doubles', 'career', 'most']
-
