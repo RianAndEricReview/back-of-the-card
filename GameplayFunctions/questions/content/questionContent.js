@@ -1,7 +1,7 @@
 //THIS FILE CONTAINS CONTENT TO BE USED TO FILL IN THE QUESTION OBJECT
 
 //Array with weighted year ranges used to select a specific year for question.
-export const defaultYearRangesArr = [
+export const defaultYearRanges = [
   {start: 1871, end: 1909, weight: 2},
   {start: 1910, end: 1919, weight: 5},
   {start: 1920, end: 1939, weight: 15},
@@ -17,7 +17,16 @@ export const defaultYearRangesArr = [
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
 export const questionSkeletons = {
   statQuestionSkeleton: function(skeletonKey){
-    return `Which ${skeletonKey.comparativePhrasing} ${skeletonKey.subjectNoun}${skeletonKey.pluralization} ${skeletonKey.verb} the ${skeletonKey.ordinal} ${skeletonKey.mostOrLeast} ${skeletonKey.objectNoun} ${skeletonKey.timeFrame}?`
+    const comparativePhrasing = (skeletonKey.comparativePhrasing) ? skeletonKey.comparativePhrasing[Math.floor(Math.random() * skeletonKey.comparativePhrasing.length)] : ''
+    const subjectNoun = (skeletonKey.subjectNoun) ? skeletonKey.subjectNoun[Math.floor(Math.random() * skeletonKey.subjectNoun.length)] : ''
+    const pluralization = (skeletonKey.pluralization) ? skeletonKey.pluralization[Math.floor(Math.random() * skeletonKey.pluralization.length)] : ''
+    const verb = (skeletonKey.verb) ? skeletonKey.verb[Math.floor(Math.random() * skeletonKey.verb.length)] : ''
+    const ordinal = (skeletonKey.ordinal) ? skeletonKey.ordinal[Math.floor(Math.random() * skeletonKey.ordinal.length)] : ''
+    const mostOrLeast = (skeletonKey.mostOrLeast) ? skeletonKey.mostOrLeast[Math.floor(Math.random() * skeletonKey.mostOrLeast.length)] : ''
+    const objectNoun = (skeletonKey.objectNoun) ? skeletonKey.objectNoun[Math.floor(Math.random() * skeletonKey.objectNoun.length)] : ''
+    const timeFrame = (skeletonKey.timeFrame) ? skeletonKey.timeFrame[Math.floor(Math.random() * skeletonKey.timeFrame.length)] : ''
+    const year = (skeletonKey.year) ? skeletonKey.year : ''
+    return `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun}${timeFrame}${year}?`
   }
 }
 

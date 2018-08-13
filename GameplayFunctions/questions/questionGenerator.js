@@ -13,6 +13,11 @@ export class Question {
   }
 
   questionTextGenerator(){
+    if (this.questionChoices.timeFrame === 'allTime'){
+      this.questionChoices.questionSkeletonKey.verb = this.questionChoices.questionSkeletonKey.verb.map(textOption => {
+        return (textOption === 'had') ? 'has' : textOption
+      })
+    }
     this.questionText = questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
   }
 }
@@ -47,11 +52,11 @@ export class QuestionChoices {
     })
     //recursively run generator on next array of choices, if there is one
     if (chosenOption.nextChoice) {
-      this.questionChoiceGenerator(chosenOption.nextChoice)
+      this.questionChoiceGenerator(chosenOption.nextChoice, yearRange)
     }
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason'){
-      this.year = randomYearSelector(yearRange)
+      this.questionSkeletonKey.year = randomYearSelector(yearRange)
     }
   }
 }
