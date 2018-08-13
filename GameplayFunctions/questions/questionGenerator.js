@@ -20,9 +20,13 @@ export class QuestionChoices {
   questionChoiceGenerator(optionsArray){
     const chosenOption = randomValueSelector(optionsArray)
     chosenOption.whatToSet.forEach((curr) => {
-      //set property on questionChoices object
+      //set questionChoice properties
       this[curr.key] = curr.value
-      //push to question selector array to later decide on question text
+      //set questionSkeleton name on questionChoices object
+      if (curr.questionSkeletonName){
+        this.questionSkeletonName = curr.questionSkeletonName
+      }
+      //set questionSkeletonKey object on questionChoices object
       if (curr.skeletonType) {
         for (let type in curr.skeletonType) {
           if (curr.skeletonType.hasOwnProperty(type)) {
