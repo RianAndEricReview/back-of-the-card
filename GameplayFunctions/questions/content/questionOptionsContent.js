@@ -61,6 +61,6 @@ const questionType = [
 
 
 export const teamOrPlayer = [
-  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', questionSkeletonName: 'statQuestionSkeleton', skeletonType: {stat: {subjectNoun: [`player`]}}}], weight: 4, nextChoice: questionType},
-  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', questionSkeletonName: 'statQuestionSkeleton', skeletonType: {stat: {subjectNoun: [`team`]}}}], weight: 2, nextChoice: questionType}
+  {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: {stat: {subjectNoun: [`player`]}}}], weight: 4, nextChoice: questionType},
+  {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: {stat: {subjectNoun: [`team`]}}}], weight: 2, nextChoice: questionType}
 ]

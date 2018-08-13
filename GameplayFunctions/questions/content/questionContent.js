@@ -13,7 +13,7 @@ export const defaultYearRanges = [
 ]
 
 
-//This object will contain all question skeletons.
+//This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
 export const questionSkeletons = {
   statQuestionSkeleton: function(skeletonKey){

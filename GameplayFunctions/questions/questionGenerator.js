@@ -18,7 +18,10 @@ export class Question {
         return (textOption === 'had') ? 'has' : textOption
       })
     }
-    this.questionText = questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
+    //the skeleton name is currently hard coded to be 'statQuestionSkeleton' 
+    //later when we have updated the content in the options objects this should set from the questionSkeletonName off questionChoices
+    //questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
+    this.questionText = questionSkeletons.statQuestionSkeleton(this.questionChoices.questionSkeletonKey)
   }
 }
 

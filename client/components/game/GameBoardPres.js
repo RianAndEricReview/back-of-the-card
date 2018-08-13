@@ -8,7 +8,6 @@ export default () => {
   const selectedQuestionChoices = new QuestionChoices()
   selectedQuestionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   const currentQuestion = new Question(selectedQuestionChoices)
-  console.log('QUESTION!!! ', currentQuestion)
   currentQuestion.questionTextGenerator()
   return (
     <div className="gameboard-pres-container">
