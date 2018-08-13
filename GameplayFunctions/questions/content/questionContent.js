@@ -1,12 +1,23 @@
-//THIS FILE CONTAINS THE SKELTONS OF THE QUESTION TEXT
+//THIS FILE CONTAINS CONTENT TO BE USED TO FILL IN THE QUESTION OBJECT
 
-//These skeletons will use the data from the QuestionChoices object to create the question text for the Question objects.
-const statQuestionSkeleton = `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun} ${timeFrame}?`
+//Array with weighted year ranges used to select a specific year for question.
+export const defaultYearRangesArr = [
+  {start: 1871, end: 1909, weight: 2},
+  {start: 1910, end: 1919, weight: 5},
+  {start: 1920, end: 1939, weight: 15},
+  {start: 1940, end: 1949, weight: 5},
+  {start: 1950, end: 1969, weight: 15},
+  {start: 1970, end: 1979, weight: 30},
+  {start: 1980, end: 1989, weight: 50},
+  {start: 1990, end: 2017, weight: 125},
+]
 
 
-
-
-
+//This object will contain all question skeletons.
+//Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
+export const questionSkeletons = {
+  statQuestionSkeleton: `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun} ${timeFrame}?`
+}
 
 //THOUGHT SPACE AS DESIGNS EVOLVED
 //very rough, placeholder question skeletons. Probably won't need phrasing array.
