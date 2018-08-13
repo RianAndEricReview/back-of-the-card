@@ -26,9 +26,9 @@ export class QuestionChoices {
       if (curr.skeletonType) {
         for (let type in curr.skeletonType) {
           if (curr.skeletonType.hasOwnProperty(type)) {
-            for (let piece in type) {
-              if (type.hasOwnProperty(piece)) {
-                this.questionSkeletonKey.skeletonType[type] = piece
+            for (let piece in curr.skeletonType[type]) {
+              if (curr.skeletonType[type].hasOwnProperty(piece)) {
+                this.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
               }
             }
           }
