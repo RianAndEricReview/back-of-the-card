@@ -4,10 +4,15 @@ import {randomValueSelector} from './questionHelperFuncs'
 
 //this class will use the QuestionChoices object to build the question object
 export class Question {
-  constructor() {
+  constructor(questionChoicesObj) {
     this.questionText = ''
     this.correctAnswer = ''
     this.answerChoices = []
+    this.questionChoices = questionChoicesObj
+  }
+
+  questionTextGenerator(){
+    
   }
 }
 
