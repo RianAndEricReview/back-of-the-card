@@ -21,7 +21,7 @@ const overallBattingStats = [
   {whatToSet: [{key: 'statCategory', value: 'STOLENBASES', skeletonType: {stat: {verb: [`stole`], objectNoun: [`bases`]}}}, {key: 'mostOrLeast', value: 'most', skeletonType: {stat: {mostOrLeast: [`most`]}}}], weight: 3},
   {whatToSet: [{key: 'statCategory', value: 'STRIKINGOUT', skeletonType: {stat: {verb: [`struck out`]}}}], weight: 3, nextChoice: mostOrLeast},
   {whatToSet: [{key: 'statCategory', value: 'HITBYPITCH', skeletonType: {stat: {verb: [`was hit by a pitch`]}}}, {key: 'mostOrLeast', value: 'most', skeletonType: {stat: {mostOrLeast: [`most`]}}}], weight: 1},
-  {whatToSet: [{key: 'statCategory', value: 'INTENTIONALWALKS', skeletonType: {stat: {verb: [`was walked intentionally`], }}}, {key: 'mostOrLeast', value: 'most', skeletonType: {stat: {mostOrLeast: [`most`]}}}], weight: 1},
+  {whatToSet: [{key: 'statCategory', value: 'INTENTIONALWALKS', skeletonType: {stat: {verb: [`was walked intentionally`] }}}, {key: 'mostOrLeast', value: 'most', skeletonType: {stat: {mostOrLeast: [`most`]}}}], weight: 1},
   {whatToSet: [{key: 'statCategory', value: 'DOUBLEPLAYS', skeletonType: {stat: {verb: [`hit into`], objectNoun: [`double plays`]}}}], weight: 1, nextChoice: mostOrLeast},
 ]
 
@@ -50,7 +50,7 @@ const overallTimeFrame = [
 
 const comparisonTimeFrame = [
   {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${year}`]}}}], weight: 3, nextChoice: comparisonBattingStats},
-  {whatToSet: [{key: 'timeFrame', value: 'allTime', weight: 1}], nextChoice: comparisonBattingStats}
+  {whatToSet: [{key: 'timeFrame', value: 'allTime'}], weight: 1, nextChoice: comparisonBattingStats}
 ]
 
 
