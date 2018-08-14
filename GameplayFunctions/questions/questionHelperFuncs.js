@@ -16,3 +16,10 @@ export const randomValueSelector = (arr) => {
     }
   }
 }
+
+//this helper function is used to pick a year from a weighted range of year options.
+export const randomYearSelector = (years) => {
+  const yearRange = randomValueSelector(years)
+
+  return Math.floor(Math.random() * (yearRange.end - yearRange.start + 1)) + yearRange.start
+}

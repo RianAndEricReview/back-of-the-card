@@ -1,13 +1,27 @@
-import {randomValueSelector} from './questionHelperFuncs'
+import {randomValueSelector, randomYearSelector} from './questionHelperFuncs'
+import {questionSkeletons} from './content/questionContent'
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
 //this class will use the QuestionChoices object to build the question object
 export class Question {
-  constructor() {
+  constructor(questionChoicesObj) {
     this.questionText = ''
     this.correctAnswer = ''
     this.answerChoices = []
+    this.questionChoices = questionChoicesObj
+  }
+
+  questionTextGenerator(){
+    if (this.questionChoices.timeFrame === 'allTime'){
+      this.questionChoices.questionSkeletonKey.verb = this.questionChoices.questionSkeletonKey.verb.map(textOption => {
+        return (textOption === 'had') ? 'has' : textOption
+      })
+    }
+    //the skeleton name is currently hard coded to be 'statQuestionSkeleton' 
+    //later when we have updated the content in the options objects this should set from the questionSkeletonName off questionChoices
+    //questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
+    this.questionText = questionSkeletons.statQuestionSkeleton(this.questionChoices.questionSkeletonKey)
   }
 }
 
@@ -17,12 +31,16 @@ export class QuestionChoices {
     this.questionSkeletonKey = {}
   }
 
-  questionChoiceGenerator(optionsArray){
+  questionChoiceGenerator(optionsArray, yearRange){
     const chosenOption = randomValueSelector(optionsArray)
     chosenOption.whatToSet.forEach((curr) => {
-      //set property on questionChoices object
+      //set questionChoice properties
       this[curr.key] = curr.value
-      //push to question selector array to later decide on question text
+      //set questionSkeleton name on questionChoices object
+      if (curr.questionSkeletonName){
+        this.questionSkeletonName = curr.questionSkeletonName
+      }
+      //set questionSkeletonKey object on questionChoices object
       if (curr.skeletonType) {
         for (let type in curr.skeletonType) {
           if (curr.skeletonType.hasOwnProperty(type)) {
@@ -37,7 +55,11 @@ export class QuestionChoices {
     })
     //recursively run generator on next array of choices, if there is one
     if (chosenOption.nextChoice) {
-      this.questionChoiceGenerator(chosenOption.nextChoice)
+      this.questionChoiceGenerator(chosenOption.nextChoice, yearRange)
+    }
+    //set the year, if it needs one
+    if (this.timeFrame === 'singleSeason'){
+      this.questionSkeletonKey.year = randomYearSelector(yearRange)
     }
   }
 }

@@ -44,12 +44,12 @@ const comparisonBattingStats = [
 ]
 
 const overallTimeFrame = [
-  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${year}`]}}}], weight: 2, nextChoice: overallBattingStats},
-  {whatToSet: [{key: 'timeFrame', value: 'allTime', skeletonType: {stat: {timeFrame: [`all time`]}}}], weight: 1, nextChoice: overallBattingStats}
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [` in `]}}}], weight: 2, nextChoice: overallBattingStats},
+  {whatToSet: [{key: 'timeFrame', value: 'allTime', skeletonType: {stat: {timeFrame: [` all time`]}}}], weight: 1, nextChoice: overallBattingStats}
 ]
 
 const comparisonTimeFrame = [
-  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [`in ${year}`]}}}], weight: 3, nextChoice: comparisonBattingStats},
+  {whatToSet: [{key: 'timeFrame', value: 'singleSeason', skeletonType: {stat: {timeFrame: [` in `]}}}], weight: 3, nextChoice: comparisonBattingStats},
   {whatToSet: [{key: 'timeFrame', value: 'allTime'}], weight: 1, nextChoice: comparisonBattingStats}
 ]
 
