@@ -33,4 +33,9 @@ Component needs Question
   * array of scores for each question for THAT player
 -frontend displays total score for each player in the sidebar (this could be sorted by score)
 
+************************
+  // questionAnswerGenerator() {
+  //   Batting.findAll({order: ['HR', 'DESC'], limit: 10, where: {year: 1919}})
+  //   .then(req => console.log('the homer guys', req))
+  // }
 
