@@ -1,5 +1,7 @@
 const router = require('express').Router()
-const { Game, Gametype, GamePlayer, User } = require('../db/models')
+const { Game, Gametype, GamePlayer, Question, User } = require('../db/models')
+const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
+const { questionTextGenerator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 module.exports = router
 
 // Used to find all currently enabled gametypes
@@ -59,4 +61,11 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
         })
     })
     .catch(next)
+})
+
+// Used to generate a question instance
+router.post('/:gameId/question', (req, res, next) => {
+  const questionChoices = new QuestionChoices()
+  const questionText = questionTextGenerator(questionChoices)
+
 })

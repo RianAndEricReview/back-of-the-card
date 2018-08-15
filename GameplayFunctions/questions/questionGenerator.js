@@ -1,9 +1,10 @@
-import {randomValueSelector, randomYearSelector} from './questionHelperFuncs'
+const randomYearSelector = require('./questionHelperFuncs').randomYearSelector
+const randomValueSelector = require('./questionHelperFuncs').randomValueSelector
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
 //class to create an object with a list of question pieces
-export class QuestionChoices {
+class QuestionChoices {
   constructor() {
     this.questionSkeletonKey = {}
   }
@@ -40,3 +41,5 @@ export class QuestionChoices {
     }
   }
 }
+
+module.exports = {QuestionChoices}
