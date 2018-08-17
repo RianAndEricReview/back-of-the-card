@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Sequelize = require('sequelize')
-const { Game, Gametype, GamePlayer, Batting, Question, User } = require('../db/models')
+const { Game, Gametype, GamePlayer, Batting, People, Question, User } = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges } = require('../../GameplayFunctions/questions/content/questionContent')
@@ -71,22 +71,11 @@ router.post('/:gameId/question', (req, res, next) => {
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   const questionText = questionTextGenerator(questionChoices)
-  // Batting.findAll({order: [['HR', 'DESC']], limit: 10, where: {year: 2008}, attributes: ['HR', 'playerID']})
-  Batting.aggregate('playerID', 'DISTINCT', {where: {year: 2008}, plain: false, limit: 200})
+  //compilies sorted results with player stats aggregated
+  Batting.aggregate('HR', 'SUM', { plain: false, group: [ 'person.playerID' ], include: [{model: People, attributes: [ 'nameFirst', 'nameLast']}], attributes: [] })
   .then(players => {
-    let playerTotals = players.map(player => {
-      return Batting.findAll({where: {playerID: player.DISTINCT, year: 2008}, attributes: ['HR', 'playerID']})
-    })
-    Promise.all(playerTotals)
-    .then(playerEntries => {
-      const homerTotals = playerEntries.map(entry => {
-        return {playerID: entry[0].dataValues.playerID, HR: entry.reduce((accum, curr) => {
-          return (curr.dataValues.HR) ? accum + curr.dataValues.HR : accum
-        }, 0)}
-      })
-      homerTotals.sort((a, b) => {return b.HR - a.HR})
-      console.log('!!!!!!!!!!!', homerTotals)
-    })
+    players.sort((a, b) => {return b.SUM - a.SUM})
+    console.log('players', players)
   })
 })
 
