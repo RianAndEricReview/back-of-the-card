@@ -71,19 +71,8 @@ router.post('/:gameId/question', (req, res, next) => {
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   const questionText = questionTextGenerator(questionChoices)
-  const question = {question: questionText, answers: [], correctAnswer: ''}
-  //compilies sorted results with player stats aggregated
-  // Batting.aggregate('HR', 'SUM', { where: {year: 2008}, plain: false, group: [ 'person.playerID' ], include: [{model: People, attributes: [ 'nameFirst', 'nameLast']}], attributes: [] })
-  // Batting.findAll({
-  //   group: [ 'person.playerID' ],
-  //   attributes: [
-  //     sequelize.fn('SUM', sequelize.col('field2'))
-  //     // etc
-  //   ],
-  //   where: {
-  //     validTo: null
-  //   }
-  // })
+  const question = {question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId}
+
   Batting.findAll({
     where: {year: 2008},
     attributes: [[sequelize.fn('SUM', sequelize.col('HR')), 'HR'], [sequelize.fn('SUM', sequelize.col('AB')), 'AB']],
@@ -94,20 +83,17 @@ router.post('/:gameId/question', (req, res, next) => {
     const playerDataArr = players.map(player => {
       return player.dataValues
     })
-    playerDataArr.sort((a, b) => {return b.HR - a.HR})
-    if (questionChoices.mostOrLeast === 'most') {
-      const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
-      question.correctAnswer = playerDataArr[0].person.dataValues.nameFirst + ' ' + playerDataArr[0].person.dataValues.nameLast + ' ~ ' + playerDataArr[0].HR
-      question.answers.push(playerDataArr[0].person.dataValues.nameFirst + ' ' + playerDataArr[0].person.dataValues.nameLast)
-      answerIndexArr.forEach(answerIndex => {
-        question.answers.push(playerDataArr[answerIndex].person.dataValues.nameFirst + ' ' + playerDataArr[answerIndex].person.dataValues.nameLast)
-      })
-    // playerDataArr.forEach((player, index) => {
-    //   console.log(index, player.HR, player.AB, player.person.dataValues.nameFirst, player.person.dataValues.nameLast, player.person.dataValues.playerID )
-    // })
-    console.log(question)
-    }
+    questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b.HR - a.HR}) : playerDataArr.sort((a, b) => {return a.HR - b.HR})
+    const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
+    question.correctAnswer = playerDataArr[0].person.dataValues.nameFirst + ' ' + playerDataArr[0].person.dataValues.nameLast + ' ~ ' + playerDataArr[0].HR
+    question.answers.push(playerDataArr[0].person.dataValues.nameFirst + ' ' + playerDataArr[0].person.dataValues.nameLast)
+    answerIndexArr.forEach(answerIndex => {
+      question.answers.push(playerDataArr[answerIndex].person.dataValues.nameFirst + ' ' + playerDataArr[answerIndex].person.dataValues.nameLast)
+    })
+    Question.create(question)
+    .then(createdQuestion => res.status(201).json(createdQuestion))
   })
+  .catch(next)
 })
 
 
