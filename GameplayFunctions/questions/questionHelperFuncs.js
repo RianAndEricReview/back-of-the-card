@@ -7,7 +7,7 @@ const randomValueSelector = (arr) => {
     return accum + currObj.weight
   }, 0)
 
-  let currentNum = 0;
+  let currentNum = 0
   const targetNum = Math.floor(Math.random() * totalWeight) + 1
 
   for (let i = 0; i < arr.length; i++) {

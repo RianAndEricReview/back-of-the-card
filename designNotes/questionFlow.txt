@@ -34,8 +34,18 @@ Component needs Question
 -frontend displays total score for each player in the sidebar (this could be sorted by score)
 
 ************************
-  // questionAnswerGenerator() {
-  //   Batting.findAll({order: ['HR', 'DESC'], limit: 10, where: {year: 1919}})
-  //   .then(req => console.log('the homer guys', req))
-  // }
+example questionChoices object
+// questionSkeletonKey:
+//   mostOrLeast:["most"]
+//   objectNoun:["home runs"]
+//   subjectNoun:["player"]
+//   timeFrame:[" in "]
+//   verb:["hit"]
+//   year:2008
+
+// questionType:"overall"
+// statCategory:"HOME RUNS"
+// teamOrPlayer:"singlePlayer"
+// timeFrame:"singleSeason"
+// mostOrLeast:"most"
 
