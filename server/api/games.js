@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Sequelize = require('sequelize')
+const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question, User } = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
@@ -72,10 +72,33 @@ router.post('/:gameId/question', (req, res, next) => {
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   const questionText = questionTextGenerator(questionChoices)
   //compilies sorted results with player stats aggregated
-  Batting.aggregate('HR', 'SUM', { plain: false, group: [ 'person.playerID' ], include: [{model: People, attributes: [ 'nameFirst', 'nameLast']}], attributes: [] })
+  // Batting.aggregate('HR', 'SUM', { where: {year: 2008}, plain: false, group: [ 'person.playerID' ], include: [{model: People, attributes: [ 'nameFirst', 'nameLast']}], attributes: [] })
+  // Batting.findAll({
+  //   group: [ 'person.playerID' ],
+  //   attributes: [
+  //     sequelize.fn('SUM', sequelize.col('field2'))
+  //     // etc
+  //   ],
+  //   where: {
+  //     validTo: null
+  //   }
+  // })
+  Batting.findAll({
+    where: {year: 2008},
+    attributes: [[sequelize.fn('SUM', sequelize.col('HR')), 'HR'], [sequelize.fn('SUM', sequelize.col('AB')), 'AB']],
+    include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast']}],
+    group: [ 'person.playerID' ]
+  })
   .then(players => {
-    players.sort((a, b) => {return b.SUM - a.SUM})
-    console.log('players', players)
+    const playerDataArr = players.map(player => {
+      return player.dataValues
+    })
+    // console.log(noDataValues)
+    playerDataArr.sort((a, b) => {return a.HR - b.HR})
+    // console.log(players[0])
+    playerDataArr.forEach((player, index) => {
+      console.log(index, player.HR, player.AB, player.person.dataValues.nameFirst, player.person.dataValues.nameLast, player.person.dataValues.playerID )
+    })
   })
 })
 
