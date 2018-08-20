@@ -33,4 +33,19 @@ Component needs Question
   * array of scores for each question for THAT player
 -frontend displays total score for each player in the sidebar (this could be sorted by score)
 
+************************
+example questionChoices object
+// questionSkeletonKey:
+//   mostOrLeast:["most"]
+//   objectNoun:["home runs"]
+//   subjectNoun:["player"]
+//   timeFrame:[" in "]
+//   verb:["hit"]
+//   year:2008
+
+// questionType:"overall"
+// statCategory:"HOME RUNS"
+// teamOrPlayer:"singlePlayer"
+// timeFrame:"singleSeason"
+// mostOrLeast:"most"
 

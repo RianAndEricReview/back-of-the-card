@@ -1,32 +1,10 @@
-import {randomValueSelector, randomYearSelector} from './questionHelperFuncs'
-import {questionSkeletons} from './content/questionContent'
+const randomYearSelector = require('./questionHelperFuncs').randomYearSelector
+const randomValueSelector = require('./questionHelperFuncs').randomValueSelector
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
-//this class will use the QuestionChoices object to build the question object
-export class Question {
-  constructor(questionChoicesObj) {
-    this.questionText = ''
-    this.correctAnswer = ''
-    this.answerChoices = []
-    this.questionChoices = questionChoicesObj
-  }
-
-  questionTextGenerator(){
-    if (this.questionChoices.timeFrame === 'allTime'){
-      this.questionChoices.questionSkeletonKey.verb = this.questionChoices.questionSkeletonKey.verb.map(textOption => {
-        return (textOption === 'had') ? 'has' : textOption
-      })
-    }
-    //the skeleton name is currently hard coded to be 'statQuestionSkeleton' 
-    //later when we have updated the content in the options objects this should set from the questionSkeletonName off questionChoices
-    //questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
-    this.questionText = questionSkeletons.statQuestionSkeleton(this.questionChoices.questionSkeletonKey)
-  }
-}
-
 //class to create an object with a list of question pieces
-export class QuestionChoices {
+class QuestionChoices {
   constructor() {
     this.questionSkeletonKey = {}
   }
@@ -63,3 +41,5 @@ export class QuestionChoices {
     }
   }
 }
+
+module.exports = {QuestionChoices}

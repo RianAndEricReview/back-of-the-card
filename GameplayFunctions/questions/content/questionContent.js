@@ -1,7 +1,7 @@
 //THIS FILE CONTAINS CONTENT TO BE USED TO FILL IN THE QUESTION OBJECT
 
 //Array with weighted year ranges used to select a specific year for question.
-export const defaultYearRanges = [
+const defaultYearRanges = [
   {start: 1871, end: 1909, weight: 2},
   {start: 1910, end: 1919, weight: 5},
   {start: 1920, end: 1939, weight: 15},
@@ -15,7 +15,7 @@ export const defaultYearRanges = [
 
 //This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
-export const questionSkeletons = {
+const questionSkeletons = {
   statQuestionSkeleton: function(skeletonKey){
     const comparativePhrasing = (skeletonKey.comparativePhrasing) ? skeletonKey.comparativePhrasing[Math.floor(Math.random() * skeletonKey.comparativePhrasing.length)] : ''
     const subjectNoun = (skeletonKey.subjectNoun) ? skeletonKey.subjectNoun[Math.floor(Math.random() * skeletonKey.subjectNoun.length)] : ''
@@ -28,6 +28,11 @@ export const questionSkeletons = {
     const year = (skeletonKey.year) ? skeletonKey.year : ''
     return `Which ${comparativePhrasing} ${subjectNoun}${pluralization} ${verb} the ${ordinal} ${mostOrLeast} ${objectNoun}${timeFrame}${year}?`
   }
+}
+
+module.exports = {
+  defaultYearRanges,
+  questionSkeletons
 }
 
 //THOUGHT SPACE AS DESIGNS EVOLVED

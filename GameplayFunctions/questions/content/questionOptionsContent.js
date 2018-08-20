@@ -60,7 +60,9 @@ const questionType = [
 ]
 
 
-export const teamOrPlayer = [
+const teamOrPlayer = [
   {whatToSet: [{key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: {stat: {subjectNoun: [`player`]}}}], weight: 4, nextChoice: questionType},
   {whatToSet: [{key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: {stat: {subjectNoun: [`team`]}}}], weight: 2, nextChoice: questionType}
 ]
+
+module.exports = {teamOrPlayer}
