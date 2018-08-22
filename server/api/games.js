@@ -89,7 +89,7 @@ router.post('/:gameId/question', (req, res, next) => {
       return player.dataValues
     })
     //sort the returned player data array either desc or asc based on most or least
-    questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b.HR - a.HR}) : playerDataArr.sort((a, b) => {return a.HR - b.HR})
+    questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b.HR - a.HR}) : playerDataArr.sort((a, b) => a.HR - b.HR)
     //Build the question object by selecting the correct answer and 3 other answers, and then post the question to DB.
     const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
     question.correctAnswer = `${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast} ~ ${playerDataArr[0].HR}`
