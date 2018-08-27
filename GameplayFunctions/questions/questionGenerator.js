@@ -37,11 +37,7 @@ class QuestionChoices {
     }
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason'){
-      let selectedYear = randomYearSelector(yearRange)
-      while (selectedYear === 1972 || selectedYear === 1981 || selectedYear === 1994 ){
-        selectedYear = randomYearSelector(yearRange)
-      }
-      this.questionSkeletonKey.year = selectedYear
+      this.questionSkeletonKey.year = randomYearSelector(yearRange)
     }
   }
 }

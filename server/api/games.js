@@ -2,7 +2,7 @@ const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question} = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
-const { questionTextGenerator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
+const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
@@ -71,6 +71,10 @@ router.post('/:gameId/question', (req, res, next) => {
   //generate and populate questionChoices, questionText, question object skeleton
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
+  //eliminate strike years, BA before 1900
+  while (questionChoices.year === 1972 || questionChoices.year  === 1981 || questionChoices.year  === 1994 || (questionChoices.statCategory === 'BA' && questionChoices.year < 1900) ){
+    questionChoices.year  = randomYearSelector(defaultYearRanges)
+  }
   const questionText = questionTextGenerator(questionChoices)
   const question = {question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId}
 
