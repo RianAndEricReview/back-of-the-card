@@ -81,6 +81,13 @@ const Batting = db.define('batting', {
     field: 'updated_at',
     defaultValue: Sequelize.fn('NOW')
   }
-}, { timestamps: true })
+}, {
+    timestamps: true,
+    getterMethods: {
+      BA() {
+        return this.hits / this.AB
+      }
+    }
+  })
 
 module.exports = Batting
