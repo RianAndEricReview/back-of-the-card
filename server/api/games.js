@@ -1,9 +1,8 @@
 const router = require('express').Router()
-const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question} = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
-const { defaultYearRanges } = require('../../GameplayFunctions/questions/content/questionContent')
+const { defaultYearRanges, requiredAttributes } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
 
@@ -82,13 +81,15 @@ router.post('/:gameId/question', (req, res, next) => {
   //Eventually it will dynamically query based on the questionChoices object.
   //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
   // we group by the playerID and sum the needed stats in attributes
+
   Batting.findAll({
-    where: {year: 2008},
-    attributes: [[sequelize.fn('SUM', sequelize.col('hits')), 'hits'], [sequelize.fn('SUM', sequelize.col('AB')), 'AB'], [sequelize.fn('MIN', sequelize.col('year')), 'year'], [sequelize.fn('SUM', sequelize.col('PA')), 'PA']],
+    where: (questionChoices.year) ? {year: questionChoices.year} : null,
+    attributes: requiredAttributes,
     include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast' ]}],
     group: [ 'person.playerID' ]
   })
   .then(players => {
+    console.log('a player!!!!!!', players[0])
     const playerDataArr = players.map(player => {
       return player.dataValues
     })
