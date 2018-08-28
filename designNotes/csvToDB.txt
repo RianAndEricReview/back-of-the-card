@@ -72,3 +72,8 @@ COPY "pitchingPosts" FROM '/Users/eeegee/Fullstack Academy/RianAndEricReview/bac
 COPY salaries FROM '/Users/eeegee/Fullstack Academy/RianAndEricReview/backOfTheCard/CSV/Salaries.csv'DELIMITER ',' CSV HEADER;
 COPY "seriesPosts" FROM '/Users/eeegee/Fullstack Academy/RianAndEricReview/backOfTheCard/CSV/SeriesPost.csv'DELIMITER ',' CSV HEADER;
 COPY "teamsHalves" FROM '/Users/eeegee/Fullstack Academy/RianAndEricReview/backOfTheCard/CSV/TeamsHalf.csv'DELIMITER ',' CSV HEADER;
+
+**************************************
+//Quick gametypes copy and paste
+1	1 Player	https://media.istockphoto.com/photos/baseball-player-picture-id502862639?k=6&m=502862639&s=612x612&w=0&h=VN9GeJiJYZcJFoboDg5trQk8_0EwTgTQGq6ij_2xv5I=	dfjkhadsflkjhsdaflkjadsflkasdjhf	TRUE	1	20	10	right-wrong		2018-07-26 10:51:28.970445-04	2018-07-26 10:51:28.970445-04
+2	2 Player	https://media.istockphoto.com/photos/baseball-player-picture-id502862639?k=6&m=502862639&s=612x612&w=0&h=VN9GeJiJYZcJFoboDg5trQk8_0EwTgTQGq6ij_2xv5I=	adsdsafsdafdsfa	TRUE	2	20	10	right-wrong		2018-07-26 10:51:28.970445-04	2018-07-26 10:51:28.970445-04
