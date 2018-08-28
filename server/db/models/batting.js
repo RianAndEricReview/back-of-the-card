@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const minPAPerYear = require('../../../GameplayFunctions/questions/content/questionContent')
+const minPAPerYear = require('../../../GameplayFunctions/questions/content/questionContent').minPAPerYear
 const db = require('../db')
 
 const Batting = db.define('batting', {
@@ -88,16 +88,13 @@ const Batting = db.define('batting', {
 }, {
     timestamps: true,
     getterMethods: {
-      BA() {
-        let minPA = null;
+      adjBA() {
+        let minPA = 502
         // Used to set the required minimum plate appearances based on the year
-        for (let i = 0; i < minPAPerYear.length + 1; i++) {
+        for (let i = 0; i < minPAPerYear.length; i++) {
           if (this.getDataValue('year') >= minPAPerYear[i].start && this.getDataValue('year') <= minPAPerYear[i].end) {
             minPA = minPAPerYear[i].minPA
             break
-          }
-          if (i === minPAPerYear.length) {
-            minPA = 502
           }
         }
         // check a player's plate appearances and adjust to account for appearances a player was short of the minimum
