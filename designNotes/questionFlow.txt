@@ -49,3 +49,28 @@ example questionChoices object
 // timeFrame:"singleSeason"
 // mostOrLeast:"most"
 
+//code for game api, dynamic year in batting query
+where: (questionChoices.year) ? {year: questionChoices.year} : null,
+
+//games played per season
+        1871: 33
+        1872: 58
+        1873: 60
+        1874: 71
+        1875: 86
+        1876: 70
+        1877: 60
+        1870: 84
+        1883: 98
+        1884: 112
+        1886: 126
+        1888: 140
+        1892: 154
+        1893: 132
+        1898: 154
+        1900: 140
+        1904: 154
+        1919: 140
+        1920: 154
+        1961: 162
+        1995: 144

@@ -12,6 +12,16 @@ const defaultYearRanges = [
   {start: 1990, end: 2017, weight: 125},
 ]
 
+// minPA to qualify for batting title in a given year
+const minPAPerYear = [
+  {start: 1900, end: 1903, minPA: 434},
+  {start: 1904, end: 1918, minPA: 477},
+  {start: 1919, end: 1919, minPA: 434},
+  {start: 1920, end: 1960, minPA: 477},
+  {start: 1961, end: 1994, minPA: 502},
+  {start: 1995, end: 1995, minPA: 446}
+]
+
 
 //This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
@@ -32,7 +42,8 @@ const questionSkeletons = {
 
 module.exports = {
   defaultYearRanges,
-  questionSkeletons
+  questionSkeletons,
+  minPAPerYear
 }
 
 //THOUGHT SPACE AS DESIGNS EVOLVED
