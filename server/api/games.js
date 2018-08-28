@@ -85,7 +85,7 @@ router.post('/:gameId/question', (req, res, next) => {
   Batting.findAll({
     where: {year: 2008},
     attributes: [[sequelize.fn('SUM', sequelize.col('hits')), 'hits'], [sequelize.fn('SUM', sequelize.col('AB')), 'AB'], [sequelize.fn('MIN', sequelize.col('year')), 'year'], [sequelize.fn('SUM', sequelize.col('PA')), 'PA']],
-    include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast', 'nameGiven']}],
+    include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast' ]}],
     group: [ 'person.playerID' ]
   })
   .then(players => {
