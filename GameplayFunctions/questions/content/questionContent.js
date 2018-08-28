@@ -31,6 +31,8 @@ const requiredAttributes = [
 ]
 
 
+const derivedStats = ['adjBASingleSeason', 'adjBAAllTime']
+
 //This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
 const questionSkeletons = {
@@ -52,7 +54,8 @@ module.exports = {
   defaultYearRanges,
   questionSkeletons,
   minPAPerYear,
-  requiredAttributes
+  requiredAttributes,
+  derivedStats
 }
 
 //THOUGHT SPACE AS DESIGNS EVOLVED

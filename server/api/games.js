@@ -100,7 +100,7 @@ router.post('/:gameId/question', (req, res, next) => {
   // we group by the playerID and sum the needed stats in attributes
 
   Batting.findAll({
-    where: (questionChoices.year) ? {year: questionChoices.year} : null,
+    where: (questionChoices.year) ? {year: questionChoices.questionSkeletonKey.year} : {PA: {[sequelize.Op.gte]: 3000}},
     attributes: attributes,
     include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast' ]}],
     group: [ 'person.playerID' ]
