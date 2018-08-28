@@ -72,8 +72,8 @@ router.post('/:gameId/question', (req, res, next) => {
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   //eliminate strike years, BA before 1900
-  while (questionChoices.year === 1972 || questionChoices.year  === 1981 || questionChoices.year  === 1994 || (questionChoices.statCategory === 'BA' && questionChoices.year < 1900) ){
-    questionChoices.year  = randomYearSelector(defaultYearRanges)
+  while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year  === 1981 || questionChoices.questionSkeletonKey.year  === 1994 || (questionChoices.statCategory === 'BA' && questionChoices.questionSkeletonKey.year < 1900) ){
+    questionChoices.questionSkeletonKey.year  = randomYearSelector(defaultYearRanges)
   }
   console.log('CHOIIIIICCCEEESSS', questionChoices)
   const questionText = questionTextGenerator(questionChoices)
@@ -100,21 +100,20 @@ router.post('/:gameId/question', (req, res, next) => {
   // we group by the playerID and sum the needed stats in attributes
 
   Batting.findAll({
-    where: (questionChoices.year) ? {year: questionChoices.questionSkeletonKey.year} : {PA: {[sequelize.Op.gte]: 3000}},
+    where: (questionChoices.questionSkeletonKey.year) ? {year: questionChoices.questionSkeletonKey.year} : null,
     attributes: attributes,
     include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast' ]}],
     group: [ 'person.playerID' ]
   })
   .then(players => {
-    console.log('a player!!!!!!', players[0])
-    const playerDataArr = players.map(player => {
-      return player.dataValues
-    })
+    const playerDataArr = (questionChoices.timeFrame === 'allTime') ? players.map(player => player.dataValues).filter(player => (player.PA >= 3000))
+    : players.map(player => player.dataValues)
+    console.log('a player!!!!!!', playerDataArr[0])
     //sort the returned player data array either desc or asc based on most or least
-    questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b.HR - a.HR}) : playerDataArr.sort((a, b) => a.HR - b.HR)
+    questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b[questionChoices.statCategory] - a[questionChoices.statCategory]}) : playerDataArr.sort((a, b) => a[questionChoices.statCategory] - b[questionChoices.statCategory])
     //Build the question object by selecting the correct answer and 3 other answers, and then post the question to DB.
     const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
-    question.correctAnswer = `${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast} ~ ${playerDataArr[0].HR}`
+    question.correctAnswer = `${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast} ~ ${playerDataArr[0][questionChoices.statCategory]}`
     question.answers.push(`${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast}`)
     answerIndexArr.forEach(answerIndex => {
       question.answers.push(`${playerDataArr[answerIndex].person.dataValues.nameFirst} ${playerDataArr[answerIndex].person.dataValues.nameLast}`)
