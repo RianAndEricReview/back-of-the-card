@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question} = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
@@ -74,8 +75,24 @@ router.post('/:gameId/question', (req, res, next) => {
   while (questionChoices.year === 1972 || questionChoices.year  === 1981 || questionChoices.year  === 1994 || (questionChoices.statCategory === 'BA' && questionChoices.year < 1900) ){
     questionChoices.year  = randomYearSelector(defaultYearRanges)
   }
+  console.log('CHOIIIIICCCEEESSS', questionChoices)
   const questionText = questionTextGenerator(questionChoices)
   const question = {question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId}
+  let attributes = []
+  const needAttribute = requiredAttributes.reduce((accum, curr) => {
+    if (curr[1] === questionChoices.statCategory){
+      return false
+    } else {
+      return accum
+    }
+  }, true)
+  if (needAttribute){
+    attributes = requiredAttributes.map(att => att)
+    attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory])
+    console.log('atttttttt', attributes)
+  } else {
+    attributes = requiredAttributes.map(att => att)
+  }
 
   //THIS QUERY IS NOT CURRENTLY BASED ON THE QUESTIONCHOICES OBJECT, IT IS HARD CODED FOR HRS IN 2008
   //Eventually it will dynamically query based on the questionChoices object.
@@ -84,7 +101,7 @@ router.post('/:gameId/question', (req, res, next) => {
 
   Batting.findAll({
     where: (questionChoices.year) ? {year: questionChoices.year} : null,
-    attributes: requiredAttributes,
+    attributes: attributes,
     include: [{model: People, attributes: [ 'playerID', 'nameFirst', 'nameLast' ]}],
     group: [ 'person.playerID' ]
   })
