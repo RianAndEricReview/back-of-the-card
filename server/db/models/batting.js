@@ -71,6 +71,9 @@ const Batting = db.define('batting', {
   GIDP: {
     type: Sequelize.INTEGER
   },
+  PA: {
+    type: Sequelize.INTEGER
+  },
   createdAt: {
     type: Sequelize.DATE,
     field: 'created_at',
@@ -85,7 +88,7 @@ const Batting = db.define('batting', {
     timestamps: true,
     getterMethods: {
       BA() {
-        return this.hits / this.AB
+        return this.getDataValue('hits') / this.getDataValue('AB')
       }
     }
   })
