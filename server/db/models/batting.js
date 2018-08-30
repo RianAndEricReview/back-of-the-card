@@ -88,7 +88,7 @@ const Batting = db.define('batting', {
 }, {
     timestamps: true,
     getterMethods: {
-      adjBASingleSeason() {
+      adjBAsingleSeason() {
         let minPA = 502
         // Used to set the required minimum plate appearances based on the year
         for (let i = 0; i < minPAPerYear.length; i++) {
@@ -104,7 +104,7 @@ const Batting = db.define('batting', {
           return this.getDataValue('hits') / this.getDataValue('AB')
         }
       },
-      adjBAAllTime() {
+      adjBAallTime() {
         return this.getDataValue('hits') / this.getDataValue('AB')
       }
     }

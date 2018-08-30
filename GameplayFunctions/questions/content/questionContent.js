@@ -1,4 +1,4 @@
-const sequelize = require('sequelize')
+// const sequelize = require('sequelize')
 //THIS FILE CONTAINS CONTENT TO BE USED TO FILL IN THE QUESTION OBJECT
 
 //Array with weighted year ranges used to select a specific year for question.
@@ -23,15 +23,15 @@ const minPAPerYear = [
   {start: 1995, end: 1995, minPA: 446}
 ]
 
-const requiredAttributes = [
-  [sequelize.fn('SUM', sequelize.col('AB')), 'AB'],
-  [sequelize.fn('SUM', sequelize.col('hits')), 'hits'],
-  [sequelize.fn('SUM', sequelize.col('PA')), 'PA'],
-  [sequelize.fn('MIN', sequelize.col('year')), 'year'],
-]
+// const requiredAttributes = [
+//   [sequelize.fn('SUM', sequelize.col('AB')), 'AB'],
+//   [sequelize.fn('SUM', sequelize.col('hits')), 'hits'],
+//   [sequelize.fn('SUM', sequelize.col('PA')), 'PA'],
+//   [sequelize.fn('MIN', sequelize.col('year')), 'year'],
+// ]
 
 
-const derivedStats = [{name: 'adjBA', attributes: ['AB', 'PA']}]
+const derivedBattingStats = [{statCat: 'adjBA', attributes: ['hits', 'AB']}]
 
 //This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
@@ -54,8 +54,8 @@ module.exports = {
   defaultYearRanges,
   questionSkeletons,
   minPAPerYear,
-  requiredAttributes,
-  derivedStats
+  // requiredAttributes,
+  derivedBattingStats
 }
 
 //THOUGHT SPACE AS DESIGNS EVOLVED

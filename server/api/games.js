@@ -3,7 +3,7 @@ const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question} = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
-const { defaultYearRanges, requiredAttributes } = require('../../GameplayFunctions/questions/content/questionContent')
+const { defaultYearRanges, derivedBattingStats } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
 
@@ -75,24 +75,28 @@ router.post('/:gameId/question', (req, res, next) => {
   while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year  === 1981 || questionChoices.questionSkeletonKey.year  === 1994 || (questionChoices.statCategory === 'BA' && questionChoices.questionSkeletonKey.year < 1900) ){
     questionChoices.questionSkeletonKey.year  = randomYearSelector(defaultYearRanges)
   }
-  console.log('CHOIIIIICCCEEESSS', questionChoices)
+  // console.log('CHOIIIIICCCEEESSS', questionChoices)
   const questionText = questionTextGenerator(questionChoices)
   const question = {question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId}
-  let attributes = []
-  const needAttribute = requiredAttributes.reduce((accum, curr) => {
-    if (curr[1] === questionChoices.statCategory){
-      return false
-    } else {
-      return accum
-    }
-  }, true)
-  if (needAttribute){
-    attributes = requiredAttributes.map(att => att)
-    attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory])
-    console.log('atttttttt', attributes)
-  } else {
-    attributes = requiredAttributes.map(att => att)
+  let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
+  // const derivedBattingStats = [{statCat: 'adjBA', attributes: ['hits', 'AB', 'PA']}]
+  let isDerived = derivedBattingStats.find((stat) => {
+    return questionChoices.statCategory === stat.statCat
+  })
+
+  if (questionChoices.timeFrame === 'singleSeason'){
+    attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
   }
+  if (!isDerived){
+    attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory])
+  } else {
+    questionChoices.statCategory = `${questionChoices.statCategory}${questionChoices.timeFrame}`
+    isDerived.attributes.forEach((attribute) => {
+      attributes.push([sequelize.fn('SUM', sequelize.col(attribute)), attribute])
+    })
+  }
+  // console.log('chhhhhooooiiicecess', questionChoices)
+  // console.log('atttttttt', attributes)
 
   //THIS QUERY IS NOT CURRENTLY BASED ON THE QUESTIONCHOICES OBJECT, IT IS HARD CODED FOR HRS IN 2008
   //Eventually it will dynamically query based on the questionChoices object.
@@ -106,12 +110,12 @@ router.post('/:gameId/question', (req, res, next) => {
     group: [ 'person.playerID' ]
   })
   .then(players => {
-    const playerDataArr = (questionChoices.timeFrame === 'allTime') ? players.map(player => player.dataValues).filter(player => (player.PA >= 3000))
-    : players.map(player => player.dataValues)
-    console.log('a player!!!!!!', playerDataArr[0])
+    const playerDataArr = (questionChoices.timeFrame === 'allTime') ? players.map(player => (!isDerived) ? player.dataValues : {...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory]}).filter(player => (player.PA >= 3000))
+    : players.map(player => (!isDerived) ? player.dataValues : {...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory]})
     //sort the returned player data array either desc or asc based on most or least
     questionChoices.mostOrLeast === 'most' ? playerDataArr.sort((a, b) => {return b[questionChoices.statCategory] - a[questionChoices.statCategory]}) : playerDataArr.sort((a, b) => a[questionChoices.statCategory] - b[questionChoices.statCategory])
     //Build the question object by selecting the correct answer and 3 other answers, and then post the question to DB.
+    console.log('PDA', playerDataArr, 'THE CAT', questionChoices.statCategory)
     const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
     question.correctAnswer = `${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast} ~ ${playerDataArr[0][questionChoices.statCategory]}`
     question.answers.push(`${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast}`)
