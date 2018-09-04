@@ -75,15 +75,18 @@ router.post('/:gameId/question', (req, res, next) => {
   while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year === 1981 || questionChoices.questionSkeletonKey.year === 1994 || (questionChoices.statCategory === 'adjBA' && questionChoices.questionSkeletonKey.year < 1900)) {
     questionChoices.questionSkeletonKey.year = randomYearSelector(defaultYearRanges)
   }
+  //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
   if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
-  console.log('qqqq', questionChoices)
+
   const questionText = questionTextGenerator(questionChoices)
   const question = { question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId }
-  const whereClause = {}
-  let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
+  
+  //Check derived content and set variable if chosen stat category is derived.
   let isDerived = derivedBattingStats.find((stat) => {
     return questionChoices.statCategory === stat.statCat
   })
+
+  let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
   //set attribute for year based on timeframe
   if (questionChoices.timeFrame === 'singleSeason') {
     attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
@@ -98,10 +101,12 @@ router.post('/:gameId/question', (req, res, next) => {
       attributes.push([sequelize.fn('SUM', sequelize.col(attribute)), attribute])
     })
   }
-
+  
+  //Set the where parameters for the query based on the questionChoices object
+  const whereClause = {}
   if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
   if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
-
+  
   //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
   // we group by the playerID and sum the needed stats in attributes
   Batting.findAll({
@@ -113,10 +118,8 @@ router.post('/:gameId/question', (req, res, next) => {
     group: ['person.playerID']
   })
     .then(players => {
-      console.log('THE LENGTH: ', players.length)
-      //if alltime require 3000 PA to qualify for derived stats.
       let playerDataArr = []
-
+      //Creates the result array of player objects, in the proper order, to be used to select answers.
       switch (true) {
         case (questionChoices.timeFrame === 'allTime' && !!isDerived):
           playerDataArr = players.map(player => {
@@ -142,15 +145,6 @@ router.post('/:gameId/question', (req, res, next) => {
             return player.dataValues
           })
       }
-
-      // if (isDerived) {
-      //   playerDataArr = (questionChoices.timeFrame === 'allTime') ? players.map(player => { return { ...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory] } }).filter(player => (player.PA >= 3000))
-      //     : players.map(player => { return { ...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory] } })
-      // } else {
-      //   playerDataArr = players.map(player => {
-      //     return player.dataValues
-      //   })
-      // }
 
       //Build the question object by selecting the correct answer and 3 other answers, and then post the question to DB.
       const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
