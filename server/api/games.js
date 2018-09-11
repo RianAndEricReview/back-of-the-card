@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const sequelize = require('sequelize')
-const { Game, Gametype, GamePlayer, Batting, People, Question } = require('../db/models')
+const { Game, Gametype, GamePlayer, Batting, People, Question, Teams } = require('../db/models')
 const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges, derivedBattingStats, minPAPerYear } = require('../../GameplayFunctions/questions/content/questionContent')
@@ -87,6 +87,7 @@ router.post('/:gameId/question', (req, res, next) => {
   })
 
   let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
+  let teamAttributes = []
   //set attribute for year based on timeframe
   if (questionChoices.timeFrame === 'singleSeason') {
     attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
@@ -109,6 +110,15 @@ router.post('/:gameId/question', (req, res, next) => {
 
   //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
   // we group by the playerID and sum the needed stats in attributes
+  Teams.findAll({
+    where: {year: questionChoices.questionSkeletonKey.year},
+    attributes: ['year', 'name', questionChoices.statCategory],
+    order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
+  })
+  .then(teams => {
+    console.log('TEAMMMMMSSSS', teams)
+  })
+
   Batting.findAll({
     where: (whereClause !== {}) ? whereClause : null,
     attributes: attributes,
