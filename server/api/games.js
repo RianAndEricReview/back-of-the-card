@@ -116,7 +116,25 @@ router.post('/:gameId/question', (req, res, next) => {
     order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
   })
   .then(teams => {
-    console.log('TEAMMMMMSSSS', teams)
+    let teamDataArr = teams.map(team => {
+      return team.dataValues
+    })
+    //add correct answer to question object
+    question.correctAnswer = `${teamDataArr[0].name} ~ ${teamDataArr[0][questionChoices.statCategory]}`
+    question.answers.push(`${teamDataArr[0].name}`)
+    //add incorrect answers to question object
+    const teamIncorrectAnswerIndex = 1
+    while(teamDataArr[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[0][questionChoices.statCategory]){
+      teamIncorrectAnswerIndex++
+    }
+    question.answers.push(`${teamDataArr[teamIncorrectAnswerIndex].name}`)
+    question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
+    question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
+    while(question.answers[2] === question.answers[3]){
+      question.answers[3] = `${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
+    }
+    console.log('TEAMMMMMSSSS', teamDataArr)
+    console.log('ANSWERSSSSSS', question.answers, question.correctAnswer)
   })
 
   Batting.findAll({
