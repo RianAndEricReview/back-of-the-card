@@ -107,7 +107,7 @@ router.post('/:gameId/question', (req, res, next) => {
   const whereClause = {}
   if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
   if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
-
+  //select query based on whether it is a team or player question
   if(questionChoices.teamOrPlayer === 'wholeTeam'){
     Teams.findAll({
       where: {year: questionChoices.questionSkeletonKey.year},
