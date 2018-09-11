@@ -108,35 +108,37 @@ router.post('/:gameId/question', (req, res, next) => {
   if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
   if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
 
+  if(questionChoices.teamOrPlayer === 'wholeTeam'){
+    Teams.findAll({
+      where: {year: questionChoices.questionSkeletonKey.year},
+      attributes: ['year', 'name', questionChoices.statCategory],
+      order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
+    })
+    .then(teams => {
+      let teamDataArr = teams.map(team => {
+        return team.dataValues
+      })
+      //add correct answer to question object
+      question.correctAnswer = `${teamDataArr[0].name} ~ ${teamDataArr[0][questionChoices.statCategory]}`
+      question.answers.push(`${teamDataArr[0].name}`)
+      //add incorrect answers to question object
+      const teamIncorrectAnswerIndex = 1
+      while(teamDataArr[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[0][questionChoices.statCategory]){
+        teamIncorrectAnswerIndex++
+      }
+      question.answers.push(`${teamDataArr[teamIncorrectAnswerIndex].name}`)
+      question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
+      question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
+      while(question.answers[2] === question.answers[3]){
+        question.answers[3] = `${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
+      }
+      Question.create(question)
+        .then(createdQuestion => res.status(201).json(createdQuestion))
+    })
+    .catch(next)
+  } else {
   //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
   // we group by the playerID and sum the needed stats in attributes
-  Teams.findAll({
-    where: {year: questionChoices.questionSkeletonKey.year},
-    attributes: ['year', 'name', questionChoices.statCategory],
-    order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
-  })
-  .then(teams => {
-    let teamDataArr = teams.map(team => {
-      return team.dataValues
-    })
-    //add correct answer to question object
-    question.correctAnswer = `${teamDataArr[0].name} ~ ${teamDataArr[0][questionChoices.statCategory]}`
-    question.answers.push(`${teamDataArr[0].name}`)
-    //add incorrect answers to question object
-    const teamIncorrectAnswerIndex = 1
-    while(teamDataArr[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[0][questionChoices.statCategory]){
-      teamIncorrectAnswerIndex++
-    }
-    question.answers.push(`${teamDataArr[teamIncorrectAnswerIndex].name}`)
-    question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
-    question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
-    while(question.answers[2] === question.answers[3]){
-      question.answers[3] = `${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
-    }
-    console.log('TEAMMMMMSSSS', teamDataArr)
-    console.log('ANSWERSSSSSS', question.answers, question.correctAnswer)
-  })
-
   Batting.findAll({
     where: (whereClause !== {}) ? whereClause : null,
     attributes: attributes,
@@ -213,4 +215,5 @@ router.post('/:gameId/question', (req, res, next) => {
         .then(createdQuestion => res.status(201).json(createdQuestion))
     })
     .catch(next)
+  }
 })
