@@ -72,7 +72,7 @@ router.post('/:gameId/question', (req, res, next) => {
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   //eliminate strike years, BA before 1900
-  while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year === 1981 || questionChoices.questionSkeletonKey.year === 1994 || (questionChoices.statCategory === 'adjBA' && questionChoices.questionSkeletonKey.year < 1900)) {
+  while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year === 1981 || questionChoices.questionSkeletonKey.year === 1994 || (questionChoices.statCategory === 'adjBA' && questionChoices.questionSkeletonKey.year < 1900) || (questionChoices.teamOrPlayer === 'team' && questionChoices.questionSkeletonKey.year < 1900)) {
     questionChoices.questionSkeletonKey.year = randomYearSelector(defaultYearRanges)
   }
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
