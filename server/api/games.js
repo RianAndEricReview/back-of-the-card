@@ -118,11 +118,12 @@ router.post('/:gameId/question', (req, res, next) => {
       let teamDataArr = teams.map(team => {
         return team.dataValues
       })
-      //add correct answer to question object
+      if (questionChoices.questionType === 'overall') {
+        //add correct answer to question object
       question.correctAnswer = `${teamDataArr[0].name} ~ ${teamDataArr[0][questionChoices.statCategory]}`
       question.answers.push(`${teamDataArr[0].name}`)
       //add incorrect answers to question object
-      const teamIncorrectAnswerIndex = 1
+      let teamIncorrectAnswerIndex = 1
       while(teamDataArr[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[0][questionChoices.statCategory]){
         teamIncorrectAnswerIndex++
       }
@@ -132,6 +133,23 @@ router.post('/:gameId/question', (req, res, next) => {
       while(question.answers[2] === question.answers[3]){
         question.answers[3] = `${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
       }
+      } else if (questionChoices.questionType === 'comparison') {
+        // randomly select team from top half of list for comparison
+        const teamAnswerIndex = Math.floor(Math.random() * Math.floor(teamDataArr.length / 2)) + 1
+        question.correctAnswer = `${teamDataArr[teamAnswerIndex].name} ~ ${teamDataArr[teamAnswerIndex][questionChoices.statCategory]}`
+        question.answers.push(`${teamDataArr[teamAnswerIndex].name}`)
+
+        // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer
+        const possibleTeamIncorrectAnswers = teamDataArr.slice(teamAnswerIndex + 1)
+        for (let i = 0; i < 3; i++) {
+          let teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
+          while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[teamAnswerIndex][questionChoices.statCategory]) {
+            teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
+          }
+          question.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex].name}`)
+        }
+      }
+
       Question.create(question)
         .then(createdQuestion => res.status(201).json(createdQuestion))
     })
