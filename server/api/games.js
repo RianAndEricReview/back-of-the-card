@@ -2,7 +2,7 @@ const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question, Teams } = require('../db/models')
 const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
-const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
+const { randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges, derivedBattingStats, minPAPerYear } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
@@ -88,7 +88,6 @@ router.post('/:gameId/question', (req, res, next) => {
   })
 
   let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
-  let teamAttributes = []
   //set attribute for year based on timeframe
   if (questionChoices.timeFrame === 'singleSeason') {
     attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
