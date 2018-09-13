@@ -12,9 +12,17 @@ class QuestionQueryParameters {
     if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
     if (whereClause !== {}) { this.where = whereClause }
   }
-
+  //Method to set the order parameters for the query based on the questionChoices object
+  orderGenerator(questionChoices, isDerived){
+    if (!isDerived) {this.order = [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']]}
+  }
+  //Method to set the include parameters for the query based on the questionChoices object
   includeGenerator(questionChoices){
     if (questionChoices.teamOrPlayer === 'singlePlayer') {this.include = [{ model: People, attributes: ['playerID', 'nameFirst', 'nameLast'] }]}
+  }
+  //Method to set the group parameters for the query based on the questionChoices object
+  groupGenerator(questionChoices){
+    if (questionChoices.teamOrPlayer === 'singlePlayer') {this.group = ['person.playerID']}
   }
 
 }

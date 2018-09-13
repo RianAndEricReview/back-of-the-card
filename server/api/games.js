@@ -105,7 +105,7 @@ router.post('/:gameId/question', (req, res, next) => {
   }
 
 const test = new QuestionQueryParameters()
-test.whereGenerator(questionChoices, isDerived)
+test.orderGenerator(questionChoices)
 console.log('!!!!!!!!', test)
 
   //REMOVE NEXT 3 LINES (creation of where clause) ONCE QUESTION QUERY GENERATOR IS COMPLETE
