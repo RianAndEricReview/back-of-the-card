@@ -103,9 +103,9 @@ router.post('/:gameId/question', (req, res, next) => {
       attributes.push([sequelize.fn('SUM', sequelize.col(attribute)), attribute])
     })
   }
-
+console.log('--------', questionChoices)
 const test = new QuestionQueryParameters()
-test.orderGenerator(questionChoices)
+test.limitGenerator(questionChoices, isDerived)
 console.log('!!!!!!!!', test)
 
   //REMOVE NEXT 3 LINES (creation of where clause) ONCE QUESTION QUERY GENERATOR IS COMPLETE

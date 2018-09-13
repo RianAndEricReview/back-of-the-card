@@ -16,6 +16,10 @@ class QuestionQueryParameters {
   orderGenerator(questionChoices, isDerived){
     if (!isDerived) {this.order = [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']]}
   }
+  //Method to set the limit parameters for the query based on the questionChoices object
+  limitGenerator(questionChoices, isDerived){
+    if (questionChoices.teamOrPlayer === 'singlePlayer' && (!isDerived && questionChoices.mostOrLeast === 'most')) {this.limit = 100}
+  }
   //Method to set the include parameters for the query based on the questionChoices object
   includeGenerator(questionChoices){
     if (questionChoices.teamOrPlayer === 'singlePlayer') {this.include = [{ model: People, attributes: ['playerID', 'nameFirst', 'nameLast'] }]}
