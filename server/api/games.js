@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question, Teams } = require('../db/models')
-const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
+const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
 const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges, derivedBattingStats, minPAPerYear } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
@@ -78,8 +78,9 @@ router.post('/:gameId/question', (req, res, next) => {
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
   if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
 
+  const question = new QuestionObjectGenerator(req.params.gameId)
   const questionText = questionTextGenerator(questionChoices)
-  const question = { question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId }
+  question.question = questionText
 
   //Check derived content and set variable if chosen stat category is derived.
   let isDerived = derivedBattingStats.find((stat) => {

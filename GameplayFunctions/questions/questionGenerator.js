@@ -42,4 +42,14 @@ class QuestionChoices {
   }
 }
 
-module.exports = {QuestionChoices}
+// class to generate question objects
+class QuestionObjectGenerator {
+  constructor(gameId) {
+    this.question = ''
+    this.answers = []
+    this.correctAnswer = ''
+    this.gameId = gameId
+  }
+}
+
+module.exports = {QuestionChoices, QuestionObjectGenerator}
