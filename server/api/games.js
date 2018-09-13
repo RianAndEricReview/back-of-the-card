@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, People, Question, Teams } = require('../db/models')
-const { QuestionChoices } = require('../../GameplayFunctions/questions/questionGenerator')
-const { questionTextGenerator, randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
+const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
+const { randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges, derivedBattingStats, minPAPerYear } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
@@ -78,8 +78,9 @@ router.post('/:gameId/question', (req, res, next) => {
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
   if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
 
-  const questionText = questionTextGenerator(questionChoices)
-  const question = { question: questionText, answers: [], correctAnswer: '', gameId: req.params.gameId }
+  const question = new QuestionObjectGenerator(req.params.gameId)
+  question.questionTextGenerator(questionChoices)
+
 
   //Check derived content and set variable if chosen stat category is derived.
   let isDerived = derivedBattingStats.find((stat) => {
@@ -87,7 +88,6 @@ router.post('/:gameId/question', (req, res, next) => {
   })
 
   let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
-  let teamAttributes = []
   //set attribute for year based on timeframe
   if (questionChoices.timeFrame === 'singleSeason') {
     attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
@@ -118,37 +118,9 @@ router.post('/:gameId/question', (req, res, next) => {
         let teamDataArr = teams.map(team => {
           return team.dataValues
         })
-        if (questionChoices.questionType === 'overall') {
-          //add correct answer to question object
-          question.correctAnswer = `${teamDataArr[0].name} ~ ${teamDataArr[0][questionChoices.statCategory]}`
-          question.answers.push(`${teamDataArr[0].name}`)
-          //add incorrect answers to question object
-          let teamIncorrectAnswerIndex = 1
-          while (teamDataArr[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[0][questionChoices.statCategory]) {
-            teamIncorrectAnswerIndex++
-          }
-          question.answers.push(`${teamDataArr[teamIncorrectAnswerIndex].name}`)
-          question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
-          question.answers.push(`${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
-          while (question.answers[2] === question.answers[3]) {
-            question.answers[3] = `${teamDataArr[Math.floor(Math.random() * (teamDataArr.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
-          }
-        } else if (questionChoices.questionType === 'comparison') {
-          // randomly select team from top half of list for comparison
-          const teamAnswerIndex = Math.floor(Math.random() * Math.floor(teamDataArr.length / 2)) + 1
-          question.correctAnswer = `${teamDataArr[teamAnswerIndex].name} ~ ${teamDataArr[teamAnswerIndex][questionChoices.statCategory]}`
-          question.answers.push(`${teamDataArr[teamAnswerIndex].name}`)
 
-          // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer
-          const possibleTeamIncorrectAnswers = teamDataArr.slice(teamAnswerIndex + 1)
-          for (let i = 0; i < 3; i++) {
-            let teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
-            while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === teamDataArr[teamAnswerIndex][questionChoices.statCategory]) {
-              teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
-            }
-            question.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex].name}`)
-          }
-        }
+        // Generate questionObject answers, and then post the question to DB.
+        question.questionAnswerGenerator(questionChoices, teamDataArr)
 
         Question.create(question)
           .then(createdQuestion => res.status(201).json(createdQuestion))
@@ -202,33 +174,9 @@ router.post('/:gameId/question', (req, res, next) => {
             })
         }
 
-        //Build the question object by selecting the correct answer and 3 other answers, and then post the question to DB.
-        if (questionChoices.questionType === 'overall') {
-          const answerIndexArr = [Math.ceil(Math.random() * 5), Math.ceil(Math.random() * 10) + 6, Math.ceil(Math.random() * 15) + 16]
-          question.correctAnswer = `${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast} ~ ${playerDataArr[0][questionChoices.statCategory]}`
-          question.answers.push(`${playerDataArr[0].person.dataValues.nameFirst} ${playerDataArr[0].person.dataValues.nameLast}`)
-          answerIndexArr.forEach(answerIndex => {
-            question.answers.push(`${playerDataArr[answerIndex].person.dataValues.nameFirst} ${playerDataArr[answerIndex].person.dataValues.nameLast}`)
-          })
-        } else if (questionChoices.questionType === 'comparison') {
-          // randomly choose a player for comparison
-          const correctAnswerIndex = Math.floor(Math.random() * 26) + 4
-          question.correctAnswer = `${playerDataArr[correctAnswerIndex].person.dataValues.nameFirst} ${playerDataArr[correctAnswerIndex].person.dataValues.nameLast} ~ ${playerDataArr[correctAnswerIndex][questionChoices.statCategory]}`
-          question.answers.push(`${playerDataArr[correctAnswerIndex].person.dataValues.nameFirst} ${playerDataArr[correctAnswerIndex].person.dataValues.nameLast}`)
+        // Generate questionObject answers, and then post the question to DB.
+        question.questionAnswerGenerator(questionChoices, playerDataArr)
 
-          // create a list of possible other players for comparison
-          const possibleIncorrectAnswers = (playerDataArr.length - correctAnswerIndex + 1 > 70) ? playerDataArr.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : playerDataArr
-          const answerIndexParameter = Math.floor(possibleIncorrectAnswers.length / 3)
-
-          // choose other possible answers while making sure the other answer choices do not have the same stat as chosen answer player
-          for (let i = 0; i < 3; i++) {
-            let incorrectAnswerIndex = Math.floor(Math.random() * answerIndexParameter) + (answerIndexParameter * i)
-            while (playerDataArr[correctAnswerIndex][questionChoices.statCategory] === possibleIncorrectAnswers[incorrectAnswerIndex][questionChoices.statCategory]) {
-              incorrectAnswerIndex = Math.floor(Math.random() * answerIndexParameter) + (answerIndexParameter * i)
-            }
-            question.answers.push(`${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameFirst} ${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameLast}`)
-          }
-        }
         Question.create(question)
           .then(createdQuestion => res.status(201).json(createdQuestion))
       })
