@@ -2,13 +2,8 @@
 
 //class to create an object with query parameters
 class QuestionQueryParameters {
-  constructor() {
-    this.attributes = []
-  }
 
-
-  //Set the where parameters for the query based on the questionChoices object
-
+  //Method to set the where parameters for the query based on the questionChoices object
   whereGenerator(questionChoices, isDerived, sequelize){
     const whereClause = {}
     if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
