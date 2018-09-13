@@ -104,7 +104,7 @@ router.post('/:gameId/question', (req, res, next) => {
     })
   }
 
-  //Set the where parameters for the query based on the questionChoices object
+  //REMOVE NEXT 3 LINES (creation of where clause) ONCE QUESTION QUERY GENERATOR IS COMPLETE
   const whereClause = {}
   if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
   if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
