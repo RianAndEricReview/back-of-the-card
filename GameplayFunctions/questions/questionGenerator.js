@@ -1,5 +1,6 @@
 const randomYearSelector = require('./questionHelperFuncs').randomYearSelector
 const randomValueSelector = require('./questionHelperFuncs').randomValueSelector
+const questionSkeletons = require('./content/questionContent').questionSkeletons
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
@@ -49,6 +50,18 @@ class QuestionObjectGenerator {
     this.answers = []
     this.correctAnswer = ''
     this.gameId = gameId
+  }
+
+  questionTextGenerator(questionChoices) {
+    if (questionChoices.timeFrame === 'allTime'){
+      questionChoices.questionSkeletonKey.verb = questionChoices.questionSkeletonKey.verb.map(textOption => {
+        return (textOption === 'had') ? 'has' : textOption
+      })
+    }
+    //the skeleton name is currently hard coded to be 'statQuestionSkeleton'
+    //later when we have updated the content in the options objects this should set from the questionSkeletonName off questionChoices
+    //questionSkeletons[this.questionChoices.questionSkeletonName](this.questionChoices.questionSkeletonKey)
+    this.question = questionSkeletons.statQuestionSkeleton(questionChoices.questionSkeletonKey)
   }
 }
 

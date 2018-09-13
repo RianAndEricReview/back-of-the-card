@@ -79,8 +79,8 @@ router.post('/:gameId/question', (req, res, next) => {
   if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
 
   const question = new QuestionObjectGenerator(req.params.gameId)
-  const questionText = questionTextGenerator(questionChoices)
-  question.question = questionText
+  question.questionTextGenerator(questionChoices)
+
 
   //Check derived content and set variable if chosen stat category is derived.
   let isDerived = derivedBattingStats.find((stat) => {
