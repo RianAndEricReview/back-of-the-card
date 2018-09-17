@@ -88,37 +88,19 @@ router.post('/:gameId/question', (req, res, next) => {
     return questionChoices.statCategory === stat.statCat
   })
 
-  let attributes = [[sequelize.fn('SUM', sequelize.col('PA')), 'PA']]
-  //set attribute for year based on timeframe
-  if (questionChoices.timeFrame === 'singleSeason') {
-    attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])
-  }
-  //set attributes for stat based on whether or not derived. PA is already inclucded when attributes array is created.
-  if (!isDerived) {
-    attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory])
-  } else {
-    //update name of derived stat
-    questionChoices.statCategory = `${questionChoices.statCategory}${questionChoices.timeFrame}`
-    isDerived.attributes.forEach((attribute) => {
-      attributes.push([sequelize.fn('SUM', sequelize.col(attribute)), attribute])
-    })
-  }
-console.log('--------', questionChoices)
-const test = new QuestionQueryParameters()
-test.limitGenerator(questionChoices, isDerived)
-console.log('!!!!!!!!', test)
+  console.log('QC--------', questionChoices)
+  //Creating and populating the object that will be passed into the query
+  const QQP = new QuestionQueryParameters()
+  Object.getOwnPropertyNames(QQP.constructor.prototype).forEach( method => {
+    if(method !== 'constructor') {
+      QQP[method](questionChoices, isDerived)
+    }
+  })
+  console.log('OPP!!!!!!!!!!!!', QQP)
 
-  //REMOVE NEXT 3 LINES (creation of where clause) ONCE QUESTION QUERY GENERATOR IS COMPLETE
-  const whereClause = {}
-  if (questionChoices.questionSkeletonKey.year) { whereClause.year = questionChoices.questionSkeletonKey.year }
-  if (!isDerived) { whereClause[questionChoices.statCategory] = { [sequelize.Op.ne]: null } }
   //select query based on whether it is a team or player question
   if (questionChoices.teamOrPlayer === 'wholeTeam') {
-    Teams.findAll({
-      where: { year: questionChoices.questionSkeletonKey.year },
-      attributes: ['year', 'name', questionChoices.statCategory],
-      order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
-    })
+    Teams.findAll({...QQP})
       .then(teams => {
         let teamDataArr = teams.map(team => {
           return team.dataValues
@@ -134,15 +116,9 @@ console.log('!!!!!!!!', test)
   } else {
     //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
     // we group by the playerID and sum the needed stats in attributes
-    Batting.findAll({
-      where: (whereClause !== {}) ? whereClause : null,
-      attributes: attributes,
-      order: (isDerived) ? null : [[sequelize.col(questionChoices.statCategory), questionChoices.mostOrLeast === 'most' ? 'DESC' : 'ASC']],
-      limit: (isDerived || questionChoices.mostOrLeast === 'least') ? null : 100,
-      include: [{ model: People, attributes: ['playerID', 'nameFirst', 'nameLast'] }],
-      group: ['person.playerID']
-    })
+    Batting.findAll({...QQP})
       .then(players => {
+        console.log('player', players[0])
         let playerDataArr = []
         //Creates the result array of player objects, in the proper order, to be used to select answers.
         switch (true) {
