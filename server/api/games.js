@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const sequelize = require('sequelize')
-const { Game, Gametype, GamePlayer, Batting, People, Question, Teams } = require('../db/models')
+const { Game, Gametype, GamePlayer, Batting, Question, Teams } = require('../db/models')
 const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
-const { randomYearSelector } = require('../../GameplayFunctions/questions/questionHelperFuncs')
-const { defaultYearRanges, derivedBattingStats, minPAPerYear } = require('../../GameplayFunctions/questions/content/questionContent')
+const { randomYearSelector, dataConsolidator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
+const { defaultYearRanges, derivedBattingStats } = require('../../GameplayFunctions/questions/content/questionContent')
 const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
 module.exports = router
 
@@ -98,70 +98,19 @@ router.post('/:gameId/question', (req, res, next) => {
   })
   console.log('OPP!!!!!!!!!!!!', QQP)
 
-  //select query based on whether it is a team or player question
-  if (questionChoices.teamOrPlayer === 'wholeTeam') {
-    Teams.findAll({...QQP})
-    .then(teams => {
-      console.log('teams', teams[0])
-        let teamDataArr = teams.map(team => {
-          return team.dataValues
-        })
-
+  //select table to query based on whether it is a team or player question
+  //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
+  let table = ''
+  if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
+  else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting}
+   table.findAll({...QQP})
+    .then(data => {
+        let consolidatedDataArr = dataConsolidator(data, questionChoices, isDerived)
         // Generate questionObject answers, and then post the question to DB.
-        question.questionAnswerGenerator(questionChoices, teamDataArr)
+        question.questionAnswerGenerator(questionChoices, consolidatedDataArr)
 
         Question.create(question)
           .then(createdQuestion => res.status(201).json(createdQuestion))
       })
-      .catch(next)
-  } else {
-    //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
-    // we group by the playerID and sum the needed stats in attributes
-    Batting.findAll({...QQP})
-      .then(players => {
-        console.log('player', players[0])
-        let playerDataArr = []
-        //Creates the result array of player objects, in the proper order, to be used to select answers.
-        switch (true) {
-          case (questionChoices.timeFrame === 'allTime' && !!isDerived):
-            playerDataArr = players.map(player => {
-              return { ...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory] }
-            }).filter(player => (player.PA >= 3000)).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
-            break
-          case (questionChoices.timeFrame === 'singleSeason' && !!isDerived):
-            playerDataArr = (questionChoices.mostOrLeast === 'most') ?
-              players.map(player => {
-                return { ...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory] }
-              }).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
-              : players.map(player => {
-                return { ...player.dataValues, [questionChoices.statCategory]: player[questionChoices.statCategory] }
-              }).sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
-            break
-          case (questionChoices.timeFrame === 'singleSeason' && questionChoices.mostOrLeast === 'least'):
-            let minPA = 502
-            // Used to set the required minimum plate appearances based on the year
-            for (let i = 0; i < minPAPerYear.length; i++) {
-              if (questionChoices.questionSkeletonKey.year >= minPAPerYear[i].start && questionChoices.questionSkeletonKey.year <= minPAPerYear[i].end) {
-                minPA = minPAPerYear[i].minPA
-                break
-              }
-            }
-            playerDataArr = players.map(player => {
-              return player.dataValues
-            }).filter(player => (player.PA >= minPA))
-            break
-          default:
-            playerDataArr = players.map(player => {
-              return player.dataValues
-            })
-        }
-
-        // Generate questionObject answers, and then post the question to DB.
-        question.questionAnswerGenerator(questionChoices, playerDataArr)
-
-        Question.create(question)
-          .then(createdQuestion => res.status(201).json(createdQuestion))
-      })
-      .catch(next)
-  }
+      .catch(next)   
 })

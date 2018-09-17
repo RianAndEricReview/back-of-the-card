@@ -4,6 +4,8 @@ const { Franchises, People} = require('../../server/db/models')
 
 //class to create an object with query parameters
 class QuestionQueryParameters {
+  //To combine stats for players with multiple entries (ex: player was traded, or all time stats):
+  // we Group by the playerID and SUM the needed stats in Attributes
 
   //Method to set the where parameters for the query based on the questionChoices object
   whereGenerator(questionChoices, isDerived){
