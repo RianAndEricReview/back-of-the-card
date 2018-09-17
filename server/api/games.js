@@ -101,7 +101,8 @@ router.post('/:gameId/question', (req, res, next) => {
   //select query based on whether it is a team or player question
   if (questionChoices.teamOrPlayer === 'wholeTeam') {
     Teams.findAll({...QQP})
-      .then(teams => {
+    .then(teams => {
+      console.log('teams', teams[0])
         let teamDataArr = teams.map(team => {
           return team.dataValues
         })

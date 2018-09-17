@@ -19,6 +19,7 @@ class QuestionQueryParameters {
     if (questionChoices.questionSkeletonKey.year) { attributes.push([sequelize.fn('MIN', sequelize.col('year')), 'year'])}
     //Add PA if it is a player stat.
     if (questionChoices.teamOrPlayer === 'singlePlayer') { attributes.push([sequelize.fn('SUM', sequelize.col('PA')), 'PA']) }
+    else if (questionChoices.teamOrPlayer === 'wholeTeam' && questionChoices.timeFrame === 'singleSeason') { attributes.push('name') }
     //set attributes for stat based on whether or not derived.
     if (!isDerived) { attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory]) }
     else {
@@ -42,12 +43,13 @@ class QuestionQueryParameters {
   //Method to set the include parameters for the query based on the questionChoices object
   includeGenerator(questionChoices){
     if (questionChoices.teamOrPlayer === 'singlePlayer') {this.include = [{ model: People, attributes: ['playerID', 'nameFirst', 'nameLast'] }]}
-    else if (questionChoices.teamOrPlayer === 'wholeTeam') {this.include = [{ model: Franchises, attributes: ['franchID', 'name'] }]}
+    else if (questionChoices.teamOrPlayer === 'wholeTeam' && questionChoices.timeFrame === 'allTime') {this.include = [{ model: Franchises, attributes: ['franchID', 'name'] }]}
   }
   //Method to set the group parameters for the query based on the questionChoices object
   groupGenerator(questionChoices){
     if (questionChoices.teamOrPlayer === 'singlePlayer') {this.group = ['person.playerID']}
-    else if (questionChoices.teamOrPlayer === 'wholeTeam') {this.group = ['franchise.franchID']}
+    else if (questionChoices.teamOrPlayer === 'wholeTeam' && questionChoices.timeFrame === 'allTime') {this.group = ['franchise.franchID']}
+    else if (questionChoices.teamOrPlayer === 'wholeTeam' && questionChoices.timeFrame === 'singleSeason') {this.group = ['teams.name']}
   }
 
 }
