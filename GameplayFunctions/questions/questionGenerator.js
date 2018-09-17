@@ -65,27 +65,28 @@ class QuestionObjectGenerator {
   }
 
   questionAnswerGenerator(questionChoices, queryResults) {
+    const teamName = (questionChoices.timeFrame === 'singleSeason') ? 'name' : franchise.dataValues.name
     if (questionChoices.teamOrPlayer === 'wholeTeam') {
       if (questionChoices.questionType === 'overall') {
         //add correct answer to question object
-        this.correctAnswer = `${queryResults[0].franchise.dataValues.name} ~ ${queryResults[0][questionChoices.statCategory]}`
-        this.answers.push(`${queryResults[0].franchise.dataValues.name}`)
+        this.correctAnswer = `${queryResults[0][teamName]} ~ ${queryResults[0][questionChoices.statCategory]}`
+        this.answers.push(`${queryResults[0][teamName]}`)
         //add incorrect answers to question object
         let teamIncorrectAnswerIndex = 1
         while (queryResults[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[0][questionChoices.statCategory]) {
           teamIncorrectAnswerIndex++
         }
-        this.answers.push(`${queryResults[teamIncorrectAnswerIndex].franchise.dataValues.name}`)
-        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].franchise.dataValues.name}`)
-        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].franchise.dataValues.name}`)
+        this.answers.push(`${queryResults[teamIncorrectAnswerIndex][teamName]}`)
+        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`)
+        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`)
         while (this.answers[2] === this.answers[3]) {
-          this.answers[3] = `${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].franchise.dataValues.name}`
+          this.answers[3] = `${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`
         }
       } else if (questionChoices.questionType === 'comparison') {
         // randomly select team from top half of list for comparison
         const teamAnswerIndex = Math.floor(Math.random() * Math.floor(queryResults.length / 2)) + 1
-        this.correctAnswer = `${queryResults[teamAnswerIndex].franchise.dataValues.name} ~ ${queryResults[teamAnswerIndex][questionChoices.statCategory]}`
-        this.answers.push(`${queryResults[teamAnswerIndex].franchise.dataValues.name}`)
+        this.correctAnswer = `${queryResults[teamAnswerIndex][teamName]} ~ ${queryResults[teamAnswerIndex][questionChoices.statCategory]}`
+        this.answers.push(`${queryResults[teamAnswerIndex][teamName]}`)
 
         // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer
         const possibleTeamIncorrectAnswers = queryResults.slice(teamAnswerIndex + 1)
@@ -94,7 +95,7 @@ class QuestionObjectGenerator {
           while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[teamAnswerIndex][questionChoices.statCategory]) {
             teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
           }
-          this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex].franchise.dataValues.name}`)
+          this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)
         }
       }
     } else if (questionChoices.teamOrPlayer === 'singlePlayer') {
