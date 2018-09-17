@@ -82,13 +82,11 @@ router.post('/:gameId/question', (req, res, next) => {
   const question = new QuestionObjectGenerator(req.params.gameId)
   question.questionTextGenerator(questionChoices)
 
-
   //Check derived content and set variable if chosen stat category is derived.
   let isDerived = derivedBattingStats.find((stat) => {
     return questionChoices.statCategory === stat.statCat
   })
 
-  console.log('QC--------', questionChoices)
   //Creating and populating the object that will be passed into the query
   const QQP = new QuestionQueryParameters()
   Object.getOwnPropertyNames(QQP.constructor.prototype).forEach( method => {
@@ -96,7 +94,6 @@ router.post('/:gameId/question', (req, res, next) => {
       QQP[method](questionChoices, isDerived)
     }
   })
-  console.log('OPP!!!!!!!!!!!!', QQP)
 
   //select table to query based on whether it is a team or player question
   //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
