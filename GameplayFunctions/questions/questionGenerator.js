@@ -73,8 +73,8 @@ class QuestionObjectGenerator {
   }
 
   questionAnswerGenerator(questionChoices, queryResults) {
-    const teamName = (questionChoices.timeFrame === 'singleSeason') ? 'name' : franchise.dataValues.name
     if (questionChoices.teamOrPlayer === 'wholeTeam') {
+      const teamName = (questionChoices.timeFrame === 'singleSeason') ? 'name' : franchise.dataValues.name
       if (questionChoices.questionType === 'overall') {
         //add correct answer to question object
         this.correctAnswer = `${queryResults[0][teamName]} ~ ${queryResults[0][questionChoices.statCategory]}`

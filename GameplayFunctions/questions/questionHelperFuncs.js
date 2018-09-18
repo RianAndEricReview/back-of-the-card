@@ -29,18 +29,21 @@ const randomYearSelector = (years) => {
 //Creates the result array of player objects, in the proper order, to be used to select answers.
 const dataConsolidator = (data, questionChoices, isDerived) => {
   switch (true) {
-    case (questionChoices.timeFrame === 'allTime' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer'):
+    case (questionChoices.timeFrame === 'allTime' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer' && questionChoices.mostOrLeast === 'most'):
       return data.map(entry => {
         return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
       }).filter(entry => (entry.PA >= 3000)).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
-    case (questionChoices.timeFrame === 'singleSeason' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer'):
-      return (questionChoices.mostOrLeast === 'most') ?
-        data.map(entry => {
-          return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
-        }).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
-        : data.map(entry => {
-          return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
-        }).sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
+
+    case (questionChoices.timeFrame === 'allTime' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer' && questionChoices.mostOrLeast === 'least'):
+      return data.map(entry => {
+        return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+      }).filter(entry => (entry.PA >= 3000)).sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
+
+    case (questionChoices.timeFrame === 'singleSeason' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer' && questionChoices.mostOrLeast === 'most'):
+      return data.map(entry => {
+        return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+      }).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
+
     case (questionChoices.timeFrame === 'singleSeason' && questionChoices.mostOrLeast === 'least' && questionChoices.teamOrPlayer === 'singlePlayer'):
       let minPA = 502
       // Used to set the required minimum plate appearances based on the year
@@ -51,8 +54,13 @@ const dataConsolidator = (data, questionChoices, isDerived) => {
         }
       }
       return data.map(entry => {
-        return entry.dataValues
+        if (!isDerived) {
+          return entry.dataValues
+        } else {
+          return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+        }
       }).filter(entry => (entry.PA >= minPA))
+
     default:
       return data.map(entry => {
         return entry.dataValues
