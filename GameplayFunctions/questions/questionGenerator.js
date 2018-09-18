@@ -10,36 +10,36 @@ class QuestionChoices {
     this.questionSkeletonKey = {}
   }
 
-  questionChoiceGenerator(optionsArray, yearRange) {
-    const questionChoiceSelector = function (passedInOptions, choicesObject) {
-      const chosenOption = randomValueSelector(passedInOptions)
-      chosenOption.whatToSet.forEach((curr) => {
-        //set questionChoice properties
-        choicesObject[curr.key] = curr.value
-        //set questionSkeleton name on questionChoices object
-        if (curr.questionSkeletonName) {
-          choicesObject.questionSkeletonName = curr.questionSkeletonName
-        }
-        //set questionSkeletonKey object on questionChoices object
-        if (curr.skeletonType) {
-          for (let type in curr.skeletonType) {
-            if (curr.skeletonType.hasOwnProperty(type)) {
-              for (let piece in curr.skeletonType[type]) {
-                if (curr.skeletonType[type].hasOwnProperty(piece)) {
-                  choicesObject.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
-                }
+  questionContentSelector(passedInOptions, choicesObject) {
+    const chosenOption = randomValueSelector(passedInOptions)
+    chosenOption.whatToSet.forEach((curr) => {
+      //set questionChoice properties
+      choicesObject[curr.key] = curr.value
+      //set questionSkeleton name on questionChoices object
+      if (curr.questionSkeletonName) {
+        choicesObject.questionSkeletonName = curr.questionSkeletonName
+      }
+      //set questionSkeletonKey object on questionChoices object
+      if (curr.skeletonType) {
+        for (let type in curr.skeletonType) {
+          if (curr.skeletonType.hasOwnProperty(type)) {
+            for (let piece in curr.skeletonType[type]) {
+              if (curr.skeletonType[type].hasOwnProperty(piece)) {
+                choicesObject.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
               }
             }
           }
         }
-      })
-      //recursively run generator on next array of choices, if there is one
-      if (chosenOption.nextChoice) {
-        questionChoiceSelector(chosenOption.nextChoice, choicesObject)
       }
+    })
+    //recursively run generator on next array of choices, if there is one
+    if (chosenOption.nextChoice) {
+      this.questionContentSelector(chosenOption.nextChoice, choicesObject)
     }
+  }
 
-    questionChoiceSelector(optionsArray, this)
+  questionChoiceGenerator(optionsArray, yearRange) {
+    this.questionContentSelector(optionsArray, this)
 
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
