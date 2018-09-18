@@ -10,34 +10,39 @@ class QuestionChoices {
     this.questionSkeletonKey = {}
   }
 
-  questionChoiceGenerator(optionsArray, yearRange){
-    const chosenOption = randomValueSelector(optionsArray)
-    chosenOption.whatToSet.forEach((curr) => {
-      //set questionChoice properties
-      this[curr.key] = curr.value
-      //set questionSkeleton name on questionChoices object
-      if (curr.questionSkeletonName){
-        this.questionSkeletonName = curr.questionSkeletonName
-      }
-      //set questionSkeletonKey object on questionChoices object
-      if (curr.skeletonType) {
-        for (let type in curr.skeletonType) {
-          if (curr.skeletonType.hasOwnProperty(type)) {
-            for (let piece in curr.skeletonType[type]) {
-              if (curr.skeletonType[type].hasOwnProperty(piece)) {
-                this.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
+  questionChoiceGenerator(optionsArray, yearRange) {
+    const questionChoiceSelector = function(passedInOptions, choicesObject) {
+      const chosenOption = randomValueSelector(passedInOptions)
+      chosenOption.whatToSet.forEach((curr) => {
+        //set questionChoice properties
+        choicesObject[curr.key] = curr.value
+        //set questionSkeleton name on questionChoices object
+        if (curr.questionSkeletonName) {
+          choicesObject.questionSkeletonName = curr.questionSkeletonName
+        }
+        //set questionSkeletonKey object on questionChoices object
+        if (curr.skeletonType) {
+          for (let type in curr.skeletonType) {
+            if (curr.skeletonType.hasOwnProperty(type)) {
+              for (let piece in curr.skeletonType[type]) {
+                if (curr.skeletonType[type].hasOwnProperty(piece)) {
+                  choicesObject.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
+                }
               }
             }
           }
         }
+      })
+      //recursively run generator on next array of choices, if there is one
+      if (chosenOption.nextChoice) {
+        questionChoiceSelector(chosenOption.nextChoice, choicesObject)
       }
-    })
-    //recursively run generator on next array of choices, if there is one
-    if (chosenOption.nextChoice) {
-      this.questionChoiceGenerator(chosenOption.nextChoice, yearRange)
     }
+
+    questionChoiceSelector(optionsArray, this)
+
     //set the year, if it needs one
-    if (this.timeFrame === 'singleSeason'){
+    if (this.timeFrame === 'singleSeason') {
       this.questionSkeletonKey.year = randomYearSelector(yearRange)
     }
   }
@@ -53,7 +58,7 @@ class QuestionObjectGenerator {
   }
 
   questionTextGenerator(questionChoices) {
-    if (questionChoices.timeFrame === 'allTime'){
+    if (questionChoices.timeFrame === 'allTime') {
       questionChoices.questionSkeletonKey.verb = questionChoices.questionSkeletonKey.verb.map(textOption => {
         return (textOption === 'had') ? 'has' : textOption
       })
@@ -129,4 +134,4 @@ class QuestionObjectGenerator {
   }
 }
 
-module.exports = {QuestionChoices, QuestionObjectGenerator}
+module.exports = { QuestionChoices, QuestionObjectGenerator }

@@ -69,7 +69,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 
 // Used to generate a question instance
 router.post('/:gameId/question', (req, res, next) => {
-  //generate and populate questionChoices, questionText, question object skeleton
+  //generate and populate questionChoices, questionText, question object
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
   //eliminate strike years, BA before 1900
@@ -87,7 +87,7 @@ router.post('/:gameId/question', (req, res, next) => {
     return questionChoices.statCategory === stat.statCat
   })
 
-  //Creating and populating the object that will be passed into the query
+  //Create and populate the object that will be passed into the query
   const QQP = new QuestionQueryParameters()
   Object.getOwnPropertyNames(QQP.constructor.prototype).forEach( method => {
     if(method !== 'constructor') {
@@ -109,5 +109,5 @@ router.post('/:gameId/question', (req, res, next) => {
         Question.create(question)
           .then(createdQuestion => res.status(201).json(createdQuestion))
       })
-      .catch(next)   
+      .catch(next)
 })
