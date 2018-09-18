@@ -9,7 +9,7 @@ class QuestionChoices {
   constructor() {
     this.questionSkeletonKey = {}
   }
-
+  // Set the question choices based on chosen question content
   questionContentSelector(passedInOptions, choicesObject) {
     const chosenOption = randomValueSelector(passedInOptions)
     chosenOption.whatToSet.forEach((curr) => {
@@ -32,15 +32,15 @@ class QuestionChoices {
         }
       }
     })
-    //recursively run generator on next array of choices, if there is one
+    //recursively run selector on next array of choices, if there is one
     if (chosenOption.nextChoice) {
       this.questionContentSelector(chosenOption.nextChoice, choicesObject)
     }
   }
 
+  // Run content selector and set a proper year
   questionChoiceGenerator(optionsArray, yearRange) {
     this.questionContentSelector(optionsArray, this)
-
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
       //eliminate strike years, BA before 1900
