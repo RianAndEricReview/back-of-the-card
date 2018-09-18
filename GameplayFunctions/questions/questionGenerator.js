@@ -9,15 +9,15 @@ class QuestionChoices {
   constructor() {
     this.questionSkeletonKey = {}
   }
-
-  questionChoiceGenerator(optionsArray, yearRange){
-    const chosenOption = randomValueSelector(optionsArray)
+  // Set the question choices based on chosen question content
+  questionContentSelector(passedInOptions, choicesObject) {
+    const chosenOption = randomValueSelector(passedInOptions)
     chosenOption.whatToSet.forEach((curr) => {
       //set questionChoice properties
-      this[curr.key] = curr.value
+      choicesObject[curr.key] = curr.value
       //set questionSkeleton name on questionChoices object
-      if (curr.questionSkeletonName){
-        this.questionSkeletonName = curr.questionSkeletonName
+      if (curr.questionSkeletonName) {
+        choicesObject.questionSkeletonName = curr.questionSkeletonName
       }
       //set questionSkeletonKey object on questionChoices object
       if (curr.skeletonType) {
@@ -25,20 +25,28 @@ class QuestionChoices {
           if (curr.skeletonType.hasOwnProperty(type)) {
             for (let piece in curr.skeletonType[type]) {
               if (curr.skeletonType[type].hasOwnProperty(piece)) {
-                this.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
+                choicesObject.questionSkeletonKey[piece] = curr.skeletonType[type][piece]
               }
             }
           }
         }
       }
     })
-    //recursively run generator on next array of choices, if there is one
+    //recursively run selector on next array of choices, if there is one
     if (chosenOption.nextChoice) {
-      this.questionChoiceGenerator(chosenOption.nextChoice, yearRange)
+      this.questionContentSelector(chosenOption.nextChoice, choicesObject)
     }
+  }
+
+  // Run content selector and set a proper year
+  questionChoiceGenerator(optionsArray, yearRange) {
+    this.questionContentSelector(optionsArray, this)
     //set the year, if it needs one
-    if (this.timeFrame === 'singleSeason'){
-      this.questionSkeletonKey.year = randomYearSelector(yearRange)
+    if (this.timeFrame === 'singleSeason') {
+      //eliminate strike years, BA before 1900
+      while (!this.questionSkeletonKey.year || this.questionSkeletonKey.year === 1972 || this.questionSkeletonKey.year === 1981 || this.questionSkeletonKey.year === 1994 || (this.statCategory === 'adjBA' && this.questionSkeletonKey.year < 1900) || (this.teamOrPlayer === 'team' && this.questionSkeletonKey.year < 1900)) {
+        this.questionSkeletonKey.year = randomYearSelector(yearRange)
+      }
     }
   }
 }
@@ -53,7 +61,7 @@ class QuestionObjectGenerator {
   }
 
   questionTextGenerator(questionChoices) {
-    if (questionChoices.timeFrame === 'allTime'){
+    if (questionChoices.timeFrame === 'allTime') {
       questionChoices.questionSkeletonKey.verb = questionChoices.questionSkeletonKey.verb.map(textOption => {
         return (textOption === 'had') ? 'has' : textOption
       })
@@ -65,27 +73,28 @@ class QuestionObjectGenerator {
   }
 
   questionAnswerGenerator(questionChoices, queryResults) {
+    const teamName = (questionChoices.timeFrame === 'singleSeason') ? 'name' : franchise.dataValues.name
     if (questionChoices.teamOrPlayer === 'wholeTeam') {
       if (questionChoices.questionType === 'overall') {
         //add correct answer to question object
-        this.correctAnswer = `${queryResults[0].name} ~ ${queryResults[0][questionChoices.statCategory]}`
-        this.answers.push(`${queryResults[0].name}`)
+        this.correctAnswer = `${queryResults[0][teamName]} ~ ${queryResults[0][questionChoices.statCategory]}`
+        this.answers.push(`${queryResults[0][teamName]}`)
         //add incorrect answers to question object
         let teamIncorrectAnswerIndex = 1
         while (queryResults[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[0][questionChoices.statCategory]) {
           teamIncorrectAnswerIndex++
         }
-        this.answers.push(`${queryResults[teamIncorrectAnswerIndex].name}`)
-        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
-        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`)
+        this.answers.push(`${queryResults[teamIncorrectAnswerIndex][teamName]}`)
+        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`)
+        this.answers.push(`${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`)
         while (this.answers[2] === this.answers[3]) {
-          this.answers[3] = `${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1].name}`
+          this.answers[3] = `${queryResults[Math.floor(Math.random() * (queryResults.length - teamIncorrectAnswerIndex - 1)) + teamIncorrectAnswerIndex + 1][teamName]}`
         }
       } else if (questionChoices.questionType === 'comparison') {
         // randomly select team from top half of list for comparison
         const teamAnswerIndex = Math.floor(Math.random() * Math.floor(queryResults.length / 2)) + 1
-        this.correctAnswer = `${queryResults[teamAnswerIndex].name} ~ ${queryResults[teamAnswerIndex][questionChoices.statCategory]}`
-        this.answers.push(`${queryResults[teamAnswerIndex].name}`)
+        this.correctAnswer = `${queryResults[teamAnswerIndex][teamName]} ~ ${queryResults[teamAnswerIndex][questionChoices.statCategory]}`
+        this.answers.push(`${queryResults[teamAnswerIndex][teamName]}`)
 
         // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer
         const possibleTeamIncorrectAnswers = queryResults.slice(teamAnswerIndex + 1)
@@ -94,7 +103,7 @@ class QuestionObjectGenerator {
           while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[teamAnswerIndex][questionChoices.statCategory]) {
             teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
           }
-          this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex].name}`)
+          this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)
         }
       }
     } else if (questionChoices.teamOrPlayer === 'singlePlayer') {
@@ -128,4 +137,4 @@ class QuestionObjectGenerator {
   }
 }
 
-module.exports = {QuestionChoices, QuestionObjectGenerator}
+module.exports = { QuestionChoices, QuestionObjectGenerator }

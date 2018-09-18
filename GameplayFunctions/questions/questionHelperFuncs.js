@@ -1,4 +1,5 @@
 //THIS FILE CONTAINS ALL HELPER FUNCTIONS NEEDED TO CREATE QUESTIONS.
+const { minPAPerYear } = require('./content/questionContent')
 
 //this helper function is used to pick a random value from an array based on weight prop of object
 const randomValueSelector = (arr) => {
@@ -24,7 +25,43 @@ const randomYearSelector = (years) => {
   return Math.floor(Math.random() * (yearRange.end - yearRange.start + 1)) + yearRange.start
 }
 
+
+//Creates the result array of player objects, in the proper order, to be used to select answers.
+const dataConsolidator = (data, questionChoices, isDerived) => {
+  switch (true) {
+    case (questionChoices.timeFrame === 'allTime' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer'):
+      return data.map(entry => {
+        return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+      }).filter(entry => (entry.PA >= 3000)).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
+    case (questionChoices.timeFrame === 'singleSeason' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer'):
+      return (questionChoices.mostOrLeast === 'most') ?
+        data.map(entry => {
+          return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+        }).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
+        : data.map(entry => {
+          return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
+        }).sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
+    case (questionChoices.timeFrame === 'singleSeason' && questionChoices.mostOrLeast === 'least' && questionChoices.teamOrPlayer === 'singlePlayer'):
+      let minPA = 502
+      // Used to set the required minimum plate appearances based on the year
+      for (let i = 0; i < minPAPerYear.length; i++) {
+        if (questionChoices.questionSkeletonKey.year >= minPAPerYear[i].start && questionChoices.questionSkeletonKey.year <= minPAPerYear[i].end) {
+          minPA = minPAPerYear[i].minPA
+          break
+        }
+      }
+      return data.map(entry => {
+        return entry.dataValues
+      }).filter(entry => (entry.PA >= minPA))
+    default:
+      return data.map(entry => {
+        return entry.dataValues
+      })
+  }
+}
+
 module.exports = {
   randomYearSelector,
-  randomValueSelector
+  randomValueSelector,
+  dataConsolidator,
 }
