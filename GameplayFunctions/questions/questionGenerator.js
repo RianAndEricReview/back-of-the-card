@@ -11,7 +11,7 @@ class QuestionChoices {
   }
 
   questionChoiceGenerator(optionsArray, yearRange) {
-    const questionChoiceSelector = function(passedInOptions, choicesObject) {
+    const questionChoiceSelector = function (passedInOptions, choicesObject) {
       const chosenOption = randomValueSelector(passedInOptions)
       chosenOption.whatToSet.forEach((curr) => {
         //set questionChoice properties
@@ -43,7 +43,10 @@ class QuestionChoices {
 
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
-      this.questionSkeletonKey.year = randomYearSelector(yearRange)
+      //eliminate strike years, BA before 1900
+      while (!this.questionSkeletonKey.year || this.questionSkeletonKey.year === 1972 || this.questionSkeletonKey.year === 1981 || this.questionSkeletonKey.year === 1994 || (this.statCategory === 'adjBA' && this.questionSkeletonKey.year < 1900) || (this.teamOrPlayer === 'team' && this.questionSkeletonKey.year < 1900)) {
+        this.questionSkeletonKey.year = randomYearSelector(yearRange)
+      }
     }
   }
 }

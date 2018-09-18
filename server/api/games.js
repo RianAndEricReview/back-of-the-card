@@ -72,10 +72,7 @@ router.post('/:gameId/question', (req, res, next) => {
   //generate and populate questionChoices, questionText, question object
   const questionChoices = new QuestionChoices()
   questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
-  //eliminate strike years, BA before 1900
-  while (questionChoices.questionSkeletonKey.year === 1972 || questionChoices.questionSkeletonKey.year === 1981 || questionChoices.questionSkeletonKey.year === 1994 || (questionChoices.statCategory === 'adjBA' && questionChoices.questionSkeletonKey.year < 1900) || (questionChoices.teamOrPlayer === 'team' && questionChoices.questionSkeletonKey.year < 1900)) {
-    questionChoices.questionSkeletonKey.year = randomYearSelector(defaultYearRanges)
-  }
+
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
   if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
 
@@ -90,7 +87,7 @@ router.post('/:gameId/question', (req, res, next) => {
   //Create and populate the object that will be passed into the query
   const QQP = new QuestionQueryParameters()
   Object.getOwnPropertyNames(QQP.constructor.prototype).forEach( method => {
-    if(method !== 'constructor') {
+    if (method !== 'constructor') {
       QQP[method](questionChoices, isDerived)
     }
   })
