@@ -74,7 +74,10 @@ router.post('/:gameId/question', (req, res, next) => {
   questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
 
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
-  if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
+  if (questionChoices.timeFrame === 'allTime') {
+    questionChoices.mostOrLeast = 'most'
+    questionChoices.questionSkeletonKey.mostOrLeast = ['most']
+  }
 
   const question = new QuestionObjectGenerator(req.params.gameId)
   question.questionTextGenerator(questionChoices)
@@ -99,6 +102,7 @@ router.post('/:gameId/question', (req, res, next) => {
   else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting}
    table.findAll({...QQP})
     .then(data => {
+
         let consolidatedDataArr = dataConsolidator(data, questionChoices, isDerived)
         // Generate questionObject answers, and then post the question to DB.
         question.questionAnswerGenerator(questionChoices, consolidatedDataArr)
