@@ -5,7 +5,7 @@ const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunc
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
 const { randomYearSelector, dataConsolidator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { defaultYearRanges, derivedBattingStats } = require('../../GameplayFunctions/questions/content/questionContent')
-const { teamOrPlayer } = require('../../GameplayFunctions/questions/content/questionOptionsContent')
+const firstOption = require('../../GameplayFunctions/questions/content/questionOptionsContent').questionType
 module.exports = router
 
 // Used to find all currently enabled gametypes
@@ -71,10 +71,13 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 router.post('/:gameId/question', (req, res, next) => {
   //generate and populate questionChoices, questionText, question object
   const questionChoices = new QuestionChoices()
-  questionChoices.questionChoiceGenerator(teamOrPlayer, defaultYearRanges)
+  questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
 
   //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
-  if (questionChoices.timeFrame === 'allTime') { questionChoices.mostOrLeast = 'most' }
+  if (questionChoices.timeFrame === 'allTime') {
+    questionChoices.mostOrLeast = 'most'
+    questionChoices.questionSkeletonKey.mostOrLeast = ['most']
+  }
 
   const question = new QuestionObjectGenerator(req.params.gameId)
   question.questionTextGenerator(questionChoices)
@@ -99,6 +102,7 @@ router.post('/:gameId/question', (req, res, next) => {
   else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting}
    table.findAll({...QQP})
     .then(data => {
+
         let consolidatedDataArr = dataConsolidator(data, questionChoices, isDerived)
         // Generate questionObject answers, and then post the question to DB.
         question.questionAnswerGenerator(questionChoices, consolidatedDataArr)
