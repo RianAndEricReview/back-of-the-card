@@ -60,7 +60,7 @@ const dataConsolidator = (data, questionChoices, isDerived) => {
           return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
         }
       }).filter(entry => (entry.PA >= minPA))
-
+      //preform ascending sort for a least derived stat
       if (!!isDerived) {
         return consolidatedData.sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
       } else {
