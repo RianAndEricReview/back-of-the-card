@@ -96,15 +96,12 @@ class QuestionObjectGenerator {
         this.correctAnswer = `${queryResults[teamAnswerIndex][teamName]} ~ ${queryResults[teamAnswerIndex][questionChoices.statCategory]}`
         this.answers.push(`${queryResults[teamAnswerIndex][teamName]}`)
 
-        // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer
+        // choose other possible answers while making sure the other answer choices do not have same stat value as the chosen/correct answer and that we prevent duplicate answers.
         const possibleTeamIncorrectAnswers = queryResults.slice(teamAnswerIndex + 1)
         for (let i = 0; i < 3; i++) {
           let teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
-          console.log('TEAM', teamIncorrectAnswerIndex)
           while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[teamAnswerIndex][questionChoices.statCategory] || this.answers.includes(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)) {
-            console.log('REPICKING')
             teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
-            console.log('NEW-TEAM', teamIncorrectAnswerIndex)
           }
           this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)
         }

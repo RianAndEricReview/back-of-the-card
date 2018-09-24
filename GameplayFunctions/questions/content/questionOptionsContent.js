@@ -94,14 +94,14 @@ const overallTeamOrPlayer = [
 ]
 
 const comparisonTeamOrPlayer = [
-  // { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: comparisonPlayerTimeframe },
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: comparisonPlayerTimeframe },
   { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 2, nextChoice: comparisonTeamTimeframe }
 ]
 
 
 const questionType = [
   { whatToSet: [{ key: 'questionType', value: 'comparison', skeletonType: { stat: { comparativePhrasing: [`of these`], pluralization: [`s`] } } }], weight: 1, nextChoice: comparisonTeamOrPlayer },
-  // { whatToSet: [{ key: 'questionType', value: 'overall' }], weight: 1, nextChoice: overallTeamOrPlayer }
+  { whatToSet: [{ key: 'questionType', value: 'overall' }], weight: 1, nextChoice: overallTeamOrPlayer }
 ]
 
 module.exports = { questionType }
