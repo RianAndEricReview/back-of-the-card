@@ -100,8 +100,11 @@ class QuestionObjectGenerator {
         const possibleTeamIncorrectAnswers = queryResults.slice(teamAnswerIndex + 1)
         for (let i = 0; i < 3; i++) {
           let teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
-          while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[teamAnswerIndex][questionChoices.statCategory]) {
+          console.log('TEAM', teamIncorrectAnswerIndex)
+          while (possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][questionChoices.statCategory] === queryResults[teamAnswerIndex][questionChoices.statCategory] || this.answers.includes(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)) {
+            console.log('REPICKING')
             teamIncorrectAnswerIndex = Math.floor(Math.random() * possibleTeamIncorrectAnswers.length)
+            console.log('NEW-TEAM', teamIncorrectAnswerIndex)
           }
           this.answers.push(`${possibleTeamIncorrectAnswers[teamIncorrectAnswerIndex][teamName]}`)
         }
