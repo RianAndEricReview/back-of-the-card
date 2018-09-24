@@ -53,13 +53,19 @@ const dataConsolidator = (data, questionChoices, isDerived) => {
           break
         }
       }
-      return data.map(entry => {
+      const consolidatedData = data.map(entry => {
         if (!isDerived) {
           return entry.dataValues
         } else {
           return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
         }
       }).filter(entry => (entry.PA >= minPA))
+
+      if (!!isDerived) {
+        return consolidatedData.sort((a, b) => { return a[questionChoices.statCategory] - b[questionChoices.statCategory] })
+      } else {
+        return consolidatedData
+      }
 
     default:
       return data.map(entry => {
