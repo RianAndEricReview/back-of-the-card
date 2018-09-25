@@ -5,6 +5,9 @@ const Question = db.define('question', {
   question: {
     type: Sequelize.TEXT
   },
+  questionNum: {
+    type: Sequelize.INTEGER
+  },
   answers: {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
