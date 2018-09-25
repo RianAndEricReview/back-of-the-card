@@ -53,11 +53,12 @@ class QuestionChoices {
 
 // class to generate question objects
 class QuestionObjectGenerator {
-  constructor(gameId) {
+  constructor(gameId, questionNum) {
     this.question = ''
     this.answers = []
     this.correctAnswer = ''
     this.gameId = gameId
+    this.questionNum = questionNum
   }
 
   questionTextGenerator(questionChoices) {
