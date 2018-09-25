@@ -69,46 +69,57 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 
 // Used to generate a question instance
 router.post('/:gameId/question', (req, res, next) => {
-  //generate and populate questionChoices, questionText, question object
-  const questionChoices = new QuestionChoices()
-  questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
+  const numOfQuestions = req.body.numOfQuestions
+  const questionTexts = []
+  //create the proper number of questions for a game based on the # of questions stated in the req.
+  for (let i = 1; i <= numOfQuestions; i++) {
+    //generate and populate questionChoices, questionText, question object
+    let questionChoices = {}
+    let question
+    //check to make sure we don't include a question twice in the same game.
+    while (!question || questionTexts.includes(question.question)) {
+      questionChoices = new QuestionChoices()
+      questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
 
-  //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
-  if (questionChoices.timeFrame === 'allTime') {
-    questionChoices.mostOrLeast = 'most'
-    questionChoices.questionSkeletonKey.mostOrLeast = ['most']
-  }
+      //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
+      if (questionChoices.timeFrame === 'allTime') {
+        questionChoices.mostOrLeast = 'most'
+        questionChoices.questionSkeletonKey.mostOrLeast = ['most']
+      }
 
-  const question = new QuestionObjectGenerator(req.params.gameId)
-  question.questionTextGenerator(questionChoices)
-
-  //Check derived content and set variable if chosen stat category is derived.
-  let isDerived = derivedBattingStats.find((stat) => {
-    return questionChoices.statCategory === stat.statCat
-  })
-
-  //Create and populate the object that will be passed into the query
-  const QQP = new QuestionQueryParameters()
-  Object.getOwnPropertyNames(QQP.constructor.prototype).forEach( method => {
-    if (method !== 'constructor') {
-      QQP[method](questionChoices, isDerived)
+      question = new QuestionObjectGenerator(req.params.gameId, i)
+      question.questionTextGenerator(questionChoices)
     }
-  })
+    questionTexts.push(question.question)
 
-  //select table to query based on whether it is a team or player question
-  //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
-  let table = ''
-  if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
-  else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting}
-   table.findAll({...QQP})
-    .then(data => {
+    //Check derived content and set variable if chosen stat category is derived.
+    let isDerived = derivedBattingStats.find((stat) => {
+      return questionChoices.statCategory === stat.statCat
+    })
+
+    //Create and populate the object that will be passed into the query
+    const QQP = new QuestionQueryParameters()
+    Object.getOwnPropertyNames(QQP.constructor.prototype).forEach(method => {
+      if (method !== 'constructor') {
+        QQP[method](questionChoices, isDerived)
+      }
+    })
+
+    //select table to query based on whether it is a team or player question
+    //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
+    let table = ''
+    if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
+    else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting }
+    table.findAll({ ...QQP })
+      .then(data => {
 
         let consolidatedDataArr = dataConsolidator(data, questionChoices, isDerived)
         // Generate questionObject answers, and then post the question to DB.
         question.questionAnswerGenerator(questionChoices, consolidatedDataArr)
 
         Question.create(question)
-          .then(createdQuestion => res.status(201).json(createdQuestion))
       })
       .catch(next)
+  }
+  res.status(201).send()
 })
