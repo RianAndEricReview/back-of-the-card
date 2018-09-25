@@ -71,6 +71,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 router.post('/:gameId/question', (req, res, next) => {
   const numOfQuestions = req.body.numOfQuestions
   const questionTexts = []
+  //create the proper number of questions for a game based on the # of questions stated in the req.
   for (let i = 1; i <= numOfQuestions; i++) {
     //generate and populate questionChoices, questionText, question object
     let questionChoices = {}
