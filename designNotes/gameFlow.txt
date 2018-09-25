@@ -1,0 +1,43 @@
+
+Currently our design handles a sigificant amount of the questions, answers, and scoring on the frontend. 
+This is less secure and allows more possibility for cheating, but is more server friendly and has less queries to the DB.
+To make this more secure we could store less on the frontend and make more routine DB queries and updates.
+
+- A new Game is created
+- The number of questions listed in that Game's gametype is created.
+  * Each question will have a question number identifying the order questions are presented in the Game.
+  * Compare question text to all previously created questions for the Game to avoid duplicates.
+- Once the game goes from open to closed, all players will query for all questions.
+  * The timing of this is TBD. Do it before or after the opening timer? 
+  * Having each player get all questions at once cuts down on the number of queries to the DB significantly. 
+    However individual calls at the start of each question would be more secure in terms of preventing cheating.
+- Once the game goes from open to closed, we want to render a welcome message and countdown timer for when the first question starts.
+  * Currently for the timer display we are thinking something like 5... 4... 3... 2... 1... GO!!! (could be 5, 10, or 15 seconds)
+- Once the question is active, the round starts and a timer will display showing how long until the round ends.
+  * This timer is based on the Game's gametype secondsPerRound value.
+- Current question answering process
+  * The player will select an answer and hit a submit button to submit.
+  * If the player does not hit submit when the round's timer expires:
+    - Take the currently selected answer if there is one.
+    - If no answer is selected, it is wrong.
+  * If all players hit the submit before the round ends, then the round is over and we kill the timer.
+- Once the round ends, we open a new component that displays the following:
+  * The correct answer.
+  * If you were correct or incorrect.
+  * All players answers, times, and scores for that round.
+- Update scores on frontend.
+  * The score for that question should be passed around to all players.
+  * Each player should update the score for each player including themselves in the store.
+  * This sequence of events should autmatically update the scoreboard in the sidebar.
+- Increment the question number in the Store.
+- When the next question clock runs out:
+   * We reload the gameboard pres component with the updated question number, which starts the countdown
+     - 5... 4... 3... 2... 1... GO!!! (could be 5, 10, or 15 seconds)
+   * And repeat the whole question process until the last question has been answered.
+- When the last question has been answered:
+  * Load a endGame component showing final scores and positions.
+  * We then add each player's score to the gameScore field in the GamePlayers table in the DB.
+    - We could update the gameScore to be an array, thereby keeping track of the score for each question.
+  * Update the Player's history where needed for each player (thinking of our json object)
+  * Delete any no longer needed DB info for that game (if desired)
+- Redirect the player back to the landing page.
