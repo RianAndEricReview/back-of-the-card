@@ -4,24 +4,24 @@ import axios from 'axios'
 const defaultQuestions = []
 
 //ACTION TYPES
-export const GET_ALL_QUESTIONS = 'GET_ALL_QUESTIONS'
+export const CREATE_ALL_QUESTIONS = 'CREATE_ALL_QUESTIONS'
 
 //ACTION CREATORS
-export const getAllQuestions = questions => ({ type: GET_ALL_QUESTIONS, questions })
+export const createAllQuestions = questions => ({ type: CREATE_ALL_QUESTIONS, questions })
 
 //THUNK CREATORS
-export const getAllQuestionsThunk = (gameId) =>
+export const createAllQuestionsThunk = (gameId) =>
   dispatch => axios.get(`/api/games/${gameId}/question`)
     .then(res => res.data)
     .then(questions => {
-      dispatch(getAllQuestions(questions))
+      dispatch(createAllQuestions(questions))
     })
     .catch(err => console.log(err))
 
 //REDUCERS
 export default function questionReducer(state = defaultQuestions, action) {
   switch (action.type) {
-    case GET_ALL_QUESTIONS:
+    case CREATE_ALL_QUESTIONS:
       return action.questions
     default:
       return state

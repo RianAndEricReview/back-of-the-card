@@ -5,6 +5,7 @@ import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import { getAllPlayersThunk } from '../../store'
+import { createAllQuestionsThunk } from '../../store/question';
 
 export class GameContainerClass extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class GameContainerClass extends Component {
 
   componentDidMount() {
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
+    if (this.state.game.host) { this.props.createAllQuestions(this.props.game.id) }
   }
 
   render() {
@@ -43,6 +45,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getAllPlayers(gameId, playerId) {
       dispatch(getAllPlayersThunk(gameId, playerId))
+    },
+    createAllQuestions(gameId) {
+      dispatch(createAllQuestionsThunk(gameId))
     }
   }
 }
