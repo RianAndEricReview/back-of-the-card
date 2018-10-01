@@ -113,24 +113,27 @@ router.post('/:gameId/question', (req, res, next) => {
     if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
     else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting }
 
+    // Info needed to build a question object
     const findAllInfo = { QQP, questionChoices, isDerived, table, question }
     questionInfoArr.push(findAllInfo)
   }
 
+  // Set up as nested Promise.alls to collect all questions before sending them to the front end
   Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
     .then(foundInfo => {
       const questionsArr = []
       foundInfo.forEach((data, idx) => {
         let consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
-        // Generate questionObject answers, and then post the question to DB.
+        // Generate questionObject answers
         questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
         questionsArr.push(questionInfoArr[idx].question)
       })
+      // Post the questions to DB and send results to front end
       Promise.all(questionsArr.map(question => Question.create(question)
       ))
         .then(questions => {
           res.status(201).json(questions)
         })
-    }
-    )
+    })
+    .catch(next)
 })
