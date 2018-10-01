@@ -5,12 +5,14 @@ import thunkMiddleware from 'redux-thunk'
 import user from './user'
 import game from './game'
 import players from './players'
+import questions from './questions'
 
 const reducer = combineReducers(
   {
     user,
     game,
     players,
+    questions
   }
 )
 
@@ -21,3 +23,4 @@ export default store
 export * from './user'
 export * from './game'
 export * from './players'
+export * from './questions'

@@ -4,8 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import { getAllPlayersThunk } from '../../store'
-import { createAllQuestionsThunk } from '../../store/question';
+import { getAllPlayersThunk, createAllQuestionsThunk } from '../../store'
 
 export class GameContainerClass extends Component {
   constructor(props) {
@@ -14,8 +13,9 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    console.log('The game props', this.props.game)
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
-    if (this.state.game.host) { this.props.createAllQuestions(this.props.game.id) }
+    if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, 4) }
   }
 
   render() {
@@ -39,6 +39,7 @@ const mapStateToProps = state => ({
   user: state.user,
   game: state.game,
   players: state.players,
+  questions: state.questions
 })
 
 const mapDispatchToProps = dispatch => {
@@ -46,8 +47,8 @@ const mapDispatchToProps = dispatch => {
     getAllPlayers(gameId, playerId) {
       dispatch(getAllPlayersThunk(gameId, playerId))
     },
-    createAllQuestions(gameId) {
-      dispatch(createAllQuestionsThunk(gameId))
+    createAllQuestions(gameId, numOfQuestions) {
+      dispatch(createAllQuestionsThunk(gameId, numOfQuestions))
     }
   }
 }

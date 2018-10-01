@@ -41,12 +41,16 @@ router.get('/:gameId/players', (req, res, next) => {
 
 // Used to create a new game instance
 router.post('/', (req, res, next) => {
-  Game.create({ open: req.body.open, gametypeId: req.body.gametypeId })
+  Gametype.findById(req.body.gametypeId)
+  .then(gametype => {
+    return Game.create({ open: req.body.open, gametypeId: gametype.id })
     .then(game => {
+      game.dataValues.gametype = gametype
       res.status(201).json(game)
       return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
     })
-    .catch(next)
+  })
+  .catch(next)
 })
 
 // Used to add a player to a game instance
