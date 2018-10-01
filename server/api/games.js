@@ -39,7 +39,7 @@ router.get('/:gameId/players', (req, res, next) => {
     .catch(next)
 })
 
-// Used to create a new game instance
+// Used to create a new game instance with gametype
 router.post('/', (req, res, next) => {
   Gametype.findById(req.body.gametypeId)
   .then(gametype => {

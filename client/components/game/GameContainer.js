@@ -13,9 +13,8 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
-    console.log('The game props', this.props.game)
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
-    if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, 4) }
+    if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
   }
 
   render() {
