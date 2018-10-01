@@ -71,6 +71,8 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 router.post('/:gameId/question', (req, res, next) => {
   const numOfQuestions = req.body.numOfQuestions
   const questionTexts = []
+  const questionInfoArr = []
+
   //create the proper number of questions for a game based on the # of questions stated in the req.
   for (let i = 1; i <= numOfQuestions; i++) {
     //generate and populate questionChoices, questionText, question object
@@ -110,16 +112,25 @@ router.post('/:gameId/question', (req, res, next) => {
     let table = ''
     if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
     else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting }
-    table.findAll({ ...QQP })
-      .then(data => {
 
-        let consolidatedDataArr = dataConsolidator(data, questionChoices, isDerived)
-        // Generate questionObject answers, and then post the question to DB.
-        question.questionAnswerGenerator(questionChoices, consolidatedDataArr)
-
-        Question.create(question)
-      })
-      .catch(next)
+    const findAllInfo = { QQP, questionChoices, isDerived, table, question }
+    questionInfoArr.push(findAllInfo)
   }
-  res.status(201).send()
+
+  Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
+    .then(foundInfo => {
+      const questionsArr = []
+      foundInfo.forEach((data, idx) => {
+        let consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
+        // Generate questionObject answers, and then post the question to DB.
+        questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
+        questionsArr.push(questionInfoArr[idx].question)
+      })
+      Promise.all(questionsArr.map(question => Question.create(question)
+      ))
+        .then(questions => {
+          res.status(201).json(questions)
+        })
+    }
+    )
 })
