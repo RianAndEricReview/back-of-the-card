@@ -1,6 +1,7 @@
 const randomYearSelector = require('./questionHelperFuncs').randomYearSelector
 const randomValueSelector = require('./questionHelperFuncs').randomValueSelector
 const questionSkeletons = require('./content/questionContent').questionSkeletons
+const shuffle = require('shuffle-array')
 
 //THIS FILE CONTAINS ALL QUESTION GENERATING CONSTRUCTOR FUNCTIONS
 
@@ -135,6 +136,7 @@ class QuestionObjectGenerator {
         }
       }
     }
+    shuffle(this.answers)
   }
 }
 
