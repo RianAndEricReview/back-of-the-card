@@ -20,7 +20,7 @@ export class GameContainerClass extends Component {
   render() {
     return (
       <div className="game-container">
-        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} />}
+        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} numOfQuestions={this.props.game.gametype.numOfQuestions} />}
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (

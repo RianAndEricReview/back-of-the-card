@@ -43,7 +43,7 @@ export class LandingContainerClass extends Component {
         {
           !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (
-              gametype.enabled && <div key={gametype.id} className="col-4 landing-gametype">
+              gametype.enabled && <div key={gametype.id} className="col-4">
                 <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} playerId={this.props.user.id} joinGameClick={this.props.joinGameClick} gametypes={this.state.gametypes} />
               </div>
             )
