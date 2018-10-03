@@ -312,4 +312,24 @@ form div {
   margin: .2em;
 }
 
+#gameplay-logo {
+  margin: .5em;
+}
+
+#gameboard-question {
+  margin: 0em 5em 2em 5em;
+  font-family: Palantino;
+}
+
+#gameboard-answer-container {
+  margin: 0em 6em;
+}
+
+#gameboard-answer-grid {
+  margin-bottom: 3em;
+}
+
+.gameboard-answer-buttons {
+  width: 15em;
+}
 
