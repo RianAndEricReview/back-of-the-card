@@ -9,7 +9,16 @@ import { getAllPlayersThunk, createAllQuestionsThunk } from '../../store'
 export class GameContainerClass extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      clickedAnswer: ''
+    }
 
+    this.answerButtonClick = this.answerButtonClick.bind(this)
+  }
+
+  answerButtonClick(event) {
+    event.preventDefault()
+    this.setState({clickedAnswer: event.target.value})
   }
 
   componentDidMount() {
@@ -20,7 +29,7 @@ export class GameContainerClass extends Component {
   render() {
     return (
       <div className="game-container">
-        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} numOfQuestions={this.props.game.gametype.numOfQuestions} />}
+        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} numOfQuestions={this.props.game.gametype.numOfQuestions} answerButtonClick={this.answerButtonClick} />}
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (

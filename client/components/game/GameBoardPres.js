@@ -16,7 +16,7 @@ export default (props) => {
             return (
               <div key={index} className="form-group">
                 <div className="col-6 text-center" id="gameboard-answer-grid">
-                  <div className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]}`}> {answer} </div>
+                  <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]}`} value={answer} onClick={(event) => props.answerButtonClick(event)}> {answer} </button>
                 </div>
               </div>
             )
