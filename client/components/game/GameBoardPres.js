@@ -23,7 +23,7 @@ export default (props) => {
           }
           )}
           </div>
-          <button type="submit">SUBMIT</button>
+          <button type="submit" onClick={(event) => props.answerSubmission(event)}>SUBMIT</button>
         </form>
       </div>
     </div>

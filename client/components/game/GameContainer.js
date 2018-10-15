@@ -10,15 +10,26 @@ export class GameContainerClass extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      clickedAnswer: ''
+      clickedAnswer: '',
+      chosenAnswer: {answer: '', score: 0}
     }
 
     this.answerButtonClick = this.answerButtonClick.bind(this)
+    this.answerSubmission = this.answerSubmission.bind(this)
   }
 
   answerButtonClick(event) {
     event.preventDefault()
     this.setState({clickedAnswer: event.target.value})
+  }
+
+  answerSubmission(event) {
+    event.preventDefault()
+    let chosenAnswer = {answer: this.state.clickedAnswer, score: 0}
+    let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
+    correctAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
+    chosenAnswer.score = chosenAnswer.answer === correctAnswer ? 1 : 0
+    this.setState({chosenAnswer})
   }
 
   componentDidMount() {
@@ -27,9 +38,10 @@ export class GameContainerClass extends Component {
   }
 
   render() {
+    console.log('STATEEEEEEEE', this.state)
     return (
       <div className="game-container">
-        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} numOfQuestions={this.props.game.gametype.numOfQuestions} answerButtonClick={this.answerButtonClick} />}
+        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> : <GameBoardPres questions={this.props.questions} currentQuestionNum={this.props.game.currentQuestion} numOfQuestions={this.props.game.gametype.numOfQuestions} answerButtonClick={this.answerButtonClick} answerSubmission={this.answerSubmission} />}
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (
