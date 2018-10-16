@@ -35,6 +35,7 @@ export class GameContainerClass extends Component {
   componentDidMount() {
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
+    else { this.props.getAllQuestions(this.props.game.id)}
   }
 
   render() {
@@ -69,6 +70,9 @@ const mapDispatchToProps = dispatch => {
     },
     createAllQuestions(gameId, numOfQuestions) {
       dispatch(createAllQuestionsThunk(gameId, numOfQuestions))
+    },
+    getAllQuestions(gameId) {
+      dispatch(getAllQuestionsThunk(gameId))
     }
   }
 }
