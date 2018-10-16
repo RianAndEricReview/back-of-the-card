@@ -21,7 +21,7 @@ export const createAllQuestionsThunk = (gameId, numOfQuestions) =>
     .catch(err => console.log(err))
 
 export const getAllQuestionsThunk = (gameId) =>
-  dispatch => axios.gett(`/api/games/${gameId}/questions`)
+  dispatch => axios.get(`/api/games/${gameId}/questions`)
     .then(res => res.data)
     .then(questions => {
       dispatch(getAllQuestions(questions))
