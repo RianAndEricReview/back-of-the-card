@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import { getAllPlayersThunk, createAllQuestionsThunk } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk } from '../../store'
 
 export class GameContainerClass extends Component {
   constructor(props) {
