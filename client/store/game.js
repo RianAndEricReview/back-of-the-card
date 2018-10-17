@@ -49,7 +49,6 @@ export default function gameReducer(state = defaultGame, action) {
     case GET_GAME:
       return action.game
     case UPDATE_GAME:
-      console.log(action.gameStatus, state)
       return {...state, ...action.gameStatus}
     default:
       return state

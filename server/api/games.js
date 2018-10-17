@@ -141,3 +141,14 @@ router.post('/:gameId/question', (req, res, next) => {
     })
     .catch(next)
 })
+
+// Used to fetch all questions of a specific game instanace
+router.get('/:gameId/questions', (req, res, next) => {
+  Question.findAll({
+    where: { gameId: req.params.gameId }
+  })
+    .then(questions => {
+      res.status(200).json(questions)
+    })
+    .catch(next)
+})
