@@ -23,7 +23,7 @@ router.get('/:gametypeId', (req, res, next) => {
     where: { open: true, gametypeId: req.params.gametypeId }
   })
     .then(game => {
-      res.status(200).json(game)
+      (game) ? res.status(200).json({id: game.dataValues.id}) : res.status(204).json(game)
     })
     .catch(next)
 })
