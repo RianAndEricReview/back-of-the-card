@@ -65,6 +65,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
           if (players.length === game.gametype.maxPlayers) {
             game.update({ open: false })
           }
+          delete game.dataValues.gamePlayers
           res.status(200).json(game)
         })
     })
