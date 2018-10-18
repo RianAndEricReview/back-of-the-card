@@ -16,7 +16,7 @@ export const updateGame = gameStatus => ({ type: UPDATE_GAME, gameStatus })
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
   dispatch => axios.get(`/api/games/${gametypeId}`)
-  .then(res => res.data)
+  .then(game => game.data)
   .then(game => {
       if (!game) {
         // Creates a new game with the current player associated with the game instance

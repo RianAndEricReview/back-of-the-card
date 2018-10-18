@@ -23,7 +23,7 @@ router.get('/:gametypeId', (req, res, next) => {
     where: { open: true, gametypeId: req.params.gametypeId }
   })
     .then(game => {
-      res.status(200).json(game)
+      (game) ? res.status(200).json({id: game.dataValues.id}) : res.status(204).json(game)
     })
     .catch(next)
 })
@@ -65,6 +65,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
           if (players.length === game.gametype.maxPlayers) {
             game.update({ open: false })
           }
+          delete game.dataValues.gamePlayers
           res.status(200).json(game)
         })
     })
@@ -72,7 +73,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 })
 
 // Used to generate a question instance
-router.post('/:gameId/question', (req, res, next) => {
+router.post('/:gameId/questions', (req, res, next) => {
   const numOfQuestions = req.body.numOfQuestions
   const questionTexts = []
   const questionInfoArr = []

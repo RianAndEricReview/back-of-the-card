@@ -173,8 +173,8 @@ Game.hasMany(GamePlayer, {cascade: true})
 //User to Question
 PlayerQuestionResult.belongsTo(User)
 User.hasMany(PlayerQuestionResult, {cascade: true})
-PlayerQuestionResult.belongsTo(Game)
-Game.hasMany(PlayerQuestionResult, {cascade: true})
+PlayerQuestionResult.belongsTo(Question)
+Question.hasMany(PlayerQuestionResult, {cascade: true})
 
 module.exports = {
   User,
