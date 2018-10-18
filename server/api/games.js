@@ -72,7 +72,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
 })
 
 // Used to generate a question instance
-router.post('/:gameId/question', (req, res, next) => {
+router.post('/:gameId/questions', (req, res, next) => {
   const numOfQuestions = req.body.numOfQuestions
   const questionTexts = []
   const questionInfoArr = []

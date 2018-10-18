@@ -13,7 +13,7 @@ export const getAllQuestions = questions => ({ type: GET_ALL_QUESTIONS, question
 
 //THUNK CREATORS
 export const createAllQuestionsThunk = (gameId, numOfQuestions) =>
-  dispatch => axios.post(`/api/games/${gameId}/question`, { numOfQuestions })
+  dispatch => axios.post(`/api/games/${gameId}/questions`, { numOfQuestions })
     .then(res => res.data)
     .then(questions => {
       dispatch(createAllQuestions(questions))
