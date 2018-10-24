@@ -6,13 +6,17 @@ import user from './user'
 import game from './game'
 import players from './players'
 import questions from './questions'
+import allPlayerAnswers from './allPlayerAnswers'
+import playerQuestionResults from './playerQuestionResults'
 
 const reducer = combineReducers(
   {
     user,
     game,
     players,
-    questions
+    questions,
+    allPlayerAnswers,
+    playerQuestionResults,
   }
 )
 
@@ -24,3 +28,5 @@ export * from './user'
 export * from './game'
 export * from './players'
 export * from './questions'
+export * from './allPlayerAnswers'
+export * from './playerQuestionResults'
