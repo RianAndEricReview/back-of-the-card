@@ -11,7 +11,7 @@ export class GameContainerClass extends Component {
     super(props)
     this.state = {
       clickedAnswer: '',
-      chosenAnswer: {answer: '', score: 0}
+      playerQuestionResult: {answer: '', time: 0, questionId: null}
     }
 
     this.answerButtonClick = this.answerButtonClick.bind(this)
@@ -25,11 +25,13 @@ export class GameContainerClass extends Component {
 
   answerSubmission(event) {
     event.preventDefault()
-    let chosenAnswer = {answer: this.state.clickedAnswer, score: 0}
+    let playerAnswer = {answer: this.state.clickedAnswer, score: 0, gamePlayer: this.props.user.id}
+    let playerQuestionResult = {answer: this.state.clickedAnswer, time: 1, questionId: this.props.game.currentQuestion}
+    //The below code is a temporary score generator with minimal functionality. This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     correctAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    chosenAnswer.score = chosenAnswer.answer === correctAnswer ? 1 : 0
-    this.setState({chosenAnswer})
+    playerQuestionResult.score = playerQuestionResult.answer === correctAnswer ? 1 : 0
+    this.setState({playerQuestionResult})
   }
 
   componentDidMount() {
