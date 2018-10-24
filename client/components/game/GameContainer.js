@@ -19,13 +19,13 @@ export class GameContainerClass extends Component {
 
   answerButtonClick(event) {
     event.preventDefault()
-    this.setState({clickedAnswer: event.target.value})
+    this.setState({ clickedAnswer: event.target.value })
   }
 
   answerSubmission(event) {
     event.preventDefault()
-    let playerQuestionResult = {answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion}
-    let playerAnswer = {answer: this.state.clickedAnswer, score: 0, gamePlayer: this.props.user.id}
+    let playerQuestionResult = { answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion }
+    let playerAnswer = { answer: this.state.clickedAnswer, score: 0, gamePlayer: this.props.user.id }
 
     //The below section of code is a temporary score generator with minimal functionality. 
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
@@ -41,7 +41,7 @@ export class GameContainerClass extends Component {
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
-    else { this.props.getAllQuestions(this.props.game.id)}
+    else { this.props.getAllQuestions(this.props.game.id) }
   }
 
   render() {
