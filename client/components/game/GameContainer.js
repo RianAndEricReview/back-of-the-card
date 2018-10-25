@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, addPlayerAnswer } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
+import socket from '../../socket'
 
 export class GameContainerClass extends Component {
   constructor(props) {
@@ -27,14 +28,15 @@ export class GameContainerClass extends Component {
     let playerQuestionResult = { answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion }
     let playerAnswer = { answer: this.state.clickedAnswer, score: 0, userId: this.props.user.id }
 
-    //The below section of code is a temporary score generator with minimal functionality. 
+    //The below section of code is a temporary score generator with minimal functionality.
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     correctAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
     playerAnswer.score = playerAnswer.answer === correctAnswer ? 1 * playerQuestionResult.time : 0
 
     this.props.createQuestionResult(playerQuestionResult)
-    this.props.addPlayerAnswer(playerAnswer)
+
+    socket.emit('submitAnswer', this.props.game.id, playerAnswer)
   }
 
   componentDidMount() {
@@ -81,9 +83,6 @@ const mapDispatchToProps = dispatch => {
     },
     createQuestionResult(playerQuestionResult) {
       dispatch(createQuestionResult(playerQuestionResult))
-    },
-    addPlayerAnswer(playerAnswer) {
-      dispatch(addPlayerAnswer(playerAnswer))
     }
   }
 }

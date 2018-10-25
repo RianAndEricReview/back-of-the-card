@@ -16,6 +16,11 @@ module.exports = (io) => {
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })
+
+    // send submitted answer to all players in the room
+    socket.on('submitAnswer', (gameId, playerAnswer) => {
+      io.in(`GameRoom${gameId}`).emit('receiveAnswer', playerAnswer)
+    })
   })
 }
 
