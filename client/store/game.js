@@ -11,7 +11,7 @@ export const UPDATE_GAME = 'UPDATE_GAME'
 
 //ACTION CREATORS
 export const getGame = game => ({ type: GET_GAME, game })
-export const updateGame = gameStatus => ({ type: UPDATE_GAME, gameStatus })
+export const updateGame = updatedItem => ({ type: UPDATE_GAME, updatedItem })
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
@@ -49,7 +49,7 @@ export default function gameReducer(state = defaultGame, action) {
     case GET_GAME:
       return action.game
     case UPDATE_GAME:
-      return {...state, ...action.gameStatus}
+      return {...state, ...action.updatedItem}
     default:
       return state
   }
