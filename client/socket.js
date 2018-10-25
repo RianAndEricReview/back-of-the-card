@@ -31,9 +31,10 @@ socket.joinGameRoom = (roomId, newPlayer) => {
 // receive answers from submitting players
 socket.on('receiveAnswer', (playerAnswer) => {
   store.dispatch(addPlayerAnswer(playerAnswer))
+  const currentStore = store.getState()
   // check to see if all players have submitted an answer
-  if (store.getState().allPlayerAnswers.length === store.getState().players.length) {
-    console.log('Round over - let the store increment question number')
+  if (currentStore.allPlayerAnswers.length === currentStore.players.length) {
+    store.dispatch(updateGame({roundOver: true}))
   }
 })
 
