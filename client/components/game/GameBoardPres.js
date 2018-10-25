@@ -2,7 +2,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 
 export default (props) => {
-  const {questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission} = props
+  const { questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission } = props
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   return (
     <div className="gameboard-pres-container">
