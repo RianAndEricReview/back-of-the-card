@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, addPlayerAnswer } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
 import socket from '../../socket'
 
 export class GameContainerClass extends Component {
@@ -35,7 +35,6 @@ export class GameContainerClass extends Component {
     playerAnswer.score = playerAnswer.answer === correctAnswer ? 1 * playerQuestionResult.time : 0
 
     this.props.createQuestionResult(playerQuestionResult)
-    // this.props.addPlayerAnswer(playerAnswer)
 
     socket.emit('submitAnswer', this.props.game.id, playerAnswer)
   }
@@ -84,9 +83,6 @@ const mapDispatchToProps = dispatch => {
     },
     createQuestionResult(playerQuestionResult) {
       dispatch(createQuestionResult(playerQuestionResult))
-    },
-    addPlayerAnswer(playerAnswer) {
-      dispatch(addPlayerAnswer(playerAnswer))
     }
   }
 }
