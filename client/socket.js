@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { getPlayer, updateGame } from './store'
+import store, { getPlayer, updateGame, addPlayerAnswer } from './store'
 
 const socket = io(window.location.origin)
 socket.on('connect', () => {
@@ -19,6 +19,10 @@ socket.on('newPlayerJoin', (newPlayer) => {
 // receive game close notification
 socket.on('gameClosed', () => {
   store.dispatch(updateGame({open: false}))
+})
+
+socket.on('receiveAnswer', (playerAnswer) => {
+  store.dispatch(addPlayerAnswer(playerAnswer))
 })
 
 //function for joining a game room.
