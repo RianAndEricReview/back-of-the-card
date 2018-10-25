@@ -23,6 +23,9 @@ socket.on('gameClosed', () => {
 
 socket.on('receiveAnswer', (playerAnswer) => {
   store.dispatch(addPlayerAnswer(playerAnswer))
+  if (store.getState().allPlayerAnswers.length === store.getState().players.length) {
+    console.log('Round over - let the store increment question number')
+  }
 })
 
 //function for joining a game room.
