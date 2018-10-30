@@ -35,12 +35,13 @@ socket.on('receiveAnswer', (playerAnswer) => {
 
   // check to see if all players have submitted an answer
   if (currentStore.allPlayerAnswers.length === currentStore.players.length) {
-    store.dispatch(updateGame({roundOver: true}))
+    //if all players have submitted: end the round, update scores for each player in store
+    store.dispatch(updateGame({ roundOver: true }))
     currentStore.allPlayerAnswers.forEach((playerAnswerObj) => {
       const currentScore = currentStore.players.find(player => {
         return player.id === playerAnswerObj.playerId
       }).gameScore
-      store.dispatch(updatePlayer(playerAnswerObj.playerId, {gameScore: playerAnswerObj.score + currentScore}))
+      store.dispatch(updatePlayer(playerAnswerObj.playerId, { gameScore: playerAnswerObj.score + currentScore }))
     })
   }
 })

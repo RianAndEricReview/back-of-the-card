@@ -27,10 +27,11 @@ export class GameContainerClass extends Component {
   answerSubmission(event) {
     event.preventDefault()
     let playerQuestionResult = { answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion }
-    let playerAnswer = { answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
-      return player.userId === this.props.user.id
-    }).id }
-    console.log('PLAYERANSWER', playerAnswer)
+    let playerAnswer = {
+      answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
+        return player.userId === this.props.user.id
+      }).id
+    }
 
     //The below section of code is a temporary score generator with minimal functionality.
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
