@@ -7,10 +7,12 @@ const defaultPlayers = []
 //ACTION TYPES
 export const GET_PLAYER = 'GET_PLAYER'
 export const GET_ALL_PLAYERS = 'GET_ALL_PLAYERS'
+export const UPDATE_PLAYER = 'UPDATE_PLAYER'
 
 //ACTION CREATORS
 export const getPlayer = player => ({ type: GET_PLAYER, player })
 export const getAllPlayers = players => ({ type: GET_ALL_PLAYERS, players })
+export const updatePlayer = (updatedPlayer) => ({ type: UPDATE_PLAYER, updatedPlayer})
 
 //THUNK CREATORS
 export const getAllPlayersThunk = (gameId, playerId) =>
@@ -33,6 +35,8 @@ export default function gameReducer(state = defaultPlayers, action) {
       return [...state, action.player]
     case GET_ALL_PLAYERS:
       return action.players
+    case UPDATE_PLAYER:
+      return state.map(player => { return (player.id === action.updatedPlayer.id) ? action.updatedPlayer : player })
     default:
       return state
   }
