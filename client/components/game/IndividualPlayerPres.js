@@ -11,7 +11,7 @@ export default (props) => {
           <h4>Player: {props.player.user.screenName}</h4>
         </div>
         <div className="player-content">
-          <h4>Score: 7224</h4>
+          <h4>Score: {!props.player.gameScore ? 0 : props.player.gameScore}</h4>
         </div>
       </div>
     </div>
