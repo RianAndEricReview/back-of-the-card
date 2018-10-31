@@ -259,7 +259,7 @@ form div {
   width: 70vw;
 }
 
-.gameboard-pres-container {
+.gameplay-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -312,20 +312,20 @@ form div {
   margin: .2em;
 }
 
-#gameplay-logo {
+.gameplay-logo {
   margin: .5em;
 }
 
-#gameboard-question {
+.gameboard-question {
   margin: 0em 5em 2em 5em;
   font-family: Palantino;
 }
 
-#gameboard-answer-container {
+.gameboard-answer-container {
   margin: 0em 6em;
 }
 
-#gameboard-answer-grid {
+.gameboard-answer-grid {
   margin-bottom: 3em;
 }
 
