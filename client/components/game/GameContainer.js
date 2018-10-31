@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import RoundResultsPres from './RoundResultsPres'
+import AnswerRevealPres from './AnswerRevealPres'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
 import socket from '../../socket'
 
@@ -62,7 +62,7 @@ export class GameContainerClass extends Component {
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
             <GameBoardPres {...gameBoardProps} /> :
-            <RoundResultsPres />}
+            <AnswerRevealPres {...gameBoardProps} />}
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (
