@@ -5,6 +5,7 @@ import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import AnswerRevealPres from './AnswerRevealPres'
+import RoundResultsPres from './RoundResultsPres'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
 import socket from '../../socket'
 
@@ -13,11 +14,13 @@ export class GameContainerClass extends Component {
     super(props)
     this.state = {
       clickedAnswer: '',
-      correctAnswerObj: {}
+      correctAnswerObj: {},
+      displayRoundResults: false,
     }
 
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
+    this.endAnswerReveal = this.endAnswerReveal.bind(this)
   }
 
   answerButtonClick(event) {
@@ -40,15 +43,23 @@ export class GameContainerClass extends Component {
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
     playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.time : 0
 
-    this.setState({correctAnswerObj: {
-      slicedCorrectAnswer,
-      correctAnswer,
-      playerCorrect: playerAnswer.answer === slicedCorrectAnswer
-    }})
+    this.setState({
+      correctAnswerObj: {
+        slicedCorrectAnswer,
+        correctAnswer,
+        playerCorrect: playerAnswer.answer === slicedCorrectAnswer
+      }
+    })
 
     this.props.createQuestionResult(playerQuestionResult)
 
     socket.emit('submitAnswer', this.props.game.id, playerAnswer)
+  }
+
+  endAnswerReveal() {
+    setTimeout(() => {
+      this.setState({ displayRoundResults: true })
+    }, 10000)
   }
 
   componentDidMount() {
@@ -63,7 +74,7 @@ export class GameContainerClass extends Component {
   }
 
   generateAnswerRevealProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.state.correctAnswerObj })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.state.correctAnswerObj, endAnswerReveal: this.endAnswerReveal })
   }
 
   render() {
