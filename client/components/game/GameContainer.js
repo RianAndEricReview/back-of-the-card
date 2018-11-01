@@ -84,8 +84,11 @@ export class GameContainerClass extends Component {
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
-            <GameBoardPres {...gameBoardProps} /> :
-            <AnswerRevealPres {...answerRevealProps} />}
+            <GameBoardPres {...gameBoardProps} /> : 
+          (!this.state.displayRoundResults) ?
+            <AnswerRevealPres {...answerRevealProps} /> : 
+            <RoundResultsPres />
+        }
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (
