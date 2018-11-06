@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import AnswerRevealPres from './AnswerRevealPres'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
+import ResultsContainer from './results/ResultsContainer'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers } from '../../store'
 import socket from '../../socket'
 
 export class GameContainerClass extends Component {
@@ -13,9 +13,8 @@ export class GameContainerClass extends Component {
     super(props)
     this.state = {
       clickedAnswer: '',
-      correctAnswerObj: {}
+      correctAnswerObj: {},
     }
-
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
   }
@@ -40,11 +39,13 @@ export class GameContainerClass extends Component {
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
     playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.time : 0
 
-    this.setState({correctAnswerObj: {
-      slicedCorrectAnswer,
-      correctAnswer,
-      playerCorrect: playerAnswer.answer === slicedCorrectAnswer
-    }})
+    this.setState({
+      correctAnswerObj: {
+        slicedCorrectAnswer,
+        correctAnswer,
+        playerCorrect: playerAnswer.answer === slicedCorrectAnswer
+      }
+    })
 
     this.props.createQuestionResult(playerQuestionResult)
 
@@ -52,6 +53,7 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
@@ -62,19 +64,15 @@ export class GameContainerClass extends Component {
     return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission })
   }
 
-  generateAnswerRevealProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.state.correctAnswerObj })
-  }
-
   render() {
     const gameBoardProps = this.generateGameBoardProps()
-    const answerRevealProps = this.generateAnswerRevealProps()
     return (
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
             <GameBoardPres {...gameBoardProps} /> :
-            <AnswerRevealPres {...answerRevealProps} />}
+            <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} />
+        }
         <div className="player-sidebar">
           {this.props.players.map(player => {
             return (
@@ -108,6 +106,9 @@ const mapDispatchToProps = dispatch => {
     },
     createQuestionResult(playerQuestionResult) {
       dispatch(createQuestionResult(playerQuestionResult))
+    },
+    clearAllPlayerAnswers() {
+      dispatch(clearAllPlayerAnswers())
     }
   }
 }
