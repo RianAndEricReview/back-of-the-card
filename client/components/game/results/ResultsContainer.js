@@ -3,31 +3,39 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AnswerRevealPres from './AnswerRevealPres'
 import RoundResultsPres from './RoundResultsPres'
-import { clearAllPlayerAnswers } from '../../store'
+import { clearAllPlayerAnswers } from '../../../store'
 
 export class ResultsContainerClass extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      displayRoundResults: false,
     }
 
   }
 
+  endAnswerReveal() {
+    setTimeout(() => {
+      this.setState({ displayRoundResults: true })
+    }, 10000)
+  }
+
   componentDidMount() {
-    this.props.endAnswerReveal()
+    this.endAnswerReveal()
   }
 
   generateAnswerRevealProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.props.correctAnswerObj, endAnswerReveal: this.props.endAnswerReveal })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.props.correctAnswerObj })
   }
 
   render() {
     const answerRevealProps = this.generateAnswerRevealProps()
     return (
       <div className="game-container">
-            (!this.state.displayRoundResults) ?
-              <AnswerRevealPres {...answerRevealProps} /> :
-              <RoundResultsPres />
+        {
+          (!this.state.displayRoundResults) ?
+          <AnswerRevealPres {...answerRevealProps} /> :
+          <RoundResultsPres />
         }
       </div>
     )

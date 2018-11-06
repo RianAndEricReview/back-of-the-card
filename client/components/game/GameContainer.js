@@ -4,8 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import AnswerRevealPres from './results/AnswerRevealPres'
-import RoundResultsPres from './results/RoundResultsPres'
+import ResultsContainer from './results/ResultsContainer'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers } from '../../store'
 import socket from '../../socket'
 
@@ -15,12 +14,9 @@ export class GameContainerClass extends Component {
     this.state = {
       clickedAnswer: '',
       correctAnswerObj: {},
-      displayRoundResults: false,
     }
-
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
-    this.endAnswerReveal = this.endAnswerReveal.bind(this)
   }
 
   answerButtonClick(event) {
@@ -56,12 +52,6 @@ export class GameContainerClass extends Component {
     socket.emit('submitAnswer', this.props.game.id, playerAnswer)
   }
 
-  endAnswerReveal() {
-    setTimeout(() => {
-      this.setState({ displayRoundResults: true })
-    }, 10000)
-  }
-
   componentDidMount() {
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
@@ -74,21 +64,14 @@ export class GameContainerClass extends Component {
     return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission })
   }
 
-  generateAnswerRevealProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.state.correctAnswerObj, endAnswerReveal: this.endAnswerReveal })
-  }
-
   render() {
     const gameBoardProps = this.generateGameBoardProps()
-    const answerRevealProps = this.generateAnswerRevealProps()
     return (
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
-            <GameBoardPres {...gameBoardProps} /> :
-            (!this.state.displayRoundResults) ?
-              <AnswerRevealPres {...answerRevealProps} /> :
-              <RoundResultsPres />
+            <GameBoardPres {...gameBoardProps} /> : 
+            <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {

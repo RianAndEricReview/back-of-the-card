@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 export class AnswerRevealPres extends Component {
 
   componentDidMount() {
-    this.props.endAnswerReveal()
+
   }
 
   render() {
