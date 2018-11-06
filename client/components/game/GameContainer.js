@@ -70,7 +70,7 @@ export class GameContainerClass extends Component {
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
-            <GameBoardPres {...gameBoardProps} /> : 
+            <GameBoardPres {...gameBoardProps} /> :
             <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} />
         }
         <div className="player-sidebar">

@@ -34,8 +34,8 @@ export class ResultsContainerClass extends Component {
       <div className="game-container">
         {
           (!this.state.displayRoundResults) ?
-          <AnswerRevealPres {...answerRevealProps} /> :
-          <RoundResultsPres />
+            <AnswerRevealPres {...answerRevealProps} /> :
+            <RoundResultsPres />
         }
       </div>
     )
