@@ -4,9 +4,9 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
-import AnswerRevealPres from './AnswerRevealPres'
-import RoundResultsPres from './RoundResultsPres'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult } from '../../store'
+import AnswerRevealPres from './results/AnswerRevealPres'
+import RoundResultsPres from './results/RoundResultsPres'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers } from '../../store'
 import socket from '../../socket'
 
 export class GameContainerClass extends Component {
@@ -63,6 +63,7 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
@@ -84,10 +85,10 @@ export class GameContainerClass extends Component {
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
-            <GameBoardPres {...gameBoardProps} /> : 
-          (!this.state.displayRoundResults) ?
-            <AnswerRevealPres {...answerRevealProps} /> : 
-            <RoundResultsPres />
+            <GameBoardPres {...gameBoardProps} /> :
+            (!this.state.displayRoundResults) ?
+              <AnswerRevealPres {...answerRevealProps} /> :
+              <RoundResultsPres />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {
@@ -122,6 +123,9 @@ const mapDispatchToProps = dispatch => {
     },
     createQuestionResult(playerQuestionResult) {
       dispatch(createQuestionResult(playerQuestionResult))
+    },
+    clearAllPlayerAnswers() {
+      dispatch(clearAllPlayerAnswers())
     }
   }
 }
