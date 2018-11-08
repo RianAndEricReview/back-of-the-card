@@ -9,19 +9,18 @@ export class ResultsContainerClass extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      displayRoundResults: false,
     }
 
   }
 
-  endAnswerReveal() {
-    setTimeout(() => {
-      this.setState({ displayRoundResults: true })
-    }, 10000)
+  componentDidMount() {
+    this.props.endAnswerReveal()
   }
 
-  componentDidMount() {
-    this.endAnswerReveal()
+  componentDidUpdate() {
+    if (this.props.displayRoundResults) {
+      this.props.endRoundResults()
+    }
   }
 
   generateAnswerRevealProps() {
@@ -33,7 +32,7 @@ export class ResultsContainerClass extends Component {
     return (
       <div className="game-container">
         {
-          (!this.state.displayRoundResults) ?
+          (!this.props.displayRoundResults) ?
             <AnswerRevealPres {...answerRevealProps} /> :
             <RoundResultsPres />
         }
