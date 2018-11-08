@@ -5,7 +5,7 @@ import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame } from '../../store'
 import socket from '../../socket'
 
 export class GameContainerClass extends Component {
@@ -14,9 +14,12 @@ export class GameContainerClass extends Component {
     this.state = {
       clickedAnswer: '',
       correctAnswerObj: {},
+      displayRoundResults: false,
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
+    this.endAnswerReveal = this.endAnswerReveal.bind(this)
+    this.endRoundResults = this.endRoundResults.bind(this)
   }
 
   answerButtonClick(event) {
@@ -52,6 +55,20 @@ export class GameContainerClass extends Component {
     socket.emit('submitAnswer', this.props.game.id, playerAnswer)
   }
 
+  endAnswerReveal() {
+    const answerRevealTimer = 5000
+    setTimeout(() => {
+      this.setState({ displayRoundResults: true })
+    }, answerRevealTimer)
+  }
+
+  endRoundResults() {
+    const roundResultsTimer = 5000
+    setTimeout(() => {
+      this.props.updateGame({roundOver: false})
+    }, roundResultsTimer)
+  }
+
   componentDidMount() {
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
@@ -71,7 +88,7 @@ export class GameContainerClass extends Component {
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
           (!this.props.game.roundOver) ?
             <GameBoardPres {...gameBoardProps} /> :
-            <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} />
+            <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {
@@ -109,6 +126,9 @@ const mapDispatchToProps = dispatch => {
     },
     clearAllPlayerAnswers() {
       dispatch(clearAllPlayerAnswers())
+    },
+    updateGame(updatedItem) {
+      dispatch(updateGame(updatedItem))
     }
   }
 }
