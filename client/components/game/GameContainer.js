@@ -58,6 +58,7 @@ export class GameContainerClass extends Component {
   endAnswerReveal() {
     const answerRevealTimer = 5000
     setTimeout(() => {
+      // After the timer ends, move on to the round results
       this.setState({ displayRoundResults: true })
     }, answerRevealTimer)
   }
@@ -65,7 +66,10 @@ export class GameContainerClass extends Component {
   endRoundResults() {
     const roundResultsTimer = 5000
     setTimeout(() => {
-      this.props.updateGame({roundOver: false})
+      // After the timer ends, reset the store/state to be ready to move on to the next question
+      this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion })
+      this.setState({ displayRoundResults: false })
+      this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
   }
 

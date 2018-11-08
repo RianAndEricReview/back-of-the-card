@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AnswerRevealPres from './AnswerRevealPres'
 import RoundResultsPres from './RoundResultsPres'
-import { clearAllPlayerAnswers, updateGame } from '../../../store'
+import { clearAllPlayerAnswers } from '../../../store'
 
 export class ResultsContainerClass extends Component {
   constructor(props) {
