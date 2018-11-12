@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -64,7 +65,7 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = 5000
+    const roundResultsTimer = 10000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion })

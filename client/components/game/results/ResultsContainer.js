@@ -27,14 +27,19 @@ export class ResultsContainerClass extends Component {
     return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, correctAnswerObj: this.props.correctAnswerObj })
   }
 
+  generateRoundResultsProps() {
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, allPlayerAnswers: this.props.allPlayerAnswers, players: this.props.players })
+  }
+
   render() {
     const answerRevealProps = this.generateAnswerRevealProps()
+    const roundResultsProps = this.generateRoundResultsProps()
     return (
       <div className="game-container">
         {
           (!this.props.displayRoundResults) ?
             <AnswerRevealPres {...answerRevealProps} /> :
-            <RoundResultsPres />
+            <RoundResultsPres {...roundResultsProps} />
         }
       </div>
     )
@@ -43,7 +48,9 @@ export class ResultsContainerClass extends Component {
 
 const mapStateToProps = state => ({
   game: state.game,
-  questions: state.questions
+  questions: state.questions,
+  allPlayerAnswers: state.allPlayerAnswers,
+  players: state.players
 })
 
 const mapDispatchToProps = dispatch => {
