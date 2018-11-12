@@ -2,7 +2,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 
 export default (props) => {
-  const { questions, currentQuestionNum, numOfQuestions, allPlayerAnswers, players } = props
+  const { questions, currentQuestionNum, numOfQuestions, allPlayerAnswers, players, userId } = props
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   return (
     <div className="gameplay-container">
@@ -11,7 +11,8 @@ export default (props) => {
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>
       </div>
       <div className="container">
-        <table className="table">
+        <table className="table table-bordered">
+          <caption>Player Results</caption>
           <thead>
             <tr>
               <th scope="col">Player</th>
@@ -23,11 +24,11 @@ export default (props) => {
           <tbody>
             {allPlayerAnswers.sort((a, b) => b.score - a.score).map(player => {
               return (
-                <tr key={player.playerId}>
+                <tr key={player.playerId} className={players.find(gamePlayer => gamePlayer.id === player.playerId).userId === userId ? 'table-active' : 'light'}>
                   <td>{players.find(gamePlayer => gamePlayer.id === player.playerId).user.screenName}</td>
-                  <td>{player.answer}</td>
+                  <td id={player.score > 0 ? 'playerCorrect' : 'playerIncorrect'}>{player.answer}</td>
                   <td>{player.score}</td>
-                  <td>9 sec</td>
+                  <td>---</td>
                 </tr>
               )
             })}

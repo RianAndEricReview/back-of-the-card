@@ -28,7 +28,7 @@ export class ResultsContainerClass extends Component {
   }
 
   generateRoundResultsProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, allPlayerAnswers: this.props.allPlayerAnswers, players: this.props.players })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, allPlayerAnswers: this.props.allPlayerAnswers, players: this.props.players, userId: this.props.user.id })
   }
 
   render() {
@@ -50,7 +50,8 @@ const mapStateToProps = state => ({
   game: state.game,
   questions: state.questions,
   allPlayerAnswers: state.allPlayerAnswers,
-  players: state.players
+  players: state.players,
+  user: state.user
 })
 
 const mapDispatchToProps = dispatch => {
