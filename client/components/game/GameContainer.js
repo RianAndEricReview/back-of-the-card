@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
+import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame } from '../../store'
 import socket from '../../socket'
@@ -16,6 +17,8 @@ export class GameContainerClass extends Component {
       clickedAnswer: '',
       correctAnswerObj: {},
       displayRoundResults: false,
+      finalRound: false,
+      gameOver: false,
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
@@ -59,17 +62,17 @@ export class GameContainerClass extends Component {
   endAnswerReveal() {
     const answerRevealTimer = 5000
     setTimeout(() => {
-      // After the timer ends, move on to the round results
-      this.setState({ displayRoundResults: true })
+      // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
+      (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
     }, answerRevealTimer)
   }
 
   endRoundResults() {
-    const roundResultsTimer = 10000
+    const roundResultsTimer = !this.state.finalRound ? 10000 : 5000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
-      this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion })
       this.setState({ displayRoundResults: false })
+      !this.state.finalRound ? this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion }) : this.setState({ gameOver: true })
       this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
   }
@@ -86,14 +89,20 @@ export class GameContainerClass extends Component {
     return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission })
   }
 
+  generateGameOverProps() {
+    return ({ players: this.props.players, userId: this.props.user.id })
+  }
+
   render() {
     const gameBoardProps = this.generateGameBoardProps()
+    const gameOverProps = this.generateGameOverProps()
     return (
       <div className="game-container">
         {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
-          (!this.props.game.roundOver) ?
-            <GameBoardPres {...gameBoardProps} /> :
-            <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} />
+          (this.state.gameOver) ? <GameOverPres {...gameOverProps} /> :
+            (!this.props.game.roundOver) ?
+              <GameBoardPres {...gameBoardProps} /> :
+              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {
@@ -112,7 +121,7 @@ const mapStateToProps = state => ({
   user: state.user,
   game: state.game,
   players: state.players,
-  questions: state.questions
+  questions: state.questions,
 })
 
 const mapDispatchToProps = dispatch => {
