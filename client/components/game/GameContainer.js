@@ -71,6 +71,7 @@ export class GameContainerClass extends Component {
     const roundResultsTimer = !this.state.finalRound ? 10000 : 5000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
+      // Or if it is the final round, instead set gameOver to true.
       this.setState({ displayRoundResults: false })
       !this.state.finalRound ? this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion }) : this.setState({ gameOver: true })
       this.props.clearAllPlayerAnswers()
@@ -98,8 +99,10 @@ export class GameContainerClass extends Component {
     const gameOverProps = this.generateGameOverProps()
     return (
       <div className="game-container">
-        {(this.props.game.open || this.props.questions.length <= 0) ? <LoadingPres /> :
-          (this.state.gameOver) ? <GameOverPres {...gameOverProps} /> :
+        {(this.props.game.open || this.props.questions.length <= 0) ?
+          <LoadingPres /> :
+          (this.state.gameOver) ?
+            <GameOverPres {...gameOverProps} /> :
             (!this.props.game.roundOver) ?
               <GameBoardPres {...gameBoardProps} /> :
               <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} />
