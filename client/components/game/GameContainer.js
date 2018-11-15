@@ -34,7 +34,7 @@ export class GameContainerClass extends Component {
 
   answerSubmission(event) {
     event.preventDefault()
-    let playerQuestionResult = { answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion }
+    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, secondsToAnswer: 5, questionId: this.props.game.currentQuestion, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
         return player.userId === this.props.user.id
@@ -45,7 +45,7 @@ export class GameContainerClass extends Component {
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.time : 0
+    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.secondsToAnswer : 0
 
     this.setState({
       correctAnswerObj: {
@@ -79,7 +79,7 @@ export class GameContainerClass extends Component {
       } else {
         this.setState({ gameOver: true })
         this.props.players.sort((a, b) => b.gameScore - a.gameScore).forEach((player, index) => {
-          this.props.updatePlayer(player.id, {finishPosition: index + 1})
+          this.props.updatePlayer(player.id, { finishPosition: index + 1 })
         })
       }
 
@@ -102,8 +102,11 @@ export class GameContainerClass extends Component {
         { currentQuestion: this.props.game.currentQuestion })
         .catch(err => console.log(err))
     }
-    axios.put(`/api/gamePlayer/${userGamePlayer.id}`,
-      { gameScore: userGamePlayer.gameScore, finishPosition: userGamePlayer.finishPosition })
+
+    axios.put(`/api/gamePlayer/${userGamePlayer.id}`, { gameScore: userGamePlayer.gameScore, finishPosition: userGamePlayer.finishPosition })
+      .catch(err => console.log(err))
+
+    axios.post('api/playerQuestionResults', this.props.playerQuestionResults)
       .catch(err => console.log(err))
   }
 
@@ -146,6 +149,7 @@ const mapStateToProps = state => ({
   game: state.game,
   players: state.players,
   questions: state.questions,
+  playerQuestionResults: state.playerQuestionResults
 })
 
 const mapDispatchToProps = dispatch => {
