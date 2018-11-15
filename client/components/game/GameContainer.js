@@ -86,6 +86,10 @@ export class GameContainerClass extends Component {
     else { this.props.getAllQuestions(this.props.game.id) }
   }
 
+  componentWillUnmount() {
+
+  }
+
   generateGameBoardProps() {
     return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission })
   }
