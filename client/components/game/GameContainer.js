@@ -7,7 +7,7 @@ import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame, updatePlayer } from '../../store'
 import socket from '../../socket'
 import axios from 'axios'
 
@@ -69,12 +69,20 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 3000 : 1000
+    const roundResultsTimer = !this.state.finalRound ? 1000 : 1000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
       this.setState({ displayRoundResults: false })
-      !this.state.finalRound ? this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion }) : this.setState({ gameOver: true })
+      if (!this.state.finalRound) {
+        this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion })
+      } else {
+        this.setState({ gameOver: true })
+        this.props.players.sort((a, b) => b.gameScore - a.gameScore).forEach((player, index) => {
+          this.props.updatePlayer(player.id, {finishPosition: index + 1})
+        })
+      }
+
       this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
   }
@@ -88,12 +96,15 @@ export class GameContainerClass extends Component {
   }
 
   componentWillUnmount() {
+    const userGamePlayer = this.props.players.find((player) => player.userId === this.props.user.id)
     if (this.props.game.host) {
       axios.put(`/api/games/${this.props.game.id}`,
-      {currentQuestion: this.props.game.currentQuestion})
-      .catch(err => console.log(err))
+        { currentQuestion: this.props.game.currentQuestion })
+        .catch(err => console.log(err))
     }
-
+    axios.put(`/api/gamePlayer/${userGamePlayer.id}`,
+      { gameScore: userGamePlayer.gameScore, finishPosition: userGamePlayer.finishPosition })
+      .catch(err => console.log(err))
   }
 
   generateGameBoardProps() {
@@ -156,6 +167,9 @@ const mapDispatchToProps = dispatch => {
     },
     updateGame(updatedItem) {
       dispatch(updateGame(updatedItem))
+    },
+    updatePlayer(playerId, updatedItem) {
+      dispatch(updatePlayer(playerId, updatedItem))
     }
   }
 }
