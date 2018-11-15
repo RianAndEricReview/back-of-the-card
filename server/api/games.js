@@ -154,13 +154,14 @@ router.get('/:gameId/questions', (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:gameId/currentQuestion', (req, res, next) => {
+router.put('/:gameId', (req, res, next) => {
   Game.findById(req.params.gameId)
   .then(game => {
-    return game.update({currentQuestion: req.body.currentQuestion})
+    return game.update(req.body)
   })
   .then(updatedGame => {
     res.status(201).json(updatedGame)
   })
   .catch(next)
 })
+

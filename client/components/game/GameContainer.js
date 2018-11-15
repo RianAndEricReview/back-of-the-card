@@ -89,7 +89,7 @@ export class GameContainerClass extends Component {
 
   componentWillUnmount() {
     if (this.props.game.host) {
-      axios.put(`/api/games/${this.props.game.id}/currentQuestion`,
+      axios.put(`/api/games/${this.props.game.id}`,
       {currentQuestion: this.props.game.currentQuestion})
       .catch(err => console.log(err))
     }
