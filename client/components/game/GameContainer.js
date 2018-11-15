@@ -9,6 +9,7 @@ import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame } from '../../store'
 import socket from '../../socket'
+import axios from 'axios'
 
 export class GameContainerClass extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 5000
+    const answerRevealTimer = 1000
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
@@ -68,7 +69,7 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 10000 : 5000
+    const roundResultsTimer = !this.state.finalRound ? 3000 : 1000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
@@ -87,6 +88,11 @@ export class GameContainerClass extends Component {
   }
 
   componentWillUnmount() {
+    if (this.props.game.host) {
+      axios.put(`/api/games/${this.props.game.id}/currentQuestion`,
+      {currentQuestion: this.props.game.currentQuestion})
+      .catch(err => console.log(err))
+    }
 
   }
 
