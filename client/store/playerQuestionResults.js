@@ -7,7 +7,7 @@ export const CLEAR_QUESTION_RESULTS = 'CLEAR_QUESTION_RESULTS'
 export const CREATE_QUESTION_RESULT = 'CREATE_QUESTION_RESULT'
 
 //ACTION CREATORS
-export const saveAndClearQuestionResults = () => ({ type: CLEAR_QUESTION_RESULTS })
+export const clearQuestionResults = () => ({ type: CLEAR_QUESTION_RESULTS })
 export const createQuestionResult = questionResult => ({ type: CREATE_QUESTION_RESULT, questionResult })
 
 //REDUCERS

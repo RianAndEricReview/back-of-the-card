@@ -7,7 +7,7 @@ import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame, updatePlayer } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
 import socket from '../../socket'
 import axios from 'axios'
 
@@ -108,6 +108,8 @@ export class GameContainerClass extends Component {
 
     axios.post('api/playerQuestionResults', this.props.playerQuestionResults)
       .catch(err => console.log(err))
+
+    this.props.clearAllGameplay()
   }
 
   generateGameBoardProps() {
@@ -168,6 +170,12 @@ const mapDispatchToProps = dispatch => {
     },
     clearAllPlayerAnswers() {
       dispatch(clearAllPlayerAnswers())
+    },
+    clearAllGameplay() {
+      dispatch(clearAllPlayers())
+      dispatch(clearAllQuestions())
+      dispatch(clearQuestionResults())
+      dispatch(clearGameData())
     },
     updateGame(updatedItem) {
       dispatch(updateGame(updatedItem))
