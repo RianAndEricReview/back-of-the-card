@@ -154,14 +154,15 @@ router.get('/:gameId/questions', (req, res, next) => {
     .catch(next)
 })
 
+// Used to update data in a specific game instance
 router.put('/:gameId', (req, res, next) => {
   Game.findById(req.params.gameId)
-  .then(game => {
-    return game.update(req.body)
-  })
-  .then(updatedGame => {
-    res.status(201).json(updatedGame)
-  })
-  .catch(next)
+    .then(game => {
+      return game.update(req.body)
+    })
+    .then(updatedGame => {
+      res.status(201).json(updatedGame)
+    })
+    .catch(next)
 })
 

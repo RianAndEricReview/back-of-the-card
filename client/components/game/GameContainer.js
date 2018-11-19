@@ -61,7 +61,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 1000
+    const answerRevealTimer = 3500
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
@@ -69,7 +69,7 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 1000 : 1000
+    const roundResultsTimer = !this.state.finalRound ? 5000 : 3500
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
@@ -96,19 +96,20 @@ export class GameContainerClass extends Component {
   }
 
   componentWillUnmount() {
+    //The host updates the game in the DB.
     const userGamePlayer = this.props.players.find((player) => player.userId === this.props.user.id)
     if (this.props.game.host) {
       axios.put(`/api/games/${this.props.game.id}`,
         { currentQuestion: this.props.game.currentQuestion })
         .catch(err => console.log(err))
     }
-
+    //Each player updates their own score and place in the DB.
     axios.put(`/api/gamePlayer/${userGamePlayer.id}`, { gameScore: userGamePlayer.gameScore, finishPosition: userGamePlayer.finishPosition })
       .catch(err => console.log(err))
-
+    //Each player posts all of their question results to the DB.
     axios.post('api/playerQuestionResults', this.props.playerQuestionResults)
       .catch(err => console.log(err))
-
+    //Clears all data for the current game in the store.
     this.props.clearAllGameplay()
   }
 
