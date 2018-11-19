@@ -7,8 +7,9 @@ import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, clearAllPlayerAnswers, updateGame } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
 import socket from '../../socket'
+import axios from 'axios'
 
 export class GameContainerClass extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ export class GameContainerClass extends Component {
 
   answerSubmission(event) {
     event.preventDefault()
-    let playerQuestionResult = { answer: this.state.clickedAnswer, time: 5, questionId: this.props.game.currentQuestion }
+    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, secondsToAnswer: 5, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
         return player.userId === this.props.user.id
@@ -44,7 +45,7 @@ export class GameContainerClass extends Component {
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.time : 0
+    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.secondsToAnswer : 0
 
     this.setState({
       correctAnswerObj: {
@@ -60,7 +61,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 5000
+    const answerRevealTimer = 3500
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
@@ -68,12 +69,20 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 10000 : 5000
+    const roundResultsTimer = !this.state.finalRound ? 5000 : 3500
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
       this.setState({ displayRoundResults: false })
-      !this.state.finalRound ? this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion }) : this.setState({ gameOver: true })
+      if (!this.state.finalRound) {
+        this.props.updateGame({ roundOver: false, currentQuestion: ++this.props.game.currentQuestion })
+      } else {
+        this.setState({ gameOver: true })
+        this.props.players.sort((a, b) => b.gameScore - a.gameScore).forEach((player, index) => {
+          this.props.updatePlayer(player.id, { finishPosition: index + 1 })
+        })
+      }
+
       this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
   }
@@ -84,6 +93,24 @@ export class GameContainerClass extends Component {
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
     else { this.props.getAllQuestions(this.props.game.id) }
+  }
+
+  componentWillUnmount() {
+    //The host updates the game in the DB.
+    const userGamePlayer = this.props.players.find((player) => player.userId === this.props.user.id)
+    if (this.props.game.host) {
+      axios.put(`/api/games/${this.props.game.id}`,
+        { currentQuestion: this.props.game.currentQuestion })
+        .catch(err => console.log(err))
+    }
+    //Each player updates their own score and place in the DB.
+    axios.put(`/api/gamePlayer/${userGamePlayer.id}`, { gameScore: userGamePlayer.gameScore, finishPosition: userGamePlayer.finishPosition })
+      .catch(err => console.log(err))
+    //Each player posts all of their question results to the DB.
+    axios.post('api/playerQuestionResults', this.props.playerQuestionResults)
+      .catch(err => console.log(err))
+    //Clears all data for the current game in the store.
+    this.props.clearAllGameplay()
   }
 
   generateGameBoardProps() {
@@ -125,6 +152,7 @@ const mapStateToProps = state => ({
   game: state.game,
   players: state.players,
   questions: state.questions,
+  playerQuestionResults: state.playerQuestionResults
 })
 
 const mapDispatchToProps = dispatch => {
@@ -144,8 +172,17 @@ const mapDispatchToProps = dispatch => {
     clearAllPlayerAnswers() {
       dispatch(clearAllPlayerAnswers())
     },
+    clearAllGameplay() {
+      dispatch(clearAllPlayers())
+      dispatch(clearAllQuestions())
+      dispatch(clearQuestionResults())
+      dispatch(clearGameData())
+    },
     updateGame(updatedItem) {
       dispatch(updateGame(updatedItem))
+    },
+    updatePlayer(playerId, updatedItem) {
+      dispatch(updatePlayer(playerId, updatedItem))
     }
   }
 }

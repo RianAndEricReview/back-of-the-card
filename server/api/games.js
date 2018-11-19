@@ -23,7 +23,7 @@ router.get('/:gametypeId', (req, res, next) => {
     where: { open: true, gametypeId: req.params.gametypeId }
   })
     .then(game => {
-      (game) ? res.status(200).json({id: game.dataValues.id}) : res.status(204).json(game)
+      (game) ? res.status(200).json({ id: game.dataValues.id }) : res.status(204).json(game)
     })
     .catch(next)
 })
@@ -42,15 +42,15 @@ router.get('/:gameId/players', (req, res, next) => {
 // Used to create a new game instance with gametype
 router.post('/', (req, res, next) => {
   Gametype.findById(req.body.gametypeId)
-  .then(gametype => {
-    return Game.create({ open: req.body.open, gametypeId: gametype.id })
-    .then(game => {
-      game.dataValues.gametype = gametype
-      res.status(201).json(game)
-      return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
+    .then(gametype => {
+      return Game.create({ open: req.body.open, gametypeId: gametype.id })
+        .then(game => {
+          game.dataValues.gametype = gametype
+          res.status(201).json(game)
+          return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
+        })
     })
-  })
-  .catch(next)
+    .catch(next)
 })
 
 // Used to add a player to a game instance
@@ -153,3 +153,16 @@ router.get('/:gameId/questions', (req, res, next) => {
     })
     .catch(next)
 })
+
+// Used to update data in a specific game instance
+router.put('/:gameId', (req, res, next) => {
+  Game.findById(req.params.gameId)
+    .then(game => {
+      return game.update(req.body)
+    })
+    .then(updatedGame => {
+      res.status(201).json(updatedGame)
+    })
+    .catch(next)
+})
+
