@@ -61,7 +61,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 3500
+    const answerRevealTimer = 1000
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
@@ -69,7 +69,7 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 5000 : 3500
+    const roundResultsTimer = !this.state.finalRound ? 1000 : 1000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
