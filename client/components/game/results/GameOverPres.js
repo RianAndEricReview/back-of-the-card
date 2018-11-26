@@ -7,7 +7,7 @@ export default (props) => {
     <div className="gameplay-container">
       <h1 className="gameplay-logo"> BackOfTheCard </h1>
       <div className="gameboard-question">
-        <h4><strong>GAME OVER!!!</strong></h4>
+        <h4 style={{color: 'red'}}><strong>GAME OVER!!!</strong></h4>
       </div>
       <div className="container">
         <table className="table table-bordered">
@@ -32,6 +32,7 @@ export default (props) => {
           </tbody>
         </table>
       </div>
+      <a href="/" className="btn btn-dark">Main Menu</a>
     </div>
   )
 }
