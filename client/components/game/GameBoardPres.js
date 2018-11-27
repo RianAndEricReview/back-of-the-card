@@ -2,7 +2,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 
 export default (props) => {
-  const { questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission, clickedAnswer } = props
+  const { questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission, clickedAnswer, answerSubmitted } = props
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   return (
     <div className="gameplay-container">
@@ -17,14 +17,14 @@ export default (props) => {
             return (
               <div key={index} className="form-group">
                 <div className="col-6 text-center gameboard-answer-grid">
-                  <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]}`} value={answer} onClick={(event) => answerButtonClick(event)}> {answer} </button>
+                  <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]} ${clickedAnswer === answer ? 'active' : ''}`} value={answer} onClick={(event) => answerButtonClick(event)}> {answer} </button>
                 </div>
               </div>
             )
           }
           )}
           </div>
-          <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer} onClick={(event) => answerSubmission(event)}>SUBMIT</button>
+          <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer || answerSubmitted} onClick={(event) => answerSubmission(event)}>SUBMIT</button>
         </form>
       </div>
     </div>

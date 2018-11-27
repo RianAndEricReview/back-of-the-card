@@ -16,6 +16,7 @@ export class GameContainerClass extends Component {
     super(props)
     this.state = {
       clickedAnswer: '',
+      answerSubmitted: false,
       correctAnswerObj: {},
       displayRoundResults: false,
       finalRound: false,
@@ -25,6 +26,11 @@ export class GameContainerClass extends Component {
     this.answerSubmission = this.answerSubmission.bind(this)
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
+    this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
+  }
+
+  resetAnswerSubmitted() {
+    this.setState({answerSubmitted: false, clickedAnswer: ''})
   }
 
   answerButtonClick(event) {
@@ -53,7 +59,7 @@ export class GameContainerClass extends Component {
         correctAnswer,
         playerCorrect: playerAnswer.answer === slicedCorrectAnswer
       },
-      clickedAnswer: ''
+      answerSubmitted: true
     })
 
     this.props.createQuestionResult(playerQuestionResult)
@@ -115,7 +121,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted })
   }
 
   generateGameOverProps() {
@@ -133,7 +139,7 @@ export class GameContainerClass extends Component {
             <GameOverPres {...gameOverProps} /> :
             (!this.props.game.roundOver) ?
               <GameBoardPres {...gameBoardProps} /> :
-              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} />
+              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} resetAnswerSubmitted={this.resetAnswerSubmitted} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {
