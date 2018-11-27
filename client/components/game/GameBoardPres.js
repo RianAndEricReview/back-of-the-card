@@ -17,7 +17,7 @@ export default (props) => {
             return (
               <div key={index} className="form-group">
                 <div className="col-6 text-center gameboard-answer-grid">
-                  <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]} ${clickedAnswer === answer ? 'active' : ''}`} value={answer} onClick={(event) => answerButtonClick(event)}> {answer} </button>
+                  <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]} ${clickedAnswer === answer ? 'active' : ''}`} value={answer} disabled={answerSubmitted && clickedAnswer !== answer} onClick={(event) => answerButtonClick(event)}> {answer} </button>
                 </div>
               </div>
             )
