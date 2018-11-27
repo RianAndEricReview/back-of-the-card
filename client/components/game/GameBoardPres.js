@@ -2,7 +2,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 
 export default (props) => {
-  const { questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission } = props
+  const { questions, currentQuestionNum, numOfQuestions, answerButtonClick, answerSubmission, clickedAnswer } = props
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   return (
     <div className="gameplay-container">
@@ -24,7 +24,7 @@ export default (props) => {
           }
           )}
           </div>
-          <button type="submit" onClick={(event) => answerSubmission(event)}>SUBMIT</button>
+          <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer} onClick={(event) => answerSubmission(event)}>SUBMIT</button>
         </form>
       </div>
     </div>

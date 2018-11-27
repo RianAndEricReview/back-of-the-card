@@ -52,7 +52,8 @@ export class GameContainerClass extends Component {
         slicedCorrectAnswer,
         correctAnswer,
         playerCorrect: playerAnswer.answer === slicedCorrectAnswer
-      }
+      },
+      clickedAnswer: ''
     })
 
     this.props.createQuestionResult(playerQuestionResult)
@@ -114,7 +115,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer })
   }
 
   generateGameOverProps() {
