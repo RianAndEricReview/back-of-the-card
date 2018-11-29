@@ -209,7 +209,7 @@ form div {
  border: 1em solid rgb(247, 236, 217);
 }
 
-.centered {
+.centered-gametype {
   position: absolute;
   text-align: center;
   top: 30%;
@@ -229,7 +229,7 @@ form div {
   height: 100%;
  }
 
-.play-button-container {
+.center-container {
   display: flex;
   justify-content: center;
  }
@@ -321,16 +321,24 @@ form div {
   font-family: Palantino;
 }
 
-.gameboard-answer-container {
-  margin: 0em 6em;
-}
-
 .gameboard-answer-grid {
   margin-bottom: 3em;
 }
 
 .gameboard-answer-buttons {
   width: 15em;
+}
+
+.gameboard-answer-col {
+  margin-bottom: 6.1em;
+}
+
+.gameboard-answer-row {
+  margin: 0em 9.7em 0em 9.05em;
+}
+
+.answer-waiting-message {
+  margin-top: -1em;
 }
 
 #playerCorrect {

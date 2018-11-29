@@ -15,6 +15,7 @@ export class ResultsContainerClass extends Component {
 
   componentDidMount() {
     this.props.endAnswerReveal()
+    this.props.resetAnswerSubmitted()
   }
 
   componentDidUpdate() {
