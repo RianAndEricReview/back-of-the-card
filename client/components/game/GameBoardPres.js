@@ -20,8 +20,7 @@ export default (props) => {
                   <button className={`gameboard-answer-buttons btn btn-outline-${buttonTypes[index]} ${clickedAnswer === answer ? 'active' : ''}`} value={answer} disabled={answerSubmitted && clickedAnswer !== answer} onClick={(event) => answerButtonClick(event)}> {answer} </button>
                 </div>
               </div>
-            )
-          }
+            )}
           )}
           </div>
           <div className="center-container">
