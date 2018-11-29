@@ -25,7 +25,7 @@ export default (props) => {
           )}
           </div>
           <div className="center-container">
-          {answerSubmitted ? <h3 className="answer-waiting-message">Waiting for all players to answer</h3> : null}
+            {answerSubmitted ? <h3 className="answer-waiting-message">Waiting for all players to answer</h3> : null}
           </div>
           <div className="center-container">
             <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer || answerSubmitted} onClick={(event) => answerSubmission(event)}>SUBMIT</button>

@@ -15,18 +15,18 @@ export default (props) => {
         {correctAnswerObj.playerCorrect ? <h2>CORRECT!!!</h2> : <h2>INCORRECT</h2>}
       </div>
       <div className="container">
-          <div className="row center-container gameboard-answer-row">{currentQuestion.answers.map((answer, index) => {
-            return (
-              <div key={index} className="col-6">
-                <div className="text-center gameboard-answer-grid gameboard-answer-col">
-                  {answer === correctAnswerObj.slicedCorrectAnswer ? <button className="gameboard-answer-buttons btn btn-primary"> {correctAnswer} </button> :
-                    <button className="gameboard-answer-buttons btn btn-secondary"> {answer} </button>}
-                </div>
+        <div className="row center-container gameboard-answer-row">{currentQuestion.answers.map((answer, index) => {
+          return (
+            <div key={index} className="col-6">
+              <div className="text-center gameboard-answer-grid gameboard-answer-col">
+                {answer === correctAnswerObj.slicedCorrectAnswer ? <button className="gameboard-answer-buttons btn btn-primary"> {correctAnswer} </button> :
+                  <button className="gameboard-answer-buttons btn btn-secondary"> {answer} </button>}
               </div>
-            )
-          }
-          )}
-          </div>
+            </div>
+          )
+        }
+        )}
+        </div>
 
       </div>
     </div>
