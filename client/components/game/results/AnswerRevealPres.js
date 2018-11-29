@@ -15,7 +15,6 @@ export default (props) => {
         {correctAnswerObj.playerCorrect ? <h2>CORRECT!!!</h2> : <h2>INCORRECT</h2>}
       </div>
       <div className="container">
-
           <div className="row center-container gameboard-answer-row">{currentQuestion.answers.map((answer, index) => {
             return (
               <div key={index} className="col-6">

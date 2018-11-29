@@ -337,6 +337,10 @@ form div {
   margin: 0em 9.7em 0em 9.05em;
 }
 
+.answer-waiting-message {
+  margin-top: -1em;
+}
+
 #playerCorrect {
   color: #159b4b97;
   font-weight: bold;
