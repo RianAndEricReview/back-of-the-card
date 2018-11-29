@@ -12,7 +12,7 @@ export default (props) => {
       </div>
       <div className="container">
         <form>
-          <div className="row gameboard-answer-container">{currentQuestion.answers.map((answer, index) => {
+          <div className="row center-container">{currentQuestion.answers.map((answer, index) => {
             const buttonTypes = ['primary', 'danger', 'success', 'warning']
             return (
               <div key={index} className="form-group">
@@ -24,7 +24,9 @@ export default (props) => {
           }
           )}
           </div>
-          <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer || answerSubmitted} onClick={(event) => answerSubmission(event)}>SUBMIT</button>
+          <div className="center-container">
+            <button type="submit" className="btn btn-secondary" disabled={!clickedAnswer || answerSubmitted} onClick={(event) => answerSubmission(event)}>SUBMIT</button>
+          </div>
         </form>
       </div>
     </div>

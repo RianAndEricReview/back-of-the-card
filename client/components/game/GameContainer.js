@@ -68,7 +68,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 1000
+    const answerRevealTimer = 5000
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
