@@ -42,7 +42,7 @@ const dataConsolidator = (data, questionChoices, isDerived) => {
     case (questionChoices.timeFrame === 'singleSeason' && !!isDerived && questionChoices.teamOrPlayer === 'singlePlayer' && questionChoices.mostOrLeast === 'most'):
       return data.map(entry => {
         return { ...entry.dataValues, [questionChoices.statCategory]: entry[questionChoices.statCategory] }
-      }).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
+      }).filter(entry => (entry.PA >= 300)).sort((a, b) => { return b[questionChoices.statCategory] - a[questionChoices.statCategory] })
 
     case (questionChoices.timeFrame === 'singleSeason' && questionChoices.mostOrLeast === 'least' && questionChoices.teamOrPlayer === 'singlePlayer'):
       let minPA = 502

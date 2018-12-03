@@ -26,7 +26,6 @@ class QuestionQueryParameters {
     if (!isDerived) { attributes.push([sequelize.fn('SUM', sequelize.col(questionChoices.statCategory)), questionChoices.statCategory]) }
     else {
       //update name of derived stat
-      questionChoices.statCategory = `${questionChoices.statCategory}${questionChoices.timeFrame}`
       isDerived.attributes.forEach((attribute) => {
         attributes.push([sequelize.fn('SUM', sequelize.col(attribute)), attribute])
       })

@@ -87,7 +87,6 @@ router.post('/:gameId/questions', (req, res, next) => {
     while (!question || questionTexts.includes(question.question)) {
       questionChoices = new QuestionChoices()
       questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
-
       //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
       if (questionChoices.timeFrame === 'allTime') {
         questionChoices.mostOrLeast = 'most'

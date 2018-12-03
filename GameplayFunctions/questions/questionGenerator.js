@@ -39,15 +39,20 @@ class QuestionChoices {
     }
   }
 
-  // Run content selector and set a proper year
+  // Run content selector and set certain query parameters.
+  // eslint-disable-next-line complexity
   questionChoiceGenerator(optionsArray, yearRange) {
     this.questionContentSelector(optionsArray, this)
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
       //eliminate strike years, BA before 1900
-      while (!this.questionSkeletonKey.year || this.questionSkeletonKey.year === 1972 || this.questionSkeletonKey.year === 1981 || this.questionSkeletonKey.year === 1994 || (this.statCategory === 'adjBA' && this.questionSkeletonKey.year < 1900) || (this.teamOrPlayer === 'team' && this.questionSkeletonKey.year < 1900)) {
+      while (!this.questionSkeletonKey.year || this.questionSkeletonKey.year === 1972 || this.questionSkeletonKey.year === 1981 || this.questionSkeletonKey.year === 1994 || (this.statCategory === 'BA' && this.questionSkeletonKey.year < 1900) || (this.teamOrPlayer === 'team' && this.questionSkeletonKey.year < 1900)) {
         this.questionSkeletonKey.year = randomYearSelector(yearRange)
       }
+    }
+    //set stat category to adjBA if it is a who led the league in BA for a year question
+    if (this.statCategory === 'BA' && this.timeFrame === 'singleSeason' && this.teamOrPlayer === 'singlePlayer' && this.questionType === 'overall') {
+      this.statCategory = 'adjBA'
     }
   }
 }
