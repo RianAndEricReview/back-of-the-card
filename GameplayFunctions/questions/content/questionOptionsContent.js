@@ -38,7 +38,7 @@ const overallPlayerBattingStats = [
   { whatToSet: [{ key: 'statCategory', value: 'hits', skeletonType: { stat: { verb: [`had`], objectNoun: [`base hits`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: '2B', skeletonType: { stat: { verb: [`hit`], objectNoun: [`doubles`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: '3B', skeletonType: { stat: { verb: [`legged out`], objectNoun: [`triples`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
-  { whatToSet: [{ key: 'statCategory', value: 'BA', skeletonType: { stat: { verb: [`had`], objectNoun: [`Batting Avg`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
+  { whatToSet: [{ key: 'statCategory', value: 'BA', skeletonType: { stat: { verb: [`had`], objectNoun: [`Batting Avg`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 300 },
   { whatToSet: [{ key: 'statCategory', value: 'RBI', skeletonType: { stat: { verb: [`had`], objectNoun: [`RBIs`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 5 },
   { whatToSet: [{ key: 'statCategory', value: 'AB', skeletonType: { stat: { verb: [`had`], objectNoun: [`at bats`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 2 },
   { whatToSet: [{ key: 'statCategory', value: 'BB', skeletonType: { stat: { verb: [`had`], objectNoun: [`walks`] } } }], weight: 3, nextChoice: mostOrLeast },
@@ -55,7 +55,7 @@ const comparisonPlayerBattingStats = [
   { whatToSet: [{ key: 'statCategory', value: 'hits', skeletonType: { stat: { verb: [`had`], objectNoun: [`base hits`] } } }], weight: 3, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: '2B', skeletonType: { stat: { verb: [`hit`], objectNoun: [`doubles`] } } }], weight: 3, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: '3B', skeletonType: { stat: { verb: [`legged out`], objectNoun: [`triples`] } } }], weight: 3, nextChoice: mostOrLeast },
-  { whatToSet: [{ key: 'statCategory', value: 'BA', skeletonType: { stat: { verb: [`had`], objectNoun: [`batting AVG`] } } }], weight: 3, nextChoice: mostOrLeast },
+  { whatToSet: [{ key: 'statCategory', value: 'BA', skeletonType: { stat: { verb: [`had`], objectNoun: [`batting AVG`] } } }], weight: 3000, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: 'RBI', skeletonType: { stat: { verb: [`had`], objectNoun: [`RBIs`] } } }], weight: 5, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: 'AB', skeletonType: { stat: { verb: [`had`], objectNoun: [`at bats`] } } }], weight: 2, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: 'BB', skeletonType: { stat: { verb: [`had`], objectNoun: [`walks`] } } }], weight: 3, nextChoice: mostOrLeast },
@@ -89,19 +89,19 @@ const comparisonPlayerTimeframe = [
 
 
 const overallTeamOrPlayer = [
-  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: overallPlayerTimeframe },
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 400, nextChoice: overallPlayerTimeframe },
   { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 2, nextChoice: overallTeamTimeframe }
 ]
 
 const comparisonTeamOrPlayer = [
-  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: comparisonPlayerTimeframe },
-  { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 2, nextChoice: comparisonTeamTimeframe }
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 400, nextChoice: comparisonPlayerTimeframe },
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 0, nextChoice: comparisonTeamTimeframe }
 ]
 
 
 const questionType = [
   { whatToSet: [{ key: 'questionType', value: 'comparison', skeletonType: { stat: { comparativePhrasing: [`of these`], pluralization: [`s`] } } }], weight: 1, nextChoice: comparisonTeamOrPlayer },
-  { whatToSet: [{ key: 'questionType', value: 'overall' }], weight: 1, nextChoice: overallTeamOrPlayer }
+  { whatToSet: [{ key: 'questionType', value: 'overall' }], weight: 0, nextChoice: overallTeamOrPlayer }
 ]
 
 module.exports = { questionType }

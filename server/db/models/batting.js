@@ -100,13 +100,13 @@ const Batting = db.define('batting', {
         }
         // check a player's plate appearances and adjust to account for appearances a player was short of the minimum
         if (this.getDataValue('PA') < minPA) {
-          return Math.round(this.getDataValue('hits') / (this.getDataValue('AB') + (minPA - this.getDataValue('PA'))), 3)
+          return this.getDataValue('hits') / (this.getDataValue('AB') + (minPA - this.getDataValue('PA')))
         } else {
-          return Math.round(this.getDataValue('hits') / this.getDataValue('AB'), 3)
+          return this.getDataValue('hits') / this.getDataValue('AB')
         }
       },
       BA() {
-        return Math.round(this.getDataValue('hits') / this.getDataValue('AB'), 3)
+        return this.getDataValue('hits') / this.getDataValue('AB')
       }
     }
   })

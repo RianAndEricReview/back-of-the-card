@@ -87,7 +87,6 @@ router.post('/:gameId/questions', (req, res, next) => {
     while (!question || questionTexts.includes(question.question)) {
       questionChoices = new QuestionChoices()
       questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
-
       //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
       if (questionChoices.timeFrame === 'allTime') {
         questionChoices.mostOrLeast = 'most'
@@ -128,7 +127,9 @@ router.post('/:gameId/questions', (req, res, next) => {
     .then(foundInfo => {
       const questionsArr = []
       foundInfo.forEach((data, idx) => {
+        // console.log('!@!@@!@@!', data[0])
         let consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
+        console.log('CDA', consolidatedDataArr[0], consolidatedDataArr[5], consolidatedDataArr[50], consolidatedDataArr[500],)
         // Generate questionObject answers
         questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
         questionsArr.push(questionInfoArr[idx].question)
