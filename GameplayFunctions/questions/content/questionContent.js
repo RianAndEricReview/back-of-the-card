@@ -22,7 +22,7 @@ const minPAPerYear = [
   {start: 1995, end: 1995, minPA: 446}
 ]
 
-const derivedBattingStats = [{statCat: 'adjBA', attributes: ['hits', 'AB']}]
+const derivedBattingStats = [{statCat: 'BA', attributes: ['hits', 'AB']}]
 
 //This object will contain all question skeleton functions.
 //Once a seleton is chosen it will use the data from the QuestionChoices object to create the question text for the Question objects.
