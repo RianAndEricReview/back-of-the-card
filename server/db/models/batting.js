@@ -88,7 +88,8 @@ const Batting = db.define('batting', {
 }, {
     timestamps: true,
     getterMethods: {
-      adjBAsingleSeason() {
+      //used for single season overall questions ONLY
+      adjBattingAvg() {
         let minPA = 502
         // Used to set the required minimum plate appearances based on the year
         for (let i = 0; i < minPAPerYear.length; i++) {
@@ -99,13 +100,13 @@ const Batting = db.define('batting', {
         }
         // check a player's plate appearances and adjust to account for appearances a player was short of the minimum
         if (this.getDataValue('PA') < minPA) {
-          return this.getDataValue('hits') / (this.getDataValue('AB') + (minPA - this.getDataValue('PA')))
+          return Math.round(this.getDataValue('hits') / (this.getDataValue('AB') + (minPA - this.getDataValue('PA'))), 3)
         } else {
-          return this.getDataValue('hits') / this.getDataValue('AB')
+          return Math.round(this.getDataValue('hits') / this.getDataValue('AB'), 3)
         }
       },
-      adjBAallTime() {
-        return this.getDataValue('hits') / this.getDataValue('AB')
+      battingAverage() {
+        return Math.round(this.getDataValue('hits') / this.getDataValue('AB'), 3)
       }
     }
   })
