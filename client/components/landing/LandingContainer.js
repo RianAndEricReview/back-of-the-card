@@ -5,6 +5,7 @@ import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
 import { getGameThunk} from '../../store'
+import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {
@@ -37,7 +38,7 @@ export class LandingContainerClass extends Component {
 
   render() {
     return (
-      <div>
+      <div className=" space-below-header" onLoad={topOfPageStart()}>
         <LandingPres />
 
         {
