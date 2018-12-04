@@ -22,6 +22,10 @@ form div {
 }
 
 .nav-container {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
   background-color: black;
   display: flex;
   justify-content: space-between;
@@ -341,13 +345,17 @@ form div {
   margin-top: -1em;
 }
 
-#playerCorrect {
+#player-correct {
   color: #159b4b97;
   font-weight: bold;
 }
 
-#playerIncorrect {
+#player-incorrect {
   color: #c61725c9;
   font-weight: bold;
+}
+
+.space-below-header {
+  margin-top: 4em;
 }
 

@@ -8,6 +8,7 @@ import GameBoardPres from './GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
+import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
 import socket from '../../socket'
 import axios from 'axios'
 
@@ -132,7 +133,7 @@ export class GameContainerClass extends Component {
     const gameBoardProps = this.generateGameBoardProps()
     const gameOverProps = this.generateGameOverProps()
     return (
-      <div className="game-container">
+      <div className="game-container space-below-header" onLoad={topOfPageStart()}>
         {(this.props.game.open || this.props.questions.length <= 0) ?
           <LoadingPres /> :
           (this.state.gameOver) ?

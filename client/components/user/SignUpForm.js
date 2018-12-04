@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { signUpThunk, getUser } from '../../store'
+import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
 
 const SignUp = props => {
   const { handleSubmit, error } = props
   return (
-    <div className="auth-form">
+    <div className="auth-form space-below-header" onLoad={topOfPageStart()}>
       <div className="auth-button-container">
         <a href="/auth/google" className="btn btn-danger btn-sm google-button">Sign Up with Google</a>
         <a href="/auth/google" className="btn btn-primary btn-sm facebook-button">Sign Up with Facebook</a>
