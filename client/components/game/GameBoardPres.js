@@ -12,7 +12,7 @@ export default (props) => {
       </div>
       <div className="container">
         <form>
-          <div className="row center-container">{currentQuestion.answers.map((answer, index) => {
+          <div className="row center-container gameboard-answer-margin">{currentQuestion.answers.map((answer, index) => {
             const buttonTypes = ['primary', 'danger', 'success', 'warning']
             return (
               <div key={index} className="form-group">
