@@ -8,7 +8,7 @@ import GameBoardPres from './gameBoard/GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
 import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
-import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
+import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 import socket from '../../socket'
 import axios from 'axios'
 
@@ -22,16 +22,19 @@ export class GameContainerClass extends Component {
       displayRoundResults: false,
       finalRound: false,
       gameOver: false,
+      displayAnswerForm: false,
+      questionCountdown: 5,
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
     this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
+
   }
 
   resetAnswerSubmitted() {
-    this.setState({answerSubmitted: false, clickedAnswer: ''})
+    this.setState({ answerSubmitted: false, clickedAnswer: '' })
   }
 
   answerButtonClick(event) {
@@ -93,6 +96,18 @@ export class GameContainerClass extends Component {
 
       this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
+  }
+
+  displayCountdown(intialTime, timerNameInState) {
+    const _this = this
+    let seconds = intialTime
+    const countdownInterval = setInterval(function () {
+      seconds--
+      _this.setState({[timerNameInState]: seconds})
+      if (!seconds) {
+        clearInterval(countdownInterval)
+      }
+    }, 1000)
   }
 
   componentDidMount() {
