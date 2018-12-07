@@ -30,7 +30,7 @@ export class GameContainerClass extends Component {
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
     this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
-
+    this.displayCountdown = this.displayCountdown.bind(this)
   }
 
   resetAnswerSubmitted() {
@@ -99,11 +99,10 @@ export class GameContainerClass extends Component {
   }
 
   displayCountdown(intialTime, timerNameInState) {
-    const _this = this
     let seconds = intialTime
     const countdownInterval = setInterval(function () {
       seconds--
-      _this.setState({[timerNameInState]: seconds})
+      this.setState({[timerNameInState]: seconds})
       if (!seconds) {
         clearInterval(countdownInterval)
       }
@@ -137,7 +136,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, displayCountdown: this.displayCountdown, questionCountdown: this.state.questionCountdown  })
   }
 
   generateGameOverProps() {
