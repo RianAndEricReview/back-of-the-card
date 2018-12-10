@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { countdown } from '../../../../HelperFunctions/utilityFunctions'
 
 class GameBoardCountdown extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class GameBoardCountdown extends Component {
   componentDidMount() {
     //set the inital seconds on countdownClock for first question
     if (this.props.countdownClock) {
-      this.props.displayCountdown(this.props.countdownClock, this.props.setCountdownClock)
+      countdown(this.props.countdownClock, this.props.setCountdownClock)
     }
   }
 

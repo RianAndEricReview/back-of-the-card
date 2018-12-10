@@ -97,16 +97,6 @@ export class GameContainerClass extends Component {
     }, roundResultsTimer)
   }
 
-  displayCountdown(currentCount, setCounter) {
-    let seconds = currentCount
-    const countdownInterval = setInterval(function () {
-      setCounter(--seconds)
-      if (!seconds) {
-        clearInterval(countdownInterval)
-      }
-    }, 1000)
-  }
-
   componentDidMount() {
     //set the inital seconds on countdownClock for first question
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
@@ -137,7 +127,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, displayCountdown: this.displayCountdown, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
   }
 
   generateGameOverProps() {
