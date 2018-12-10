@@ -30,7 +30,6 @@ export class GameContainerClass extends Component {
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
     this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
-    this.displayCountdown = this.displayCountdown.bind(this)
   }
 
   resetAnswerSubmitted() {

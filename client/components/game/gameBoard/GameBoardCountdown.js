@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 class GameBoardCountdown extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      questionCountdown: 5,
+    }
   }
 
   componentDidMount() {
@@ -14,7 +17,7 @@ class GameBoardCountdown extends Component {
   render() {
     return (
       <div>
-        <h1>{this.props.questionCountdown}</h1>
+        <h1>{this.state.questionCountdown}</h1>
       </div>
     )
   }
