@@ -8,6 +8,7 @@ import players from './players'
 import questions from './questions'
 import allPlayerAnswers from './allPlayerAnswers'
 import playerQuestionResults from './playerQuestionResults'
+import countdownClock from './countdownClock'
 
 const reducer = combineReducers(
   {
@@ -17,6 +18,7 @@ const reducer = combineReducers(
     questions,
     allPlayerAnswers,
     playerQuestionResults,
+    countdownClock
   }
 )
 
@@ -30,3 +32,4 @@ export * from './players'
 export * from './questions'
 export * from './allPlayerAnswers'
 export * from './playerQuestionResults'
+export * from './countdownClock'

@@ -3,19 +3,19 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AnswerRevealPres from './AnswerRevealPres'
 import RoundResultsPres from './RoundResultsPres'
-import { clearAllPlayerAnswers } from '../../../store'
+import { clearAllPlayerAnswers, setCountdownClock } from '../../../store'
 
 export class ResultsContainerClass extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
-
+    this.state = {}
   }
 
   componentDidMount() {
     this.props.endAnswerReveal()
     this.props.resetAnswerSubmitted()
+    //reset question countdownClock to initial time
+    this.props.setCountdownClock(this.props.initialQuestionCountdownInt)
   }
 
   componentDidUpdate() {
@@ -59,6 +59,9 @@ const mapDispatchToProps = dispatch => {
   return {
     clearAllPlayerAnswers() {
       dispatch(clearAllPlayerAnswers())
+    },
+    setCountdownClock(numOfSeconds) {
+      dispatch(setCountdownClock(numOfSeconds))
     }
   }
 }

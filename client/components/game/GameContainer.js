@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
-import GameBoardPres from './GameBoardPres'
+import GameBoardPres from './gameBoard/GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
-import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults, setCountdownClock } from '../../store'
+import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 import socket from '../../socket'
 import axios from 'axios'
 
@@ -22,6 +22,8 @@ export class GameContainerClass extends Component {
       displayRoundResults: false,
       finalRound: false,
       gameOver: false,
+      displayAnswerForm: false,
+      initialQuestionCountdownInt: 5,
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
@@ -31,7 +33,7 @@ export class GameContainerClass extends Component {
   }
 
   resetAnswerSubmitted() {
-    this.setState({answerSubmitted: false, clickedAnswer: ''})
+    this.setState({ answerSubmitted: false, clickedAnswer: '' })
   }
 
   answerButtonClick(event) {
@@ -96,6 +98,9 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    //set the inital seconds on countdownClock for first question
+    this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
+    //failsafe to make sure no answers are left from a previous game.
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
@@ -122,7 +127,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
   }
 
   generateGameOverProps() {
@@ -140,7 +145,7 @@ export class GameContainerClass extends Component {
             <GameOverPres {...gameOverProps} /> :
             (!this.props.game.roundOver) ?
               <GameBoardPres {...gameBoardProps} /> :
-              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} resetAnswerSubmitted={this.resetAnswerSubmitted} />
+              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} resetAnswerSubmitted={this.resetAnswerSubmitted} initialQuestionCountdownInt={this.state.initialQuestionCountdownInt} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {
@@ -160,7 +165,8 @@ const mapStateToProps = state => ({
   game: state.game,
   players: state.players,
   questions: state.questions,
-  playerQuestionResults: state.playerQuestionResults
+  playerQuestionResults: state.playerQuestionResults,
+  countdownClock: state.countdownClock,
 })
 
 const mapDispatchToProps = dispatch => {
@@ -191,6 +197,9 @@ const mapDispatchToProps = dispatch => {
     },
     updatePlayer(playerId, updatedItem) {
       dispatch(updatePlayer(playerId, updatedItem))
+    },
+    setCountdownClock(numOfSeconds) {
+      dispatch(setCountdownClock(numOfSeconds))
     }
   }
 }
