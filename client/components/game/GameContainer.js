@@ -108,7 +108,9 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    //set the inital seconds on countdownClock for first question
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
+    //failsafe to make sure no answers are left from a previous game.
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
@@ -153,7 +155,7 @@ export class GameContainerClass extends Component {
             <GameOverPres {...gameOverProps} /> :
             (!this.props.game.roundOver) ?
               <GameBoardPres {...gameBoardProps} /> :
-              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} resetAnswerSubmitted={this.resetAnswerSubmitted} />
+              <ResultsContainer correctAnswerObj={this.state.correctAnswerObj} displayRoundResults={this.state.displayRoundResults} endAnswerReveal={this.endAnswerReveal} endRoundResults={this.endRoundResults} resetAnswerSubmitted={this.resetAnswerSubmitted} initialQuestionCountdownInt={this.state.initialQuestionCountdownInt} />
         }
         <div className="player-sidebar">
           {this.props.players.map(player => {

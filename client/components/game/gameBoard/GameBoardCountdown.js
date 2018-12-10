@@ -3,10 +3,12 @@ import React, { Component } from 'react'
 class GameBoardCountdown extends Component {
   constructor(props) {
     super(props)
+    this.state = {}
   }
 
   componentDidMount() {
-    if (this.props.countdownClock){
+    //set the inital seconds on countdownClock for first question
+    if (this.props.countdownClock) {
       this.props.displayCountdown(this.props.countdownClock, this.props.setCountdownClock)
     }
   }

@@ -12,6 +12,7 @@ export default (props) => {
       <div className="gameboard-question">
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>
       </div>
+      {/* if there is time on the countdownClock display countdown component, otherwise show answer form */}
       {countdownClock ? <GameBoardCountdown countdownClock={countdownClock} setCountdownClock={setCountdownClock} displayCountdown={displayCountdown} /> : <GameBoardAnswerForm answerFormProps={props} />}
     </div>
   )
