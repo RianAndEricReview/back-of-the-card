@@ -4,7 +4,7 @@ import GameBoardCountdown from './GameBoardCountdown'
 /* eslint-disable react/display-name */
 
 export default (props) => {
-  const { questions, currentQuestionNum, numOfQuestions, displayCountdown, questionCountdown } = props
+  const { questions, currentQuestionNum, numOfQuestions, countdownClock, setCountdownClock, displayCountdown } = props
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   return (
     <div className="gameplay-container">
@@ -12,7 +12,7 @@ export default (props) => {
       <div className="gameboard-question">
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>
       </div>
-      {questionCountdown ? <GameBoardCountdown displayCountdown={displayCountdown} questionCountdown={questionCountdown} /> : <GameBoardAnswerForm answerFormProps={props} />}
+      {countdownClock ? <GameBoardCountdown countdownClock={countdownClock} setCountdownClock={setCountdownClock} displayCountdown={displayCountdown} /> : <GameBoardAnswerForm answerFormProps={props} />}
     </div>
   )
 }

@@ -7,7 +7,7 @@ import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './gameBoard/GameBoardPres'
 import GameOverPres from './results/GameOverPres'
 import ResultsContainer from './results/ResultsContainer'
-import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults } from '../../store'
+import { getAllPlayersThunk, createAllQuestionsThunk, getAllQuestionsThunk, createQuestionResult, updateGame, updatePlayer, clearAllPlayerAnswers, clearGameData, clearAllPlayers, clearAllQuestions, clearQuestionResults, setCountdownClock } from '../../store'
 import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 import socket from '../../socket'
 import axios from 'axios'
@@ -23,7 +23,7 @@ export class GameContainerClass extends Component {
       finalRound: false,
       gameOver: false,
       displayAnswerForm: false,
-      questionCountdown: 5,
+      initialQuestionCountdownInt: 5,
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
@@ -97,11 +97,10 @@ export class GameContainerClass extends Component {
     }, roundResultsTimer)
   }
 
-  displayCountdown(intialTime, timerNameInState) {
-    let seconds = intialTime
+  displayCountdown(currentCount, setCounter) {
+    let seconds = currentCount
     const countdownInterval = setInterval(function () {
-      seconds--
-      this.setState({[timerNameInState]: seconds})
+      setCounter(--seconds)
       if (!seconds) {
         clearInterval(countdownInterval)
       }
@@ -109,6 +108,7 @@ export class GameContainerClass extends Component {
   }
 
   componentDidMount() {
+    this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
@@ -135,7 +135,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, displayCountdown: this.displayCountdown, questionCountdown: this.state.questionCountdown  })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, displayCountdown: this.displayCountdown, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
   }
 
   generateGameOverProps() {
@@ -173,7 +173,8 @@ const mapStateToProps = state => ({
   game: state.game,
   players: state.players,
   questions: state.questions,
-  playerQuestionResults: state.playerQuestionResults
+  playerQuestionResults: state.playerQuestionResults,
+  countdownClock: state.countdownClock,
 })
 
 const mapDispatchToProps = dispatch => {
@@ -204,6 +205,9 @@ const mapDispatchToProps = dispatch => {
     },
     updatePlayer(playerId, updatedItem) {
       dispatch(updatePlayer(playerId, updatedItem))
+    },
+    setCountdownClock(numOfSeconds) {
+      dispatch(setCountdownClock(numOfSeconds))
     }
   }
 }
