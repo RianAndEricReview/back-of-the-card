@@ -32,6 +32,7 @@ export class GameContainerClass extends Component {
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
     this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
+    this.createScoringTimer = this.createScoringTimer.bind(this)
   }
 
   resetAnswerSubmitted() {
@@ -101,6 +102,18 @@ export class GameContainerClass extends Component {
     }, roundResultsTimer)
   }
 
+  createScoringTimer(miliseconds) {
+    // eslint-disable-next-line no-undef
+    this.setState({scoringTimer: new timerBar.SemiCircle(scoringtimer, {
+      strokeWidth: 4,
+      duration: miliseconds,
+      color: 'blue',
+      trailColor: 'aqua',
+      easing: 'easeInOut',
+      svgStyle: { width: '100%', height: '100%'}
+    })})
+  }
+
   componentDidMount() {
     //set the inital seconds on countdownClock for first question
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
@@ -137,7 +150,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock, createScoringTimer: this.createScoringTimer, secondsPerRound: this.props.game.gametype.secondsPerRound })
   }
 
   generateGameOverProps() {
