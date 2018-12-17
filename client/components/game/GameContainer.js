@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import timerBar from 'progressbar.js'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './gameBoard/GameBoardPres'
@@ -24,6 +25,7 @@ export class GameContainerClass extends Component {
       gameOver: false,
       displayAnswerForm: false,
       initialQuestionCountdownInt: 5,
+      scoringTimer: {}
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
@@ -64,6 +66,8 @@ export class GameContainerClass extends Component {
       },
       answerSubmitted: true
     })
+
+    this.state.scoringTimer.stop()
 
     this.props.createQuestionResult(playerQuestionResult)
 
@@ -106,6 +110,12 @@ export class GameContainerClass extends Component {
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
     else { this.props.getAllQuestions(this.props.game.id) }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
+      this.state.scoringTimer.animate(1)
+    }
   }
 
   componentWillUnmount() {

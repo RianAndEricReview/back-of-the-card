@@ -362,3 +362,9 @@ form div {
 .space-below-header {
   margin-top: 4em;
 }
+
+#scoringtimer {
+  width: 20em;
+  height: 10em;
+  margin: 2em;
+}
