@@ -53,13 +53,13 @@ export class GameContainerClass extends Component {
       }).id
     }
 
+    //The below section of code is a score generator set for a game with timed rounds.
+    //This functionality will be made dynamic for timed scoring and will also work for other gametypes in the future.
     this.state.scoringTimer.stop()
     const scoringTimerValue = this.state.scoringTimer.value()
     const timeScoringMultiplier = 1 - scoringTimerValue
     playerQuestionResult.secondsToAnswer = Math.round(scoringTimerValue * this.props.game.gametype.secondsPerRound * 10000) / 10000
 
-    //The below section of code is a temporary score generator with minimal functionality.
-    //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
     playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
@@ -107,6 +107,7 @@ export class GameContainerClass extends Component {
 
   createScoringTimer(miliseconds) {
     // eslint-disable-next-line no-undef
+    // invoked when the GameBoardScoringTimer component mounts to ensure the #scoringtimer div exists for the timerBar to be created.
     this.setState({scoringTimer: new timerBar.SemiCircle(scoringtimer, {
       strokeWidth: 4,
       duration: miliseconds,

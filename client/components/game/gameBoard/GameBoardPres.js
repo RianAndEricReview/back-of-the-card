@@ -13,6 +13,7 @@ export default (props) => {
       <div className="gameboard-question">
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>
       </div>
+      {/* The timer is currently always showing but will need to be conditionally rendered in the future depending on the gametype */}
       <GameBoardScoringTimer createScoringTimer={createScoringTimer} secondsPerRound={secondsPerRound} />
       {/* if there is time on the countdownClock display countdown component, otherwise show answer form */}
       {countdownClock ? <GameBoardCountdown countdownClock={countdownClock} setCountdownClock={setCountdownClock} /> : <GameBoardAnswerForm answerFormProps={props} />}

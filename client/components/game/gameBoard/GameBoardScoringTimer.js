@@ -7,6 +7,7 @@ class GameBoardScoringTimer extends Component {
   }
 
   componentDidMount() {
+    // the scoring timer from progressbar.js is created and bound to the game container. This may be adjusted to be put in the store instead.
     this.props.createScoringTimer(this.props.secondsPerRound * 1000)
   }
 
