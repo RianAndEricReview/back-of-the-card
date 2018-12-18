@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import timerBar from 'progressbar.js'
 import LoadingPres from './LoadingPres'
 import IndividualPlayerPres from './IndividualPlayerPres'
 import GameBoardPres from './gameBoard/GameBoardPres'
@@ -23,13 +24,15 @@ export class GameContainerClass extends Component {
       finalRound: false,
       gameOver: false,
       displayAnswerForm: false,
-      initialQuestionCountdownInt: 5,
+      initialQuestionCountdownInt: 3,
+      scoringTimer: {}
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
     this.answerSubmission = this.answerSubmission.bind(this)
     this.endAnswerReveal = this.endAnswerReveal.bind(this)
     this.endRoundResults = this.endRoundResults.bind(this)
     this.resetAnswerSubmitted = this.resetAnswerSubmitted.bind(this)
+    this.createScoringTimer = this.createScoringTimer.bind(this)
   }
 
   resetAnswerSubmitted() {
@@ -43,18 +46,23 @@ export class GameContainerClass extends Component {
 
   answerSubmission(event) {
     event.preventDefault()
-    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, secondsToAnswer: 5, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
+    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
         return player.userId === this.props.user.id
       }).id
     }
 
-    //The below section of code is a temporary score generator with minimal functionality.
-    //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
+    //The below section of code is a score generator set for a game with timed rounds.
+    //This functionality will be made dynamic for timed scoring and will also work for other gametypes in the future.
+    this.state.scoringTimer.stop()
+    const scoringTimerValue = this.state.scoringTimer.value()
+    const timeScoringMultiplier = 1 - scoringTimerValue
+    playerQuestionResult.secondsToAnswer = Math.round(scoringTimerValue * this.props.game.gametype.secondsPerRound * 10000) / 10000
+
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.secondsToAnswer : 0
+    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
 
     this.setState({
       correctAnswerObj: {
@@ -97,6 +105,19 @@ export class GameContainerClass extends Component {
     }, roundResultsTimer)
   }
 
+  createScoringTimer(miliseconds) {
+    // eslint-disable-next-line no-undef
+    // invoked when the GameBoardScoringTimer component mounts to ensure the #scoringtimer div exists for the timerBar to be created.
+    this.setState({scoringTimer: new timerBar.SemiCircle(scoringtimer, {
+      strokeWidth: 4,
+      duration: miliseconds,
+      color: 'blue',
+      trailColor: 'aqua',
+      easing: 'easeInOut',
+      svgStyle: { width: '100%', height: '100%'}
+    })})
+  }
+
   componentDidMount() {
     //set the inital seconds on countdownClock for first question
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
@@ -106,6 +127,12 @@ export class GameContainerClass extends Component {
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
     if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
     else { this.props.getAllQuestions(this.props.game.id) }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
+      this.state.scoringTimer.animate(1)
+    }
   }
 
   componentWillUnmount() {
@@ -127,7 +154,7 @@ export class GameContainerClass extends Component {
   }
 
   generateGameBoardProps() {
-    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock })
+    return ({ questions: this.props.questions, currentQuestionNum: this.props.game.currentQuestion, numOfQuestions: this.props.game.gametype.numOfQuestions, answerButtonClick: this.answerButtonClick, answerSubmission: this.answerSubmission, clickedAnswer: this.state.clickedAnswer, answerSubmitted: this.state.answerSubmitted, generateGameBoardCountdownProps: this.generateGameBoardCountdownProps, countdownClock: this.props.countdownClock, setCountdownClock: this.props.setCountdownClock, createScoringTimer: this.createScoringTimer, secondsPerRound: this.props.game.gametype.secondsPerRound })
   }
 
   generateGameOverProps() {
