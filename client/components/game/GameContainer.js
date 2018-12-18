@@ -24,7 +24,7 @@ export class GameContainerClass extends Component {
       finalRound: false,
       gameOver: false,
       displayAnswerForm: false,
-      initialQuestionCountdownInt: 5,
+      initialQuestionCountdownInt: 3,
       scoringTimer: {}
     }
     this.answerButtonClick = this.answerButtonClick.bind(this)
@@ -46,18 +46,23 @@ export class GameContainerClass extends Component {
 
   answerSubmission(event) {
     event.preventDefault()
-    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, secondsToAnswer: 5, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
+    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
         return player.userId === this.props.user.id
       }).id
     }
 
+    this.state.scoringTimer.stop()
+    const scoringTimerValue = this.state.scoringTimer.value()
+    const timeScoringMultiplier = 1 - scoringTimerValue
+    playerQuestionResult.secondsToAnswer = Math.round(scoringTimerValue * this.props.game.gametype.secondsPerRound * 10000) / 10000
+
     //The below section of code is a temporary score generator with minimal functionality.
     //This functionality will be moved to GameplayFunctions and expanded upon to take into account time and gametype.
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? 1 * playerQuestionResult.secondsToAnswer : 0
+    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
 
     this.setState({
       correctAnswerObj: {
@@ -67,8 +72,6 @@ export class GameContainerClass extends Component {
       },
       answerSubmitted: true
     })
-
-    this.state.scoringTimer.stop()
 
     this.props.createQuestionResult(playerQuestionResult)
 

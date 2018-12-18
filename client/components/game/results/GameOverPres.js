@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 /* eslint-disable react/display-name */
 
 export default (props) => {
@@ -32,7 +33,7 @@ export default (props) => {
           </tbody>
         </table>
       </div>
-      <a href="/" className="btn btn-dark">Main Menu</a>
+      <NavLink to="/"><button className="btn btn-dark">Main Menu</button></NavLink>
     </div>
   )
 }
