@@ -44,8 +44,8 @@ export class GameContainerClass extends Component {
     this.setState({ clickedAnswer: event.target.value })
   }
 
-  answerSubmission(event = null) {
-    if (event !== null) {event.preventDefault()}
+  answerSubmission(event) {
+    if (event) event.preventDefault()
     let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
@@ -62,7 +62,8 @@ export class GameContainerClass extends Component {
 
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
+    playerAnswer.correct = playerAnswer.answer === slicedCorrectAnswer
+    playerAnswer.score = playerAnswer.correct ? Math.round(1000 * timeScoringMultiplier) : 0
 
     this.setState({
       correctAnswerObj: {
@@ -103,41 +104,6 @@ export class GameContainerClass extends Component {
 
       this.props.clearAllPlayerAnswers()
     }, roundResultsTimer)
-  }
-
-  answerSubmission(event) {
-    if (event) event.preventDefault()
-    let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
-    let playerAnswer = {
-      answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
-        return player.userId === this.props.user.id
-      }).id
-    }
-
-    //The below section of code is a score generator set for a game with timed rounds.
-    //This functionality will be made dynamic for timed scoring and will also work for other gametypes in the future.
-    this.state.scoringTimer.stop()
-    const scoringTimerValue = this.state.scoringTimer.value()
-    const timeScoringMultiplier = 1 - scoringTimerValue
-    playerQuestionResult.secondsToAnswer = Math.round(scoringTimerValue * this.props.game.gametype.secondsPerRound * 10000) / 10000
-
-    let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
-    let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.correct = playerAnswer.answer === slicedCorrectAnswer
-    playerAnswer.score = playerAnswer.correct ? Math.round(1000 * timeScoringMultiplier) : 0
-
-    this.setState({
-      correctAnswerObj: {
-        slicedCorrectAnswer,
-        correctAnswer,
-        playerCorrect: playerAnswer.answer === slicedCorrectAnswer
-      },
-      answerSubmitted: true
-    })
-
-    this.props.createQuestionResult(playerQuestionResult)
-
-    socket.emit('submitAnswer', this.props.game.id, playerAnswer)
   }
 
   createScoringTimer(miliseconds) {
