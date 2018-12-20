@@ -26,7 +26,7 @@ export default (props) => {
               return (
                 <tr key={player.playerId} className={players.find(gamePlayer => gamePlayer.id === player.playerId).userId === userId ? 'table-active' : 'light'}>
                   <td>{players.find(gamePlayer => gamePlayer.id === player.playerId).user.screenName}</td>
-                  <td id={player.score > 0 ? 'player-correct' : 'player-incorrect'}>{player.answer}</td>
+                  <td id={player.correct ? 'player-correct' : 'player-incorrect'}>{player.answer}</td>
                   <td>{player.score}</td>
                   <td>---</td>
                 </tr>

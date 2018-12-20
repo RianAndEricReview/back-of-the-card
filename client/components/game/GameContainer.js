@@ -123,7 +123,8 @@ export class GameContainerClass extends Component {
 
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
+    playerAnswer.correct = playerAnswer.answer === slicedCorrectAnswer
+    playerAnswer.score = playerAnswer.correct ? Math.round(1000 * timeScoringMultiplier) : 0
 
     this.setState({
       correctAnswerObj: {
