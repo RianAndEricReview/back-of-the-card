@@ -45,7 +45,7 @@ export class GameContainerClass extends Component {
   }
 
   answerSubmission(event) {
-    event.preventDefault()
+    if (event) event.preventDefault()
     let playerQuestionResult = { chosenAnswer: this.state.clickedAnswer, questionId: this.props.questions.find(question => question.questionNum === this.props.game.currentQuestion).id, userId: this.props.user.id }
     let playerAnswer = {
       answer: this.state.clickedAnswer, score: 0, playerId: this.props.players.find(player => {
@@ -62,7 +62,8 @@ export class GameContainerClass extends Component {
 
     let correctAnswer = this.props.questions.find(question => this.props.game.currentQuestion === question.questionNum).correctAnswer
     let slicedCorrectAnswer = correctAnswer.slice(0, correctAnswer.indexOf(' ~'))
-    playerAnswer.score = playerAnswer.answer === slicedCorrectAnswer ? Math.round(1000 * timeScoringMultiplier) : 0
+    playerAnswer.correct = playerAnswer.answer === slicedCorrectAnswer
+    playerAnswer.score = playerAnswer.correct ? Math.round(1000 * timeScoringMultiplier) : 0
 
     this.setState({
       correctAnswerObj: {
@@ -79,7 +80,7 @@ export class GameContainerClass extends Component {
   }
 
   endAnswerReveal() {
-    const answerRevealTimer = 1000
+    const answerRevealTimer = 2500
     setTimeout(() => {
       // After the timer ends, move on to the round results. If it is the last round, set finalRound to true.
       (this.props.game.currentQuestion >= this.props.game.gametype.numOfQuestions) ? this.setState({ displayRoundResults: true, finalRound: true }) : this.setState({ displayRoundResults: true })
@@ -87,7 +88,7 @@ export class GameContainerClass extends Component {
   }
 
   endRoundResults() {
-    const roundResultsTimer = !this.state.finalRound ? 1000 : 1000
+    const roundResultsTimer = !this.state.finalRound ? 2500 : 1000
     setTimeout(() => {
       // After the timer ends, reset the store/state to be ready to move on to the next question
       // Or if it is the final round, instead set gameOver to true.
@@ -131,7 +132,7 @@ export class GameContainerClass extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
-      this.state.scoringTimer.animate(1)
+      this.state.scoringTimer.animate(1, {}, () => {this.answerSubmission()} )
     }
   }
 
