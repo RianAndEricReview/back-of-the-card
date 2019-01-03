@@ -112,9 +112,28 @@ export class GameContainerClass extends Component {
     this.setState({scoringTimer: new timerBar.SemiCircle(scoringtimer, {
       strokeWidth: 4,
       duration: miliseconds,
-      color: 'blue',
-      trailColor: 'aqua',
+      color: '#20ec3b',
+      trailColor: '#c5c1c2c9',
+      trailWidth: 0.5,
       easing: 'easeInOut',
+      from: {color1: '#20ec3b', color2: '#000000'},
+      to: {color1: '#000000', color2: '#fc4242'},
+      text: {
+        alignToBottom: false,
+        style: {
+          color: this.state.color,
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          padding: 0,
+          margin: 0,
+          fontSize: '2rem',
+      }},
+      step: (state, bar) => {
+        bar.setText(Math.round(1000 * (1 - bar.value())))
+        bar.path.setAttribute('stroke', bar.value() <= 0.5 ? state.color1 : state.color2)
+        bar.text.style.color = bar.value() <= 0.5 ? state.color1 : state.color2
+      },
       svgStyle: { width: '100%', height: '100%'}
     })})
   }
