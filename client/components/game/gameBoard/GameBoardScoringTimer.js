@@ -10,7 +10,7 @@ class GameBoardScoringTimer extends Component {
   componentDidMount() {
     //set the inital seconds on countdownClock for first question
     if (this.props.countdownClock) {
-      countdown(this.props.countdownClock, this.props.setCountdownClock)
+      countdown(this.props.countdownClock, 1000, this.props.setCountdownClock)
     }
     // the scoring timer from progressbar.js is created and bound to the game container. This may be adjusted to be put in the store instead.
     this.props.createScoringTimer(this.props.secondsPerRound * 1000)
