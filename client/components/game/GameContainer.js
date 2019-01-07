@@ -109,41 +109,44 @@ export class GameContainerClass extends Component {
   createScoringTimer(miliseconds) {
     // eslint-disable-next-line no-undef
     // invoked when the GameBoardScoringTimer component mounts to ensure the #scoringtimer div exists for the timerBar to be created.
-    this.setState({scoringTimer: new timerBar.SemiCircle(scoringtimer, {
-      strokeWidth: 4,
-      duration: miliseconds,
-      color: '#20ec3b',
-      trailColor: '#c5c1c2c9',
-      trailWidth: 0.5,
-      easing: 'easeInOut',
-      text: {
-        alignToBottom: false,
-        style: {
-          color: this.state.color,
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          padding: 0,
-          margin: 0,
-          fontSize: '2rem',
-      }},
-      step: (state, bar) => {
-        if (bar.value() >= 0.25 && bar.value() < 0.5){
-          bar.path.setAttribute('stroke', '#f0e65c')
-          bar.text.style.color = '#f0e65c'
-        }
-        if (bar.value() >= 0.5 && bar.value() < 0.75){
-          bar.path.setAttribute('stroke', '#fca738')
-          bar.text.style.color = '#fca738'
-        }
-        if (bar.value() >= 0.75){
-          bar.path.setAttribute('stroke', '#fc3838')
-          bar.text.style.color = '#fc3838'
-        }
-        bar.setText(Math.round(1000 * (1 - bar.value())))
-      },
-      svgStyle: { width: '100%', height: '100%'}
-    })})
+    this.setState({
+      scoringTimer: new timerBar.SemiCircle(scoringtimer, {
+        strokeWidth: 4,
+        duration: miliseconds,
+        color: '#20ec3b',
+        trailColor: '#c5c1c2c9',
+        trailWidth: 0.5,
+        easing: 'easeInOut',
+        text: {
+          alignToBottom: false,
+          style: {
+            color: this.state.color,
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            padding: 0,
+            margin: 0,
+            fontSize: '2rem',
+          }
+        },
+        step: (state, bar) => {
+          if (bar.value() >= 0.25 && bar.value() < 0.5) {
+            bar.path.setAttribute('stroke', '#f0e65c')
+            bar.text.style.color = '#f0e65c'
+          }
+          if (bar.value() >= 0.5 && bar.value() < 0.75) {
+            bar.path.setAttribute('stroke', '#fca738')
+            bar.text.style.color = '#fca738'
+          }
+          if (bar.value() >= 0.75) {
+            bar.path.setAttribute('stroke', '#fc3838')
+            bar.text.style.color = '#fc3838'
+          }
+          bar.setText(Math.round(1000 * (1 - bar.value())))
+        },
+        svgStyle: { width: '100%', height: '100%' }
+      })
+    })
   }
 
   componentDidMount() {
@@ -159,7 +162,7 @@ export class GameContainerClass extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
-      this.state.scoringTimer.animate(1, {}, () => {this.answerSubmission()} )
+      this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
     }
   }
 

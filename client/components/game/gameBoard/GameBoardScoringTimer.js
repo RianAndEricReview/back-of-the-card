@@ -23,6 +23,7 @@ class GameBoardScoringTimer extends Component {
         <div id="countdown-timer">
           <p>{countdownText || 'Play Ball!!!'}</p>
         </div>
+        {/* When gametype system has been updated, the div with scoring timer will need to be conditionally rendered based on gametype */}
         <div id="scoringtimer" />
       </div>
     )
