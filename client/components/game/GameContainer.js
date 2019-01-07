@@ -116,8 +116,6 @@ export class GameContainerClass extends Component {
       trailColor: '#c5c1c2c9',
       trailWidth: 0.5,
       easing: 'easeInOut',
-      from: {color1: '#20ec3b', color2: '#000000'},
-      to: {color1: '#000000', color2: '#fc4242'},
       text: {
         alignToBottom: false,
         style: {
@@ -130,9 +128,19 @@ export class GameContainerClass extends Component {
           fontSize: '2rem',
       }},
       step: (state, bar) => {
+        if (bar.value() >= 0.25 && bar.value() < 0.5){
+          bar.path.setAttribute('stroke', '#f0e65c')
+          bar.text.style.color = '#f0e65c'
+        }
+        if (bar.value() >= 0.5 && bar.value() < 0.75){
+          bar.path.setAttribute('stroke', '#fca738')
+          bar.text.style.color = '#fca738'
+        }
+        if (bar.value() >= 0.75){
+          bar.path.setAttribute('stroke', '#fc3838')
+          bar.text.style.color = '#fc3838'
+        }
         bar.setText(Math.round(1000 * (1 - bar.value())))
-        bar.path.setAttribute('stroke', bar.value() <= 0.5 ? state.color1 : state.color2)
-        bar.text.style.color = bar.value() <= 0.5 ? state.color1 : state.color2
       },
       svgStyle: { width: '100%', height: '100%'}
     })})
