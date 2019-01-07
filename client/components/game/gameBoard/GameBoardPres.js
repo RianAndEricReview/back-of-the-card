@@ -1,6 +1,5 @@
 import React from 'react'
 import GameBoardAnswerForm from './GameBoardAnswerForm'
-import GameBoardCountdown from './GameBoardCountdown'
 import GameBoardScoringTimer from './GameBoardScoringTimer'
 /* eslint-disable react/display-name */
 
@@ -14,9 +13,9 @@ export default (props) => {
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>
       </div>
       {/* The timer is currently always showing but will need to be conditionally rendered in the future depending on the gametype */}
-      <GameBoardScoringTimer createScoringTimer={createScoringTimer} secondsPerRound={secondsPerRound} />
+      <GameBoardScoringTimer createScoringTimer={createScoringTimer} secondsPerRound={secondsPerRound} countdownClock={countdownClock} setCountdownClock={setCountdownClock} />
       {/* if there is time on the countdownClock display countdown component, otherwise show answer form */}
-      {countdownClock ? <GameBoardCountdown countdownClock={countdownClock} setCountdownClock={setCountdownClock} /> : <GameBoardAnswerForm answerFormProps={props} />}
+      {countdownClock ? null : <GameBoardAnswerForm answerFormProps={props} />}
     </div>
   )
 }

@@ -363,8 +363,26 @@ form div {
   margin-top: 4em;
 }
 
+/* .gameboard-timer {
+  width: 20em;
+  height: 10em;
+  margin: 2em;
+} */
+
 #scoringtimer {
   width: 20em;
   height: 10em;
   margin: 2em;
+}
+
+#countdown-timer {
+  position: absolute;
+  margin: 5.5em 0em 0em 7em;
+  text-align: center;
+}
+
+#countdown-timer p {
+  width: 5em;
+  display: inline-block;
+  font-size: 2em;
 }
