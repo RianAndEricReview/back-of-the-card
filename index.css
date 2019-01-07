@@ -321,7 +321,7 @@ form div {
 }
 
 .gameboard-question {
-  margin: 0em 5em 2em 5em;
+  margin: 0em 5em 1em 5em;
   font-family: Palantino;
 }
 
@@ -366,5 +366,17 @@ form div {
 #scoringtimer {
   width: 20em;
   height: 10em;
-  margin: 2em;
+  margin: 0em 2em 2em 2em;
+}
+
+#countdown-timer {
+  position: absolute;
+  margin: 4em 0em 0em 7em;
+  text-align: center;
+}
+
+#countdown-timer p {
+  width: 5em;
+  display: inline-block;
+  font-size: 2em;
 }
