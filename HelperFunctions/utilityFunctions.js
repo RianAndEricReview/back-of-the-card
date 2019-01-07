@@ -13,3 +13,10 @@ export const countdown = (initialCount, setCounterFunc) => {
     }
   }, 1000)
 }
+
+//used to turn 3,2,1 part of countdown into text
+export const countdownTextConverter = (countdownNum, ...args) => {
+  if (countdownNum > args.length) return countdownNum
+  return args.reverse()[countdownNum - 1]
+}
+

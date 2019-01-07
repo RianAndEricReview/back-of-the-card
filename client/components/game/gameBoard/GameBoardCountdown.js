@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { countdown } from '../../../../HelperFunctions/utilityFunctions'
+import { countdown, countdownTextConverter } from '../../../../HelperFunctions/utilityFunctions'
 
 class GameBoardCountdown extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class GameBoardCountdown extends Component {
   render() {
     return (
       <div>
-        <h1>{this.props.countdownClock}</h1>
+        <h1>{countdownTextConverter(this.props.countdownClock, 'Ready...', 'Set...', 'Play Ball!!!')}</h1>
       </div>
     )
   }
