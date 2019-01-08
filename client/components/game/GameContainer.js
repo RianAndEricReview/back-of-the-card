@@ -209,7 +209,7 @@ export class GameContainerClass extends Component {
           {this.props.players.map(player => {
             return (
               <div key={player.id}>
-                <IndividualPlayerPres player={player} />
+                <IndividualPlayerPres player={player} user={this.props.user} maxPlayers={this.props.game.gametype.maxPlayers} />
               </div>)
           })}
         </div>

@@ -36,7 +36,7 @@ export class ResultsContainerClass extends Component {
     const answerRevealProps = this.generateAnswerRevealProps()
     const roundResultsProps = this.generateRoundResultsProps()
     return (
-      <div className="game-container">
+      <div className="results-container">
         {
           (!this.props.displayRoundResults) ?
             <AnswerRevealPres {...answerRevealProps} /> :
