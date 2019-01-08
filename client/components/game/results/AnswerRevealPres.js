@@ -6,7 +6,7 @@ export default (props) => {
   const currentQuestion = questions.find((question) => question.questionNum === currentQuestionNum)
   let correctAnswer = questions.find(question => currentQuestionNum === question.questionNum).correctAnswer
   return (
-    <div className="gameplay-container">
+    <div className="results-pres-container">
       <h1 className="gameplay-logo"> BackOfTheCard </h1>
       <div className="gameboard-question">
         <h4><strong>Question {currentQuestionNum}/{numOfQuestions}:</strong> {currentQuestion.question}</h4>

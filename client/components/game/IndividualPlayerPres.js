@@ -3,7 +3,7 @@ import React from 'react'
 /* eslint-disable react/display-name */
 export default (props) => {
   return (
-    <div className={props.player.user.screenName === props.user.screenName ? 'your-individual-player-pres-container' : 'individual-player-pres-container'}>
+    <div className={props.player.user.screenName === props.user.screenName && props.maxPlayers > 1 ? 'your-individual-player-pres-container' : 'individual-player-pres-container'}>
       <div className="individual-player-name">
         <h4>{props.player.user.screenName}</h4>
       </div>
