@@ -23,7 +23,8 @@ export default (props) => {
                   <button className="gameboard-answer-buttons btn btn-secondary"> {answer} </button>}
               </div>
             </div>
-          )}
+          )
+        }
         )}
         </div>
       </div>
