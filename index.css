@@ -254,20 +254,21 @@ form div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80vw;
 }
 
 .loading-content-container {
   margin: 1em;
   border: .15em solid black;
   background-color:  rgb(247, 236, 217);
-  width: 70vw;
+  width: 75vw;
 }
 
 .gameplay-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 70vw;
+  width: 80vw;
 }
 
 .game-container {
@@ -280,40 +281,75 @@ form div {
   border: .15em solid black;
   background-color:  rgb(202, 199, 190);
   height: 100vh;
-  width: 30vw;
+  width: 20vw;
 }
 
-.player-pres-container {
-  display: flex;
-  align-items: center;
+.individual-player-pres-container {
   border: .15em solid black;
   margin: 1em;
-  background-color:  rgb(247, 236, 217);
+  background-color: #f7ecd9;
+  box-shadow: 10px 5px 5px #4b4545;
 }
 
-.player-content-image {
-  margin: .5em;
+.your-individual-player-pres-container {
+  border: .3em double #b42222;
+  border-style: double solid solid double;
+  margin: 1em;
+  background-color: #f7ecd9;
+  box-shadow: 10px 5px 5px #af3f3f;
+}
+
+.individual-player-name {
+  display: flex;
+  justify-content: center;
+  margin: .2em .2em 0em .2em;
+}
+
+.individual-player-name h4 {
+  margin-bottom: .1em;
+  text-decoration: underline;
+  font-weight: 300;
+  font-size: 1.5em;
+}
+
+.your-individual-player-pres-container .individual-player-name h4 {
+  margin-bottom: .1em;
+  text-decoration: underline;
+  font-weight: 300;
+  font-size: 1.5em;
+  color: #af3f3f;
+}
+
+.individual-player-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0em .25em .25em .25em;
+  background-color: rgb(247, 236, 217);
+}
+
+.individual-player-image {
+  margin: 0 .1em .1em .1em;
   border: .15em solid black;
   background-color:  rgb(247, 236, 217);
   height: 4em;
   width: 4em;
 }
 
-.player-content-image img {
+.individual-player-image img {
   height: 100%;
   width: 100%;
 }
 
-.player-content-container {
+.individual-player-score {
   display: flex;
-  flex-direction: column;
-  margin: .5em;
-  background-color:  rgb(247, 236, 217);
-  flex-grow: 4;
+  align-items: center;
+  flex-grow: 10;
+  margin: .2em;
 }
 
-.player-content h4 {
-  margin: .2em;
+.individual-player-score h4 {
+  font-weight: 250;
+  font-size: 1.5em;
 }
 
 .gameplay-logo {

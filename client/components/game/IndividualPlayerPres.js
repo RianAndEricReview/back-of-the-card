@@ -1,16 +1,17 @@
+/* eslint-disable quotes */
 import React from 'react'
 /* eslint-disable react/display-name */
 export default (props) => {
   return (
-    <div className="player-pres-container">
-      <div className="player-content-image">
-        <img src={props.player.user.playerImage} />
+    <div className={props.player.user.screenName === props.user.screenName ? 'your-individual-player-pres-container' : 'individual-player-pres-container'}>
+      <div className="individual-player-name">
+        <h4>{props.player.user.screenName}</h4>
       </div>
-      <div className="player-content-container">
-        <div className="player-content">
-          <h4>Player: {props.player.user.screenName}</h4>
+      <div className="individual-player-container">
+        <div className="individual-player-image">
+          <img src={props.player.user.playerImage} />
         </div>
-        <div className="player-content">
+        <div className="individual-player-score">
           <h4>Score: {!props.player.gameScore ? 0 : props.player.gameScore}</h4>
         </div>
       </div>
