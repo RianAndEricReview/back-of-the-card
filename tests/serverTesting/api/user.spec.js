@@ -10,8 +10,10 @@ describe('User routes', () => {
 
   describe('/api/users/', () => {
     const bobsEmail = 'bob@bob.bob'
+    const bobsFirstName = 'Bob'
+    const bobsLastName = 'Bob'
 
-    beforeEach(() => User.create({ email: bobsEmail }))
+    beforeEach(() => User.create({ email: bobsEmail, firstName: bobsFirstName, lastName: bobsLastName }))
     it('GET /api/users', () => {
       return request(app).get('/api/users').expect(200)
         .then(res => {
