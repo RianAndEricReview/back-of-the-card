@@ -6,7 +6,7 @@ describe('User routes', () => {
   beforeEach(() => db.sync({ force: true }))
 
   let bob
-  beforeEach(() => User.create({ email: 'bob@bob.bob', password: 'iambob' })
+  beforeEach(() => User.create({ email: 'bob@bob.bob', password: 'iambob', firstName: 'Bob', lastName: 'Bob' })
     .then(user => {
       bob = user
     })

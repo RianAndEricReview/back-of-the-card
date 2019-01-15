@@ -48,7 +48,9 @@ const User = db.define('user', {
 }, {
     getterMethods: {
       totalScoresObject() {
-        return JSON.parse(this.totalScores)
+        if (this.totalScores){
+          return JSON.parse(this.totalScores)
+        }
       },
       fullName() {
         return `${this.firstName} ${this.lastName}`
