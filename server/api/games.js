@@ -121,7 +121,7 @@ router.post('/:gameId/questions', (req, res, next) => {
     const findAllInfo = { QQP, questionChoices, isDerived, table, question }
     questionInfoArr.push(findAllInfo)
   }
-
+  
   // Set up as nested Promise.alls to collect all questions before sending them to the front end
   Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
     .then(foundInfo => {
