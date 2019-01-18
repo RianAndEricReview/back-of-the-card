@@ -1,11 +1,13 @@
 const { expect } = require('chai')
+// const should = require('chai').should()
 const db = require('../../server/db')
 const Batting = db.model('batting')
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
 const { QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
+const { dataConsolidator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 
 
-describe('User routes', () => {
+describe('Batting Data Stats by Year', () => {
 
   const findAllInfo = {
     questionChoices: {
@@ -19,7 +21,7 @@ describe('User routes', () => {
         mostOrLeast: ['*'],
         year: 1871
       },
-      questionType: 'comparison',
+      questionType: 'overall',
       teamOrPlayer: 'singlePlayer',
       timeFrame: 'singleSeason',
       statCategory: 'HR',
@@ -28,35 +30,39 @@ describe('User routes', () => {
     QQP: new QuestionQueryParameters(),
     isDerived: undefined,
     table: Batting,
-    question: new QuestionObjectGenerator(),
   }
 
-  Object.getOwnPropertyNames(findAllInfo.QQP.constructor.prototype).forEach(method => {
-    if (method !== 'constructor') {
-      findAllInfo.QQP[method](findAllInfo.questionChoices, findAllInfo.isDerived)
-    }
-  })
-  console.log('FAIIIIII', findAllInfo)
+  describe('Batting Data', () => {
+    describe('HR', () => {
+      const HRPromiseArray = []
+      // const HRQuestionAnswers = {}
 
-  describe.skip('Instance methods', () => {
-    describe('correctPassword', () => {
+      it('answers array has a length of 4', () => {
 
-      it('returns true if the password is correct', () => {
-        expect(bob.correctPassword('iambob')).to.be.equal(true)
-      })
-      it('returns false if the password is incorrect', () => {
-        expect(bob.correctPassword('iamnotbob')).to.be.equal(false)
+        for (let i = 2000; i <= 2017; i++){
+          findAllInfo.questionChoices.questionSkeletonKey.year = i
+          
+          Object.getOwnPropertyNames(findAllInfo.QQP.constructor.prototype).forEach(method => {
+            if (method !== 'constructor') {
+              findAllInfo.QQP[method](findAllInfo.questionChoices, findAllInfo.isDerived)
+            }
+          })
+
+          HRPromiseArray.push(findAllInfo.table.findAll({ ...findAllInfo.QQP }))
+        }
+        return Promise.all(HRPromiseArray)
+        .then(foundInfo => {
+          foundInfo.forEach((yearData, idx) => {
+            const question = new QuestionObjectGenerator()
+            const year = findAllInfo.questionChoices.questionSkeletonKey.year - foundInfo.length + idx + 1
+            let consolidatedDataArr = dataConsolidator(yearData, findAllInfo.questionChoices, findAllInfo.isDerived)
+                // Generate questionObject answers
+                question.questionAnswerGenerator(findAllInfo.questionChoices, consolidatedDataArr)
+                if(idx === 7) question.answers.pop()
+                expect(question.answers, `${year}`).to.have.lengthOf(4)
+          })
+        })
       })
     })
   })
 
-  describe.skip('Class methods', () => {
-    describe('generateSalt', () => {
-
-      it('returns a salted password', () => {
-        expect(bob.salt()).to.be.an('string')
-        expect(bob.salt).to.not.be.equal(bob.password)
-      })
-    })
-  })
-})
