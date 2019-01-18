@@ -24,7 +24,7 @@ describe('Batting Data Stats by Year', () => {
       questionType: 'overall',
       teamOrPlayer: 'singlePlayer',
       timeFrame: 'singleSeason',
-      statCategory: 'HR',
+      statCategory: 'SB',
       mostOrLeast: 'most'
     },
     QQP: new QuestionQueryParameters(),
@@ -32,37 +32,35 @@ describe('Batting Data Stats by Year', () => {
     table: Batting,
   }
 
-  describe('Batting Data', () => {
-    describe('HR', () => {
-      const HRPromiseArray = []
-      // const HRQuestionAnswers = {}
+  describe('SB', () => {
+    const HRPromiseArray = []
+    // const HRQuestionAnswers = {}
 
-      it('answers array has a length of 4', () => {
 
-        for (let i = 2000; i <= 2017; i++){
-          findAllInfo.questionChoices.questionSkeletonKey.year = i
-          
-          Object.getOwnPropertyNames(findAllInfo.QQP.constructor.prototype).forEach(method => {
-            if (method !== 'constructor') {
-              findAllInfo.QQP[method](findAllInfo.questionChoices, findAllInfo.isDerived)
-            }
-          })
 
-          HRPromiseArray.push(findAllInfo.table.findAll({ ...findAllInfo.QQP }))
+    for (let i = 1871; i <= 2017; i++) {
+      findAllInfo.questionChoices.questionSkeletonKey.year = i
+
+      Object.getOwnPropertyNames(findAllInfo.QQP.constructor.prototype).forEach(method => {
+        if (method !== 'constructor') {
+          findAllInfo.QQP[method](findAllInfo.questionChoices, findAllInfo.isDerived)
         }
-        return Promise.all(HRPromiseArray)
-        .then(foundInfo => {
-          foundInfo.forEach((yearData, idx) => {
+      })
+
+      HRPromiseArray.push(findAllInfo.table.findAll({ ...findAllInfo.QQP }))
+    }
+    HRPromiseArray.forEach((promise, idx) => {
+      const year = findAllInfo.questionChoices.questionSkeletonKey.year - HRPromiseArray.length + idx + 1
+      it(`${year} answers array has a length of 4`, () => {
+        return Promise.resolve(promise)
+          .then(yearData => {
             const question = new QuestionObjectGenerator()
-            const year = findAllInfo.questionChoices.questionSkeletonKey.year - foundInfo.length + idx + 1
             let consolidatedDataArr = dataConsolidator(yearData, findAllInfo.questionChoices, findAllInfo.isDerived)
-                // Generate questionObject answers
-                question.questionAnswerGenerator(findAllInfo.questionChoices, consolidatedDataArr)
-                if(idx === 7) question.answers.pop()
-                expect(question.answers, `${year}`).to.have.lengthOf(4)
+            // Generate questionObject answers
+            question.questionAnswerGenerator(findAllInfo.questionChoices, consolidatedDataArr)
+            expect(question.answers, `${question.answers}`).to.have.lengthOf(4)
           })
-        })
       })
     })
   })
-
+})
