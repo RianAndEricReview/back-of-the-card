@@ -1,5 +1,4 @@
 const { expect } = require('chai')
-// const should = require('chai').should()
 const db = require('../../server/db')
 const Batting = db.model('batting')
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
@@ -7,10 +6,13 @@ const { QuestionObjectGenerator } = require('../../GameplayFunctions/questions/q
 const { dataConsolidator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
 const { derivedBattingStats } = require('../../GameplayFunctions/questions/content/questionContent')
 
-describe('Batting Data Stats by Year', () => {
-  let miliseconds = 0
+describe('Tests to determine if batting table data is valid', () => {
+  let delayInMiliseconds = 0
+  //This array contains each field from the batting table that is being used in question queries.
+  //WHEN ADDING A QUESTION WITH A NEW STAT CAT, ADD THE STAT TO THIS ARRAY TO INCLUDE IN TESTING.
   const battingStatCats = ['HR', 'hits', '2B', '3B', 'RBI', 'BA', 'AB', 'BB', 'SB', 'SO', 'HBP', 'IBB', 'GIDP', 'runs']
   for(let statCatIdx=0; statCatIdx<battingStatCats.length; statCatIdx++){
+    //Build the needed info to make a question query
     const relevantStatInfo = {
       questionChoices: {
         questionSkeletonKey: {
@@ -37,10 +39,10 @@ describe('Batting Data Stats by Year', () => {
     relevantStatInfo.isDerived = derivedBattingStats.find((stat) => {
       return relevantStatInfo.questionChoices.statCategory === stat.statCat
     })
-    console.log(`${battingStatCats[statCatIdx]} ${miliseconds}`)
+    //Before creating and executing a question query & data for every year of the stat being tested, add a delay to avoid overwhelming the database.
     setTimeout(() => {
-      describe(`${battingStatCats[statCatIdx]}`, () => {
-        const HRPromiseArray = []
+      describe(`${battingStatCats[statCatIdx]} data valid for each year`, () => {
+        const yearlyDataPromiseArray = []
         for (let i = 1871; i <= 2017; i++) {
           relevantStatInfo.questionChoices.questionSkeletonKey.year = i
           Object.getOwnPropertyNames(relevantStatInfo.QQP.constructor.prototype).forEach(method => {
@@ -48,10 +50,10 @@ describe('Batting Data Stats by Year', () => {
               relevantStatInfo.QQP[method](relevantStatInfo.questionChoices, relevantStatInfo.isDerived)
             }
           })
-          HRPromiseArray.push(relevantStatInfo.table.findAll({ ...relevantStatInfo.QQP }))
+          yearlyDataPromiseArray.push(relevantStatInfo.table.findAll({ ...relevantStatInfo.QQP }))
         }
-        HRPromiseArray.forEach((promise, idx) => {
-          const year = relevantStatInfo.questionChoices.questionSkeletonKey.year - HRPromiseArray.length + idx + 1
+        yearlyDataPromiseArray.forEach((promise, idx) => {
+          const year = relevantStatInfo.questionChoices.questionSkeletonKey.year - yearlyDataPromiseArray.length + idx + 1
           it(`${year} answers array has a length of 4`, () => {
             return Promise.resolve(promise)
               .then(yearData => {
@@ -65,7 +67,8 @@ describe('Batting Data Stats by Year', () => {
         })
       })
       run()
-    }, miliseconds)
-    miliseconds += 3000
+    }, delayInMiliseconds)
+    //increase the delay between each category of DB query to prevent overwhelming the DB.
+    delayInMiliseconds += 3000
   }
 })
