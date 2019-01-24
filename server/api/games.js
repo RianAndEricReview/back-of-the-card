@@ -127,7 +127,32 @@ router.post('/:gameId/questions', (req, res, next) => {
     .then(foundInfo => {
       const questionsArr = []
       foundInfo.forEach((data, idx) => {
-        let consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
+        //set a goodData variable, starts false
+        let dataIsGood = false
+        let consolidatedDataArr
+        //set a while loop that runs while goodData is false
+        // while(!dataIsGood){
+          //run the data consolidator
+          consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
+          //check consoidated data to see if data is bad
+            //most
+              //check first 10
+                //fail if any are nulls or 0s
+                //if overall fail if the first 6 values are the same
+                //if comparison fail if there isn't a value from 5 on that is different than at least 3 values the next 20
+
+          //if good data set goodData to true (ends the loop)
+          //if bad get another random year
+          //use the idx to get the correct findAllInfo object from the questionInfoArr
+          //Update the year in all spots in the (question choices/skeleton key and the QQP)
+            //Optionally update the database with the year and stat of bad data
+          //Run the findAll on that findInfo object (QQP)
+          //loop runs again
+        // }
+        
+
+
+
         // Generate questionObject answers
         questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
         questionsArr.push(questionInfoArr[idx].question)
