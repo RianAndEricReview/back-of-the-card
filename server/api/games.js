@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Game, Gametype, GamePlayer, Batting, Question, Teams } = require('../db/models')
@@ -121,50 +122,82 @@ router.post('/:gameId/questions', (req, res, next) => {
     const findAllInfo = { QQP, questionChoices, isDerived, table, question }
     questionInfoArr.push(findAllInfo)
   }
-  
-  // Set up as nested Promise.alls to collect all questions before sending them to the front end
-  Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
-    .then(foundInfo => {
-      const questionsArr = []
-      foundInfo.forEach((data, idx) => {
-        //set a goodData variable, starts false
-        let dataIsGood = false
-        let consolidatedDataArr
-        //set a while loop that runs while goodData is false
-        // while(!dataIsGood){
+
+  //set a goodData variable, starts false
+  let dataIsGood = true
+  //set a while loop that runs while goodData is false
+  do {
+    // Set up as nested Promise.alls to collect all questions before sending them to the front end
+    Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
+      .then(foundInfo => {
+        const questionsArr = []
+        foundInfo.forEach((data, idx) => {
+          let consolidatedDataArr
+
           //run the data consolidator
           consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
-          //check consoidated data to see if data is bad
-            //most
-              //check first 10
-                //fail if any are nulls or 0s
-                //if overall fail if the first 6 values are the same
-                //if comparison fail if there isn't a value from 5 on that is different than at least 3 values the next 20
+          //check consolidated data to see if data is bad
+          //most
+          if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+            //check first 10 fail if any are nulls or 0s
+            for (let j = 0; j < 10; j++) {
+              if (consolidatedDataArr[j] === 0 || consolidatedDataArr[j] === null) {
+                dataIsGood = false
+                break
+              }
+            }
+            //if overall, fail if the first 6 values are the same
+            if (dataIsGood && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0] === consolidatedDataArr[5])) {
+              dataIsGood = false
+            }
+          }
 
-          //if good data set goodData to true (ends the loop)
+          //another conditional to check least questions
+
+
           //if bad get another random year
-          //use the idx to get the correct findAllInfo object from the questionInfoArr
-          //Update the year in all spots in the (question choices/skeleton key and the QQP)
-            //Optionally update the database with the year and stat of bad data
-          //Run the findAll on that findInfo object (QQP)
+          if (!dataIsGood) {
+            //*******TODO update the database with the year and stat of bad data
+
+            //use the idx to get the correct findAllInfo object from the questionInfoArr
+            //Update the year in all spots in the (question choices/skeleton key and the QQP)
+            const newRandomYear = randomYearSelector(defaultYearRanges)
+            questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
+            questionInfoArr[idx].QQP.where.year = newRandomYear
+          }
+
           //loop runs again
-        // }
-        
 
 
 
-        // Generate questionObject answers
-        questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
-        questionsArr.push(questionInfoArr[idx].question)
-      })
-      // Post the questions to DB and send results to front end
-      Promise.all(questionsArr.map(question => Question.create(question)
-      ))
-        .then(questions => {
-          res.status(201).json(questions)
+
+
+          // Generate questionObject answers
+          questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
+          questionsArr.push(questionInfoArr[idx].question)
+
+          //if answers comes back as empty array, pick a new year for the query
+          if (questionInfoArr[idx].question.answers === []) {
+            const newRandomYear = randomYearSelector(defaultYearRanges)
+            questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
+            questionInfoArr[idx].QQP.where.year = newRandomYear
+            dataIsGood = false
+          }
         })
-    })
-    .catch(next)
+
+
+        if (dataIsGood) {
+          // Post the questions to DB and send results to front end
+          Promise.all(questionsArr.map(question => Question.create(question)))
+            .then(questions => {
+              res.status(201).json(questions)
+            })
+        }
+      })
+      .catch(next)
+  }
+  //if good data set goodData is true (ends the loop)
+  while (!dataIsGood)
 })
 
 // Used to fetch all questions of a specific game instanace
