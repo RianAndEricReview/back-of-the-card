@@ -124,49 +124,57 @@ class QuestionObjectGenerator {
           this.answers.push(`${queryResults[answerIndex].person.dataValues.nameFirst} ${queryResults[answerIndex].person.dataValues.nameLast}`)
         })
       } else if (questionChoices.questionType === 'comparison') {
-        let usableIncorrectAnswerCount = 0
         let first = true
+        //set to true if we have verified that there are enough usable incorrect answers for the selected correct answer
+        let usableIncorrectAnswer = false
         // randomly choose a player for comparison between the 5th and 30th player
         let correctAnswerIndex = Math.floor(Math.random() * 26) + 4
         // create a list of possible other players for comparison, which includes up to the next 70 players from the queryResults
         let possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
         //Test to make sure that the data set is valid. There need to be 3 usable incorrect answers available.
-        while (usableIncorrectAnswerCount < 3) {
+        while (usableIncorrectAnswer) {
           //the index of the next potential usable incorrect answer
           let answerStartIndex = 0
           //find the index of the next value different from the correct answer value
           const validDataIndex = possibleIncorrectAnswers.slice([answerStartIndex]).findIndex((player) => {
             return queryResults[correctAnswerIndex][questionChoices.statCategory] !== player[questionChoices.statCategory]
           })
-          //if there isn't one: reset the while loop. Choose a new correct answer and set of possible incorrect answers. And end the for loop.
-          if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) <= 3) {
-            usableIncorrectAnswerCount = 0
+          //if there aren't 3 possible incorrect answers then the data set isn't valid, set answers to empty array and return an error.
+          if (possibleIncorrectAnswers.length < 3) {
+            this.answers = []
+            return new Error('Data Set invalid, cannot generate 4 possible answers')
+          //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
+          } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) <= 3) {
             correctAnswerIndex = first ? 5 : correctAnswerIndex + 1
             possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
             //First (plus the above incrementing) is used for least questions where the more unique data tends to be farther down the list.
             first = false
+          } else {
+            usableIncorrectAnswer = true
           }
         }
 
         //Set the correct answer based on the chosen index, and push it the answers array
         this.correctAnswer = `${queryResults[correctAnswerIndex].person.dataValues.nameFirst} ${queryResults[correctAnswerIndex].person.dataValues.nameLast} ~ ${queryResults[correctAnswerIndex][questionChoices.statCategory]}`
         this.answers.push(`${queryResults[correctAnswerIndex].person.dataValues.nameFirst} ${queryResults[correctAnswerIndex].person.dataValues.nameLast}`)
-        
+
         const answerIndexParameter = Math.floor(possibleIncorrectAnswers.length / 3)
+        const incorrectAnswerIndexArray = []
         // Find and set 3 usable incorrect answers
         for (let i = 0; i < 3; i++) {
           let incorrectAnswerIndex = Math.floor(Math.random() * answerIndexParameter) + (answerIndexParameter * i)
-          //Find a valid incorrect answer
-          while (queryResults[correctAnswerIndex][questionChoices.statCategory] === possibleIncorrectAnswers[incorrectAnswerIndex][questionChoices.statCategory]) {
-            //NEED TO UPDATE TO PREVENT DUPLICATE INCORRECT ANSWERS
+          //Find a valid incorrect answer (that the value doesn't equal the correct answer value and that it hasn't already been selected)
+          while (queryResults[correctAnswerIndex][questionChoices.statCategory] === possibleIncorrectAnswers[incorrectAnswerIndex][questionChoices.statCategory] && incorrectAnswerIndexArray.includes(incorrectAnswerIndex)) {
             incorrectAnswerIndex = Math.floor(Math.random() * possibleIncorrectAnswers.length)
           }
-          //set the valid incorrect answer to the answers array
+          //set the valid incorrect answer to the answers array & the idxs array
+          incorrectAnswerIndexArray.push(incorrectAnswerIndex)
           this.answers.push(`${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameFirst} ${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameLast}`)
         }
       }
     }
     shuffle(this.answers)
+    return 'Answers created successfully'
   }
 }
 

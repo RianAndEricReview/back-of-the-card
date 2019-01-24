@@ -11,7 +11,7 @@ describe('Tests to determine if batting table data is valid', () => {
   //This array contains each field from the batting table that is being used in question queries.
   //WHEN ADDING A QUESTION WITH A NEW STAT CAT, ADD THE STAT TO THIS ARRAY TO INCLUDE IN TESTING.
   // const battingStatCats = ['HR', 'hits', '2B', '3B', 'RBI', 'BA', 'AB', 'BB', 'SB', 'SO', 'HBP', 'IBB', 'GIDP', 'runs']
-  const battingStatCats = ['HR', 'SB', '2B', 'HBP', 'IBB']
+  const battingStatCats = ['HR', 'HBP']
   for(let statCatIdx=0; statCatIdx<battingStatCats.length; statCatIdx++){
     //Build the needed info to make a question query
     const relevantStatInfo = {
