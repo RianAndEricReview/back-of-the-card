@@ -11,7 +11,7 @@ describe('Tests to determine if batting table data is valid', () => {
   //This array contains each field from the batting table that is being used in question queries.
   //WHEN ADDING A QUESTION WITH A NEW STAT CAT, ADD THE STAT TO THIS ARRAY TO INCLUDE IN TESTING.
   // const battingStatCats = ['HR', 'hits', '2B', '3B', 'RBI', 'BA', 'AB', 'BB', 'SB', 'SO', 'HBP', 'IBB', 'GIDP', 'runs']
-  const battingStatCats = ['HR', 'HBP']
+  const battingStatCats = ['SO']
   for(let statCatIdx=0; statCatIdx<battingStatCats.length; statCatIdx++){
     //Build the needed info to make a question query
     const relevantStatInfo = {
@@ -55,14 +55,36 @@ describe('Tests to determine if batting table data is valid', () => {
         }
         yearlyDataPromiseArray.forEach((promise, idx) => {
           const year = relevantStatInfo.questionChoices.questionSkeletonKey.year - yearlyDataPromiseArray.length + idx + 1
-          it(`${year} answers array has a length of 4`, () => {
+          it(`${year} has valid answers`, () => {
             return Promise.resolve(promise)
-              .then(yearData => {
+            .then(yearData => {
+              let err
+                if(!yearData.length) {
+                  err = 'No data returned: all Nulls'
+                  expect(err).to.not.equal('No data returned: all Nulls')
+                }
                 const question = new QuestionObjectGenerator()
                 let consolidatedDataArr = dataConsolidator(yearData, relevantStatInfo.questionChoices, relevantStatInfo.isDerived)
-                // Generate questionObject answers
-                question.questionAnswerGenerator(relevantStatInfo.questionChoices, consolidatedDataArr)
-                expect(question.answers, `${question.answers}`).to.have.lengthOf(4)
+                
+                if (relevantStatInfo.questionChoices.mostOrLeast === 'most') {
+                  //check first 10 fail if any are nulls or 0s
+                  for (let j = 0; j < 10; j++) {
+                    if (consolidatedDataArr[j][relevantStatInfo.questionChoices.statCategory] === '0') {
+                      err = 'Null or 0 in first 10 answers'
+                      expect(err).to.not.equal('Null or 0 in first 10 answers')
+                    }
+                  }
+                  //if overall, fail if the first 6 values are the same
+                  // if (dataIsGood && relevantStatInfo.questionChoices.questionType === 'overall' && (consolidatedDataArr[0] === consolidatedDataArr[5])) {
+                  //   return new Error('First 6 values are same in overall')
+                  // }
+                }
+                
+                if(!err){
+                  // Generate questionObject answers
+                  question.questionAnswerGenerator(relevantStatInfo.questionChoices, consolidatedDataArr)
+                  expect(question.answers, `${question.answers}`).to.have.lengthOf(4)
+                }
               })
           })
         })

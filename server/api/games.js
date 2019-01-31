@@ -133,27 +133,30 @@ router.post('/:gameId/questions', (req, res, next) => {
         const questionsArr = []
         foundInfo.forEach((data, idx) => {
           let consolidatedDataArr
-
-          //run the data consolidator
-          consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
-          //check consolidated data to see if data is bad
-          //most
-          if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
-            //check first 10 fail if any are nulls or 0s
-            for (let j = 0; j < 10; j++) {
-              if (consolidatedDataArr[j] === 0 || consolidatedDataArr[j] === null) {
+          if(!data.length) {
+            dataIsGood = false
+          } else {
+            //run the data consolidator
+            consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
+            //check consolidated data to see if data is bad
+            //most
+            if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+              //check first 10 fail if any are nulls or 0s
+              for (let j = 0; j < 10; j++) {
+                if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
+                  dataIsGood = false
+                  break
+                }
+              }
+              //if overall, fail if the first 6 values are the same
+              if (dataIsGood && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0][questionInfoArr[idx].questionChoices.statCategory] === consolidatedDataArr[5][questionInfoArr[idx].questionChoices.statCategory])) {
                 dataIsGood = false
-                break
               }
             }
-            //if overall, fail if the first 6 values are the same
-            if (dataIsGood && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0] === consolidatedDataArr[5])) {
-              dataIsGood = false
-            }
+  
+            //another conditional to check least questions
+
           }
-
-          //another conditional to check least questions
-
 
           //if bad get another random year
           if (!dataIsGood) {

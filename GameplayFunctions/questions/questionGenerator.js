@@ -132,7 +132,7 @@ class QuestionObjectGenerator {
         // create a list of possible other players for comparison, which includes up to the next 70 players from the queryResults
         let possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
         //Test to make sure that the data set is valid. There need to be 3 usable incorrect answers available.
-        while (usableIncorrectAnswer) {
+        while (!usableIncorrectAnswer) {
           //the index of the next potential usable incorrect answer
           let answerStartIndex = 0
           //find the index of the next value different from the correct answer value
@@ -144,7 +144,10 @@ class QuestionObjectGenerator {
             this.answers = []
             return new Error('Data Set invalid, cannot generate 4 possible answers')
           //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
-          } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) <= 3) {
+          } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) >= 3) {
+            // console.log('VDI', validDataIndex)
+            // console.log('PIA', possibleIncorrectAnswers.length)
+            // console.log('else if')
             correctAnswerIndex = first ? 5 : correctAnswerIndex + 1
             possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
             //First (plus the above incrementing) is used for least questions where the more unique data tends to be farther down the list.
