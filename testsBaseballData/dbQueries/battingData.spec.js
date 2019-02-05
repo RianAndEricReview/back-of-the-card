@@ -10,8 +10,7 @@ describe('Tests to determine if batting table data is valid', () => {
   let delayInMiliseconds = 0
   //This array contains each field from the batting table that is being used in question queries.
   //WHEN ADDING A QUESTION WITH A NEW STAT CAT, ADD THE STAT TO THIS ARRAY TO INCLUDE IN TESTING.
-  // const battingStatCats = ['HR', 'hits', '2B', '3B', 'RBI', 'BA', 'AB', 'BB', 'SB', 'SO', 'HBP', 'IBB', 'GIDP', 'runs']
-  const battingStatCats = ['SO']
+  const battingStatCats = ['HR', 'hits', '2B', '3B', 'RBI', 'BA', 'AB', 'BB', 'SB', 'SO', 'HBP', 'IBB', 'GIDP', 'runs']
   for(let statCatIdx=0; statCatIdx<battingStatCats.length; statCatIdx++){
     //Build the needed info to make a question query
     const relevantStatInfo = {
@@ -58,33 +57,28 @@ describe('Tests to determine if batting table data is valid', () => {
           it(`${year} has valid answers`, () => {
             return Promise.resolve(promise)
             .then(yearData => {
-              let err
+              //fail if an empty array is returned
                 if(!yearData.length) {
-                  err = 'No data returned: all Nulls'
-                  expect(err).to.not.equal('No data returned: all Nulls')
+                  throw new Error('No valid data: All Nulls')
                 }
                 const question = new QuestionObjectGenerator()
                 let consolidatedDataArr = dataConsolidator(yearData, relevantStatInfo.questionChoices, relevantStatInfo.isDerived)
                 
                 if (relevantStatInfo.questionChoices.mostOrLeast === 'most') {
-                  //check first 10 fail if any are nulls or 0s
+                  //check first 10, fail if any are nulls or 0s
                   for (let j = 0; j < 10; j++) {
                     if (consolidatedDataArr[j][relevantStatInfo.questionChoices.statCategory] === '0') {
-                      err = 'Null or 0 in first 10 answers'
-                      expect(err).to.not.equal('Null or 0 in first 10 answers')
+                      throw new Error('Null or 0 in first 10 answers')
                     }
                   }
-                  //if overall, fail if the first 6 values are the same
-                  // if (dataIsGood && relevantStatInfo.questionChoices.questionType === 'overall' && (consolidatedDataArr[0] === consolidatedDataArr[5])) {
-                  //   return new Error('First 6 values are same in overall')
-                  // }
+                  // if overall, fail if the first 6 values are the same
+                  if (relevantStatInfo.questionChoices.questionType === 'overall' && (consolidatedDataArr[0][relevantStatInfo.questionChoices.statCategory] === consolidatedDataArr[5][relevantStatInfo.questionChoices.statCategory])) {
+                    throw new Error('Overall: First 6 values are the same')
+                  }
                 }
-                
-                if(!err){
                   // Generate questionObject answers
                   question.questionAnswerGenerator(relevantStatInfo.questionChoices, consolidatedDataArr)
                   expect(question.answers, `${question.answers}`).to.have.lengthOf(4)
-                }
               })
           })
         })
@@ -92,6 +86,6 @@ describe('Tests to determine if batting table data is valid', () => {
       run()
     }, delayInMiliseconds)
     //increase the delay between each category of DB query to prevent overwhelming the DB.
-    delayInMiliseconds += 3000
+    delayInMiliseconds += 2600
   }
 })
