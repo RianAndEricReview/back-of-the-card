@@ -125,9 +125,9 @@ router.post('/:gameId/questions', (req, res, next) => {
     questionInfoArr.push(findAllInfo)
   }
 
-  //set a goodData variable, starts false
+  //set a goodData variable (assumed true until proven otherwise)
   let dataIsGood = true
-  //set a while loop that runs while goodData is false
+  //set a do while loop that keeps running while dataIsGood is false
   do {
     // Set up as nested Promise.alls to collect all questions before sending them to the front end
     Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
@@ -174,7 +174,7 @@ router.post('/:gameId/questions', (req, res, next) => {
             }
           }
 
-          //if bad get another random year
+          //if data is not good get another random year
           if (!dataIsGood) {
             //*******TODO update the database with the year and stat of bad data
 
@@ -185,25 +185,20 @@ router.post('/:gameId/questions', (req, res, next) => {
             questionInfoArr[idx].QQP.where.year = newRandomYear
           }
 
-          //loop runs again
+          if (dataIsGood) {
+            // Generate questionObject answers
+            questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
+            questionsArr.push(questionInfoArr[idx].question)
 
-
-
-
-
-          // Generate questionObject answers
-          questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
-          questionsArr.push(questionInfoArr[idx].question)
-
-          //if answers comes back as empty array, pick a new year for the query
-          if (questionInfoArr[idx].question.answers === []) {
-            const newRandomYear = randomYearSelector(defaultYearRanges)
-            questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
-            questionInfoArr[idx].QQP.where.year = newRandomYear
-            dataIsGood = false
+            //if answers comes back as empty array pick a new year for the query
+            if (questionInfoArr[idx].question.answers === []) {
+              const newRandomYear = randomYearSelector(defaultYearRanges)
+              questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
+              questionInfoArr[idx].QQP.where.year = newRandomYear
+              dataIsGood = false
+            }
           }
         })
-
 
         if (dataIsGood) {
           // Post the questions to DB and send results to front end
@@ -215,7 +210,7 @@ router.post('/:gameId/questions', (req, res, next) => {
       })
       .catch(next)
   }
-  //if good data set goodData is true (ends the loop)
+  //if good data set goodData to true (ends the loop)
   while (!dataIsGood)
 })
 
