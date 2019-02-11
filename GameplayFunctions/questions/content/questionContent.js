@@ -18,7 +18,6 @@ const minPAPerYear = [
   {start: 1904, end: 1918, minPA: 477},
   {start: 1919, end: 1919, minPA: 434},
   {start: 1920, end: 1960, minPA: 477},
-  {start: 1961, end: 1994, minPA: 502},
   {start: 1995, end: 1995, minPA: 446}
 ]
 

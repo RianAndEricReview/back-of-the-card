@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-loop-func */
 const router = require('express').Router()
 const sequelize = require('sequelize')
@@ -133,14 +134,17 @@ router.post('/:gameId/questions', (req, res, next) => {
         const questionsArr = []
         foundInfo.forEach((data, idx) => {
           let consolidatedDataArr
-          if(!data.length) {
+          if (!data.length) {
             dataIsGood = false
           } else {
             //run the data consolidator
             consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
             //check consolidated data to see if data is bad
-            //most
-            if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+            if (consolidatedDataArr.length < 20) {
+              dataIsGood = false
+            }
+            //MOST
+            else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
               //check first 10 fail if any are nulls or 0s
               for (let j = 0; j < 10; j++) {
                 if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
@@ -153,7 +157,7 @@ router.post('/:gameId/questions', (req, res, next) => {
                 dataIsGood = false
               }
             }
-  
+
             //another conditional to check least questions
 
           }
