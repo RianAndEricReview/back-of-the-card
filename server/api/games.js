@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable complexity */
 /* eslint-disable no-loop-func */
 const router = require('express').Router()
@@ -139,12 +140,16 @@ router.post('/:gameId/questions', (req, res, next) => {
           } else {
             //run the data consolidator
             consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
-            //check consolidated data to see if data is bad
-            if (consolidatedDataArr.length < 20) {
-              dataIsGood = false
-            }
-            //MOST
-            else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+
+            // for MOST questions check to make sure data is valid
+            if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+              // make sure there are enough data points after the sixth to make a good question
+              const failsafePlayer = consolidatedDataArr[5]
+              const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
+              if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                dataIsGood = false
+              }
+
               //check first 10 fail if any are nulls or 0s
               for (let j = 0; j < 10; j++) {
                 if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
@@ -152,14 +157,21 @@ router.post('/:gameId/questions', (req, res, next) => {
                   break
                 }
               }
+
               //if overall, fail if the first 6 values are the same
-              if (dataIsGood && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0][questionInfoArr[idx].questionChoices.statCategory] === consolidatedDataArr[5][questionInfoArr[idx].questionChoices.statCategory])) {
+              if (dataIsGood && consolidatedDataArr.length < 30 && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0][questionInfoArr[idx].questionChoices.statCategory] === consolidatedDataArr[5][questionInfoArr[idx].questionChoices.statCategory])) {
                 dataIsGood = false
               }
             }
 
-            //another conditional to check least questions
-
+            // for LEAST questions check to make sure data is valid
+            else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'least') {
+              const failsafePlayer = consolidatedDataArr[0]
+              const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
+              if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                dataIsGood = false
+              }
+            }
           }
 
           //if bad get another random year
