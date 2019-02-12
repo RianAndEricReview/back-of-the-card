@@ -125,10 +125,12 @@ router.post('/:gameId/questions', (req, res, next) => {
     questionInfoArr.push(findAllInfo)
   }
 
-  //set a goodData variable (assumed true until proven otherwise)
-  let dataIsGood = true
+  //set up a goodData variable to be used to continue running a while loop until getting good data set
+  let dataIsGood
   //set a do while loop that keeps running while dataIsGood is false
   do {
+    //each new data set is assumed true until proven otherwise
+    dataIsGood = true
     // Set up as nested Promise.alls to collect all questions before sending them to the front end
     Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
       .then(foundInfo => {
@@ -137,22 +139,26 @@ router.post('/:gameId/questions', (req, res, next) => {
           let consolidatedDataArr
           if (!data.length) {
             dataIsGood = false
+            console.log('111111111111111')
           } else {
             //run the data consolidator
             consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
 
             // for MOST questions check to make sure data is valid
             if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
+              console.log('most')
               // make sure there are enough data points after the sixth to make a good question
               const failsafePlayer = consolidatedDataArr[5]
               const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
               if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                console.log('33333333333333333')
                 dataIsGood = false
               }
 
               //check first 10 fail if any are nulls or 0s
               for (let j = 0; j < 10; j++) {
                 if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
+                  console.log('44444444444444444444')
                   dataIsGood = false
                   break
                 }
@@ -160,22 +166,42 @@ router.post('/:gameId/questions', (req, res, next) => {
 
               //if overall, fail if the first 6 values are the same
               if (dataIsGood && consolidatedDataArr.length < 30 && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0][questionInfoArr[idx].questionChoices.statCategory] === consolidatedDataArr[5][questionInfoArr[idx].questionChoices.statCategory])) {
+                console.log('55555555555555555555555555')
                 dataIsGood = false
               }
             }
 
             // for LEAST questions check to make sure data is valid
             else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'least') {
+              console.log('least')
               const failsafePlayer = consolidatedDataArr[0]
               const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
               if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                console.log('777777777777777777')
                 dataIsGood = false
               }
             }
           }
 
+          if (dataIsGood) {
+            console.log('inside of data is good')
+            // Generate questionObject answers
+            questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
+            questionsArr.push(questionInfoArr[idx].question)
+
+            //if answers comes back as empty array pick a new year for the query
+            if (questionInfoArr[idx].question.answers === []) {
+              console.log('inside of empty answer array')
+              const newRandomYear = randomYearSelector(defaultYearRanges)
+              questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
+              questionInfoArr[idx].QQP.where.year = newRandomYear
+              dataIsGood = false
+            }
+          }
+
           //if data is not good get another random year
           if (!dataIsGood) {
+            console.log('inside of bad data if')
             //*******TODO update the database with the year and stat of bad data
 
             //use the idx to get the correct findAllInfo object from the questionInfoArr
@@ -183,20 +209,6 @@ router.post('/:gameId/questions', (req, res, next) => {
             const newRandomYear = randomYearSelector(defaultYearRanges)
             questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
             questionInfoArr[idx].QQP.where.year = newRandomYear
-          }
-
-          if (dataIsGood) {
-            // Generate questionObject answers
-            questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
-            questionsArr.push(questionInfoArr[idx].question)
-
-            //if answers comes back as empty array pick a new year for the query
-            if (questionInfoArr[idx].question.answers === []) {
-              const newRandomYear = randomYearSelector(defaultYearRanges)
-              questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
-              questionInfoArr[idx].QQP.where.year = newRandomYear
-              dataIsGood = false
-            }
           }
         })
 
@@ -209,6 +221,7 @@ router.post('/:gameId/questions', (req, res, next) => {
         }
       })
       .catch(next)
+
   }
   //if good data set goodData to true (ends the loop)
   while (!dataIsGood)
