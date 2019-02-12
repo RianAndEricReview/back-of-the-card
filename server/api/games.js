@@ -53,7 +53,7 @@ router.post('/', (req, res, next) => {
 
           const numOfQuestions = gametype.numOfQuestions
           const questionTexts = []
-          const questionInfoArr = []
+          const findAllInfoArr = []
 
           //create the proper number of questions for a game based on the # of questions stated in the req.
           for (let i = 1; i <= numOfQuestions; i++) {
@@ -99,34 +99,32 @@ router.post('/', (req, res, next) => {
             findAllInfoArr.push(findAllInfo)
           }
 
-          const questionCreatorFunc = (gameId, questionInfoArr) => {
+          const questionCreatorFunc = (questionInfoArr) => {
+            const questionsArr = []
+            const newQuestionInfoArr = []
             Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
               .then(foundInfo => {
-                const questionsArr = []
                 foundInfo.forEach((data, idx) => {
+                  let dataIsGood = true
                   let consolidatedDataArr
                   if (!data.length) {
                     dataIsGood = false
-                    console.log('111111111111111')
                   } else {
                     //run the data consolidator
                     consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
 
                     // for MOST questions check to make sure data is valid
                     if (questionInfoArr[idx].questionChoices.mostOrLeast === 'most') {
-                      console.log('most')
                       // make sure there are enough data points after the sixth to make a good question
                       const failsafePlayer = consolidatedDataArr[5]
                       const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
                       if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
-                        console.log('33333333333333333')
                         dataIsGood = false
                       }
 
                       //check first 10 fail if any are nulls or 0s
                       for (let j = 0; j < 10; j++) {
                         if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
-                          console.log('44444444444444444444')
                           dataIsGood = false
                           break
                         }
@@ -134,32 +132,27 @@ router.post('/', (req, res, next) => {
 
                       //if overall, fail if the first 6 values are the same
                       if (dataIsGood && consolidatedDataArr.length < 30 && questionInfoArr[idx].questionChoices.questionType === 'overall' && (consolidatedDataArr[0][questionInfoArr[idx].questionChoices.statCategory] === consolidatedDataArr[5][questionInfoArr[idx].questionChoices.statCategory])) {
-                        console.log('55555555555555555555555555')
                         dataIsGood = false
                       }
                     }
 
                     // for LEAST questions check to make sure data is valid
                     else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'least') {
-                      console.log('least')
                       const failsafePlayer = consolidatedDataArr[0]
                       const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
                       if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
-                        console.log('777777777777777777')
                         dataIsGood = false
                       }
                     }
                   }
 
                   if (dataIsGood) {
-                    console.log('inside of data is good')
                     // Generate questionObject answers
                     questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
                     questionsArr.push(questionInfoArr[idx].question)
 
                     //if answers comes back as empty array pick a new year for the query
                     if (questionInfoArr[idx].question.answers === []) {
-                      console.log('inside of empty answer array')
                       const newRandomYear = randomYearSelector(defaultYearRanges)
                       questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
                       questionInfoArr[idx].QQP.where.year = newRandomYear
@@ -169,24 +162,29 @@ router.post('/', (req, res, next) => {
 
                   //if data is not good get another random year
                   if (!dataIsGood) {
-                    console.log('inside of bad data if')
                     //*******TODO update the database with the year and stat of bad data
 
                     //use the idx to get the correct findAllInfo object from the questionInfoArr
                     //Update the year in all spots in the (question choices/skeleton key and the QQP)
                     const newRandomYear = randomYearSelector(defaultYearRanges)
                     questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
-                    questionInfoArr[idx].QQP.where.year = newRandomYear
+                      .QQP.where.year = newRandomYear
+                    newQuestionInfoArr.push(questionInfoArr[idx])
                   }
                 })
 
-                if (dataIsGood) {
+                if (questionsArr.length > 0) {
                   // Post the questions to DB and send results to front end
                   Promise.all(questionsArr.map(question => Question.create(question)))
                     .then(questions => {
                       res.status(201).json(questions)
                     })
                 }
+
+                if (newQuestionInfoArr.length > 0) {
+                  questionCreatorFunc(newQuestionInfoArr)
+                }
+
               })
               .catch(next)
           }
