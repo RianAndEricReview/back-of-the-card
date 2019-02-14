@@ -156,8 +156,7 @@ export class GameContainerClass extends Component {
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
-    if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
-    else { this.props.getAllQuestions(this.props.game.id) }
+    this.props.getAllQuestions(this.props.game.id)
   }
 
   componentDidUpdate(prevProps) {

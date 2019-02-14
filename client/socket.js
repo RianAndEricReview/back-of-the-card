@@ -27,6 +27,11 @@ socket.joinGameRoom = (roomId, newPlayer) => {
   socket.emit('joinGameRoom', roomId, newPlayer)
 }
 
+// update number of questions created
+socket.on('questionsCreated', (numQuestions) => {
+  store.dispatch(updateGame({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
+})
+
 // GAMEPLAY SOCKETS
 // receive answers from submitting players
 socket.on('receiveAnswer', (playerAnswer) => {

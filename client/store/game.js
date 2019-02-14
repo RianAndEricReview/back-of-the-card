@@ -9,11 +9,13 @@ const defaultGame = {}
 export const GET_GAME = 'GET_GAME'
 export const UPDATE_GAME = 'UPDATE_GAME'
 export const CLEAR_GAME_DATA = 'CLEAR_GAME_DATA'
+export const INCREMENT_GAME_DATA = 'INCREMENT_GAME_DATA'
 
 //ACTION CREATORS
 export const getGame = game => ({ type: GET_GAME, game })
 export const updateGame = updatedItem => ({ type: UPDATE_GAME, updatedItem })
 export const clearGameData = () => ({ type: CLEAR_GAME_DATA })
+export const incrementGameData = itemToIncrement => ({type: INCREMENT_GAME_DATA, itemToIncrement})
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
@@ -52,6 +54,8 @@ export default function gameReducer(state = defaultGame, action) {
       return action.game
     case UPDATE_GAME:
       return {...state, ...action.updatedItem}
+    case INCREMENT_GAME_DATA:
+      return {...state, [action.whatToIncrement]: state[action.whatToIncrement] + action.valueToIncrement}
     case CLEAR_GAME_DATA:
       return {}
     default:

@@ -3,6 +3,7 @@
 /* eslint-disable no-loop-func */
 const router = require('express').Router()
 const sequelize = require('sequelize')
+const socket = require('../socket')
 const { Game, Gametype, GamePlayer, Batting, Question, Teams } = require('../db/models')
 const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
@@ -49,6 +50,7 @@ router.post('/', (req, res, next) => {
       return Game.create({ open: req.body.open, gametypeId: gametype.id })
         .then(game => {
           game.dataValues.gametype = gametype
+          game.numQuestionsCreated = 0
           res.status(201).json(game)
 
           const numOfQuestions = gametype.numOfQuestions
@@ -168,17 +170,19 @@ router.post('/', (req, res, next) => {
                     //Update the year in all spots in the (question choices/skeleton key and the QQP)
                     const newRandomYear = randomYearSelector(defaultYearRanges)
                     questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
-                      .QQP.where.year = newRandomYear
+                    questionInfoArr[idx].QQP.where.year = newRandomYear
                     newQuestionInfoArr.push(questionInfoArr[idx])
                   }
                 })
 
                 if (questionsArr.length > 0) {
                   // Post the questions to DB and send results to front end
-                  Promise.all(questionsArr.map(question => Question.create(question)))
-                    .then(questions => {
-                      res.status(201).json(questions)
+                  return Promise.all(questionsArr.map(question => Question.create(question)))
+                    .then(() => {
+                      const questionCount = questionsArr.length
+                      socket.emit('questionsAdded', game.id, questionCount)
                     })
+                    .catch(next)
                 }
 
                 if (newQuestionInfoArr.length > 0) {
@@ -188,6 +192,7 @@ router.post('/', (req, res, next) => {
               })
               .catch(next)
           }
+          questionCreatorFunc(findAllInfoArr)
           return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
         })
     })

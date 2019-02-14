@@ -21,6 +21,11 @@ module.exports = (io) => {
     socket.on('submitAnswer', (gameId, playerAnswer) => {
       io.in(`GameRoom${gameId}`).emit('receiveAnswer', playerAnswer)
     })
+
+    // send number of new questions ready
+    socket.on('questionsAdded', (gameId, numQuestionsAdded) => {
+      io.in(`GameRoom${gameId}`).emit('questionsCreated', numQuestionsAdded)
+    })
   })
 }
 
