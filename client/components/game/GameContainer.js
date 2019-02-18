@@ -154,12 +154,11 @@ export class GameContainerClass extends Component {
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
     //failsafe to make sure no answers are left from a previous game.
     this.props.clearAllPlayerAnswers()
-    // the host player will create the questions for the game, all other players will fetch those questions
+    // the host player will create the questions for the game, and then all players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
   }
 
   componentDidUpdate(prevProps) {
-    console.log('the questions', this.props.questions.length)
     if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
       this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
     }

@@ -100,8 +100,9 @@ router.post('/', (req, res, next) => {
             findAllInfoArr.push(findAllInfo)
           }
 
+          // function used to create valid questions. It is called recursively when non-valid questions are found.
+          // REFACTOR: SHOULD BE MADE INTO A HELPER FUNCTION
           const questionCreatorFunc = (questionInfoArr) => {
-            console.log('in here more than once')
             const questionsArr = []
             const newQuestionInfoArr = []
             Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
@@ -109,6 +110,7 @@ router.post('/', (req, res, next) => {
                 foundInfo.forEach((data, idx) => {
                   let dataIsGood = true
                   let consolidatedDataArr
+                  // do not use a data set that is too short to get initial correct answer
                   if (data.length < 6) {
                     dataIsGood = false
                   } else {
@@ -154,7 +156,7 @@ router.post('/', (req, res, next) => {
                     questionsArr.push(questionInfoArr[idx].question)
                     questionInfoArr[idx].question.questionTextGenerator(questionInfoArr[idx].questionChoices)
 
-                    //if answers comes back as empty array pick a new year for the query
+                    //if answers array comes back from the answer generator as empty array pick a new year for the query
                     if (questionInfoArr[idx].question.answers === []) {
                       const newRandomYear = randomYearSelector(defaultYearRanges)
                       questionInfoArr[idx].questionChoices.questionSkeletonKey.year = newRandomYear
@@ -175,28 +177,23 @@ router.post('/', (req, res, next) => {
                     newQuestionInfoArr.push(questionInfoArr[idx])
                   }
                 })
-                newQuestionInfoArr.forEach((qia, idx) => {
-                  console.log('yearrrrrrrrrr', qia.questionChoices.questionSkeletonKey, 'idx', idx)
-                })
-                //console.log(newQuestionInfoArr[0].questionChoices, 'above promise')
-                if (questionsArr.length > 0) {
 
-                  // Post the questions to DB and send results to front end
+                // Post the good questions to DB and socket the number of good questions made
+                if (questionsArr.length > 0) {
                   return Promise.all(questionsArr.map(question => Question.create(question)))
                     .then(() => {
                       const questionCount = questionsArr.length
-                      console.log('ioioioiooi')
                       req.app.io.in(`GameRoom${game.id}`).emit('questionsAdded', questionCount)
+                      // use the updated queries of the bad questions that were created to recursively create good ones
                       if (newQuestionInfoArr.length > 0) {
-                        console.log('in the recursive call inside', newQuestionInfoArr.length)
                         questionCreatorFunc(newQuestionInfoArr)
                       }
                     })
                     .catch(next)
                 }
 
+                // if no good questions were created, recursively run the function if there are bad questions
                 if (newQuestionInfoArr.length > 0) {
-                  console.log('in the recursive call outside', newQuestionInfoArr.length)
                   questionCreatorFunc(newQuestionInfoArr)
                 }
 

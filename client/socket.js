@@ -29,7 +29,6 @@ socket.joinGameRoom = (roomId, newPlayer) => {
 
 // update number of questions created
 socket.on('questionsAdded', (numQuestions) => {
-  console.log('is this registering?', numQuestions)
   store.dispatch(incrementGameData({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
 })
 
