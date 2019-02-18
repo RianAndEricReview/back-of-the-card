@@ -26,7 +26,7 @@ export const getGameThunk = (gametypeId, playerId, open) =>
         // Creates a new game with the current player associated with the game instance
         axios.post(`/api/games`, { playerId, gametypeId, open })
           .then(newGame => {
-            dispatch(getGame({...newGame.data, host: true}))
+            dispatch(getGame({...newGame.data, host: true, numQuestionsCreated: 0}))
             history.push(`/game/${newGame.data.id}`)
           })
           .catch(err => console.log(err))
@@ -55,7 +55,7 @@ export default function gameReducer(state = defaultGame, action) {
     case UPDATE_GAME:
       return {...state, ...action.updatedItem}
     case INCREMENT_GAME_DATA:
-      return {...state, [action.whatToIncrement]: state[action.whatToIncrement] + action.valueToIncrement}
+      return {...state, [action.itemToIncrement.whatToIncrement]: state[action.itemToIncrement.whatToIncrement] + action.itemToIncrement.valueToIncrement}
     case CLEAR_GAME_DATA:
       return {}
     default:

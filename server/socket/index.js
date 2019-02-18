@@ -22,10 +22,11 @@ module.exports = (io) => {
       io.in(`GameRoom${gameId}`).emit('receiveAnswer', playerAnswer)
     })
 
-    // send number of new questions ready
-    socket.on('questionsAdded', (gameId, numQuestionsAdded) => {
-      io.in(`GameRoom${gameId}`).emit('questionsCreated', numQuestionsAdded)
-    })
+    // // send number of new questions ready
+    // socket.on('questionsAdded', (gameId, numQuestionsAdded) => {
+    //   // console.log('in the backend emit')
+    //   io.in(`GameRoom${gameId}`).emit('questionsCreated', numQuestionsAdded)
+    // })
   })
 }
 

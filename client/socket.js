@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { getPlayer, updateGame, addPlayerAnswer, updatePlayer } from './store'
+import store, { getPlayer, updateGame, addPlayerAnswer, updatePlayer, incrementGameData } from './store'
 
 const socket = io(window.location.origin)
 socket.on('connect', () => {
@@ -28,8 +28,9 @@ socket.joinGameRoom = (roomId, newPlayer) => {
 }
 
 // update number of questions created
-socket.on('questionsCreated', (numQuestions) => {
-  store.dispatch(updateGame({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
+socket.on('questionsAdded', (numQuestions) => {
+  console.log('is this registering?', numQuestions)
+  store.dispatch(incrementGameData({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
 })
 
 // GAMEPLAY SOCKETS

@@ -156,12 +156,15 @@ export class GameContainerClass extends Component {
     this.props.clearAllPlayerAnswers()
     // the host player will create the questions for the game, all other players will fetch those questions
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
-    this.props.getAllQuestions(this.props.game.id)
   }
 
   componentDidUpdate(prevProps) {
+    console.log('the questions', this.props.questions.length)
     if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
       this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
+    }
+    if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions && prevProps.game.numQuestionsCreated !== this.props.game.numQuestionsCreated) {
+      this.props.getAllQuestions(this.props.game.id)
     }
   }
 
@@ -196,7 +199,7 @@ export class GameContainerClass extends Component {
     const gameOverProps = this.generateGameOverProps()
     return (
       <div className="game-container space-below-header" onLoad={topOfPageStart()}>
-        {(this.props.game.open || this.props.questions.length <= 0) ?
+        {(this.props.game.open || this.props.questions.length !== this.props.game.gametype.numOfQuestions) ?
           <LoadingPres /> :
           (this.state.gameOver) ?
             <GameOverPres {...gameOverProps} /> :

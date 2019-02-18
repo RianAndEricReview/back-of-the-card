@@ -50,7 +50,6 @@ router.post('/', (req, res, next) => {
       return Game.create({ open: req.body.open, gametypeId: gametype.id })
         .then(game => {
           game.dataValues.gametype = gametype
-          game.numQuestionsCreated = 0
           res.status(201).json(game)
 
           const numOfQuestions = gametype.numOfQuestions
@@ -102,6 +101,7 @@ router.post('/', (req, res, next) => {
           }
 
           const questionCreatorFunc = (questionInfoArr) => {
+            console.log('in here more than once')
             const questionsArr = []
             const newQuestionInfoArr = []
             Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
@@ -109,7 +109,7 @@ router.post('/', (req, res, next) => {
                 foundInfo.forEach((data, idx) => {
                   let dataIsGood = true
                   let consolidatedDataArr
-                  if (!data.length) {
+                  if (data.length < 6) {
                     dataIsGood = false
                   } else {
                     //run the data consolidator
@@ -120,7 +120,7 @@ router.post('/', (req, res, next) => {
                       // make sure there are enough data points after the sixth to make a good question
                       const failsafePlayer = consolidatedDataArr[5]
                       const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
-                      if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                      if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30 && questionInfoArr[idx].questionChoices.questionType === 'singlePlayer') {
                         dataIsGood = false
                       }
 
@@ -142,7 +142,7 @@ router.post('/', (req, res, next) => {
                     else if (questionInfoArr[idx].questionChoices.mostOrLeast === 'least') {
                       const failsafePlayer = consolidatedDataArr[0]
                       const firstValidPlayerIdx = consolidatedDataArr.findIndex(player => failsafePlayer[questionInfoArr[idx].questionChoices.statCategory] !== player[questionInfoArr[idx].questionChoices.statCategory])
-                      if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30) {
+                      if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30 && questionInfoArr[idx].questionChoices.questionType === 'singlePlayer') {
                         dataIsGood = false
                       }
                     }
@@ -152,6 +152,7 @@ router.post('/', (req, res, next) => {
                     // Generate questionObject answers
                     questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
                     questionsArr.push(questionInfoArr[idx].question)
+                    questionInfoArr[idx].question.questionTextGenerator(questionInfoArr[idx].questionChoices)
 
                     //if answers comes back as empty array pick a new year for the query
                     if (questionInfoArr[idx].question.answers === []) {
@@ -174,18 +175,28 @@ router.post('/', (req, res, next) => {
                     newQuestionInfoArr.push(questionInfoArr[idx])
                   }
                 })
-
+                newQuestionInfoArr.forEach((qia, idx) => {
+                  console.log('yearrrrrrrrrr', qia.questionChoices.questionSkeletonKey, 'idx', idx)
+                })
+                //console.log(newQuestionInfoArr[0].questionChoices, 'above promise')
                 if (questionsArr.length > 0) {
+
                   // Post the questions to DB and send results to front end
                   return Promise.all(questionsArr.map(question => Question.create(question)))
                     .then(() => {
                       const questionCount = questionsArr.length
-                      socket.emit('questionsAdded', game.id, questionCount)
+                      console.log('ioioioiooi')
+                      req.app.io.in(`GameRoom${game.id}`).emit('questionsAdded', questionCount)
+                      if (newQuestionInfoArr.length > 0) {
+                        console.log('in the recursive call inside', newQuestionInfoArr.length)
+                        questionCreatorFunc(newQuestionInfoArr)
+                      }
                     })
                     .catch(next)
                 }
 
                 if (newQuestionInfoArr.length > 0) {
+                  console.log('in the recursive call outside', newQuestionInfoArr.length)
                   questionCreatorFunc(newQuestionInfoArr)
                 }
 
@@ -212,6 +223,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
             game.update({ open: false })
           }
           delete game.dataValues.gamePlayers
+          game.numQuestionsCreated = 0
           res.status(200).json(game)
         })
     })
