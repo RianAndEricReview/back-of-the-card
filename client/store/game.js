@@ -24,13 +24,15 @@ export const getGameThunk = (gametypeId, playerId, open) =>
   .then(game => {
       if (!game) {
         // Creates a new game with the current player associated with the game instance
-        axios.post(`/api/games`, { playerId, gametypeId, open })
+        axios.post(`/api/games`, { playerId, gametypeId, open, socketId: socket.id })
           .then(newGame => {
             dispatch(getGame({...newGame.data, host: true, numQuestionsCreated: 0}))
             history.push(`/game/${newGame.data.id}`)
           })
           .catch(err => console.log(err))
       } else {
+        //
+        socket.emit('joinGameRoomOnly', game.id)
         // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
           .then(joinedGame => {

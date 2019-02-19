@@ -154,14 +154,17 @@ export class GameContainerClass extends Component {
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
     //failsafe to make sure no answers are left from a previous game.
     this.props.clearAllPlayerAnswers()
-    // the host player will create the questions for the game, and then all players will fetch those questions
+    //Get all players already in the game and pass your info to everyone else in game
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
+    // if all the questions have been created, grab them and put them in the store
+    if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions) this.props.getAllQuestions(this.props.game.id)
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
       this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
     }
+    // Once the host has created all of the quesions, grab them
     if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions && prevProps.game.numQuestionsCreated !== this.props.game.numQuestionsCreated) {
       this.props.getAllQuestions(this.props.game.id)
     }
