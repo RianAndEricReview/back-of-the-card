@@ -161,7 +161,8 @@ export class GameContainerClass extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
+    //If the countdownClock hits 0, start the scoring timer
+    if (this.props.countdownClock === 0 && prevProps.countdownClock !== 0) {
       this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
     }
     // Once the host has created all of the quesions, grab them

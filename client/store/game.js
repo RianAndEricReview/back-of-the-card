@@ -31,8 +31,8 @@ export const getGameThunk = (gametypeId, playerId, open) =>
           })
           .catch(err => console.log(err))
       } else {
-        //
-        socket.emit('joinGameRoomOnly', game.id)
+        // If a game exists have the player join the socket GameRoom
+        socket.emit('joinGameRoom', game.id)
         // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
           .then(joinedGame => {

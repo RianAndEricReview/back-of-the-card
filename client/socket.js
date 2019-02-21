@@ -13,9 +13,13 @@ socket.on('welcome', (message) => {
 })
 
 // receive new player info when the new player joins
-socket.on('newPlayerJoin', (newPlayer) => {
-  console.log('NP JOIN', newPlayer)
+socket.on('newPlayerToGame', (newPlayer) => {
   store.dispatch(addPlayerThunk(newPlayer))
+})
+
+// middleman to communicate that a player needs to join a specific room
+socket.on('hostJoinRoom', (roomId) => {
+  socket.emit('joinGameRoom', roomId)
 })
 
 // receive game close notification
@@ -23,24 +27,8 @@ socket.on('gameClosed', () => {
   store.dispatch(updateGame({ open: false }))
 })
 
-// //function for joining a game room.
-// socket.joinGameRoom = (roomId, newPlayer) => {
-//   socket.emit('joinGameRoom', roomId, newPlayer)
-// }
-
-//
-socket.on('newPlayerToRoom', (roomId, newPlayer) => {
-  socket.emit('addNewPlayer', roomId, newPlayer)
-})
-
-//
-socket.on('onlyJoinRoom', (roomId) => {
-  socket.emit('joinGameRoomOnly', roomId)
-})
-
 // update number of questions created
 socket.on('questionsAdded', (numQuestions) => {
-  console.log('in the socket: ', numQuestions)
   store.dispatch(incrementGameData({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
 })
 

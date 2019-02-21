@@ -101,7 +101,6 @@ router.post('/', (req, res, next) => {
           // function used to create valid questions. It is called recursively when non-valid questions are found.
           // REFACTOR: SHOULD BE MADE INTO A HELPER FUNCTION
           const questionCreatorFunc = (questionInfoArr) => {
-            console.log('Qu creator func runs')
             const questionsArr = []
             const newQuestionInfoArr = []
             Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
@@ -127,7 +126,7 @@ router.post('/', (req, res, next) => {
 
                       //check first 10 fail if any are nulls or 0s
                       for (let j = 0; j < 10; j++) {
-                        if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
+                        if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0' || !consolidatedDataArr[j]) {
                           dataIsGood = false
                           break
                         }
@@ -150,7 +149,6 @@ router.post('/', (req, res, next) => {
                   }
 
                   if (dataIsGood) {
-                    console.log('about to generate answers')
                     // Generate questionObject answers
                     questionInfoArr[idx].question.questionAnswerGenerator(questionInfoArr[idx].questionChoices, consolidatedDataArr)
                     questionsArr.push(questionInfoArr[idx].question)
@@ -180,18 +178,12 @@ router.post('/', (req, res, next) => {
 
                 // Post the good questions to DB and socket the number of good questions made
                 if (questionsArr.length > 0) {
-                  console.log('about to put good ones in DB')
                   return Promise.all(questionsArr.map(question => Question.create(question)))
                     .then(() => {
-                      console.log('good ones in DB', req.app.io.in)
                       const questionCount = questionsArr.length
-                      console.log('socket should have fired', questionCount, `GameRoom${game.id}`)
                       req.app.io.in(`GameRoom${game.id}`).emit('questionsAdded', questionCount)
-                      // req.app.io.emit('welcome', `GameRoom${game.id} with ${questionCount}`)
-                      console.log('socket should have fired', questionCount, `GameRoom${game.id}`)
                       // use the updated queries of the bad questions that were created to recursively create good ones
                       if (newQuestionInfoArr.length > 0) {
-                        console.log('run again 1')
                         questionCreatorFunc(newQuestionInfoArr)
                       }
                     })
@@ -200,16 +192,16 @@ router.post('/', (req, res, next) => {
 
                 // if no good questions were created, recursively run the function if there are bad questions
                 if (newQuestionInfoArr.length > 0) {
-                  console.log('run again 2')
                   questionCreatorFunc(newQuestionInfoArr)
                 }
 
               })
               .catch(next)
           }
-          console.log('dskjfhkasdjfh', req.body.socketId)
-          req.app.io.to(`${req.body.socketId}`).emit('onlyJoinRoom', game.id)
+          //join the room and then run the question creator func
+          req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
           questionCreatorFunc(findAllInfoArr)
+          //create the user's gamePlayer in DB
           return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
         })
     })
@@ -221,7 +213,8 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
   //Create the GamePlayer instance linking user to game.
   GamePlayer.create({ gameId: req.params.gameId, userId: req.body.playerId.toString() })
     .then((newPlayer) => {
-      req.app.io.in(`GameRoom${req.params.gameId}`).emit('newPlayerJoin', newPlayer)
+      //let everyone in the GameRoom know there is a new gamePlayer
+      req.app.io.in(`GameRoom${req.params.gameId}`).emit('newPlayerToGame', newPlayer)
       //Get info to decide whether to close game or not.
       return Promise.all([Game.findById(req.params.gameId), GamePlayer.findAll({ where: { gameId: req.params.gameId } })])
         .then((result) => {
