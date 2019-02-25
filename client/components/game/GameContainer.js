@@ -169,6 +169,10 @@ export class GameContainerClass extends Component {
     if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions && prevProps.game.numQuestionsCreated !== this.props.game.numQuestionsCreated) {
       this.props.getAllQuestions(this.props.game.id)
     }
+    //if a new player is added, let sockets know to send out numQuestionsCreated
+    if (this.props.players.length > prevProps.players.length){
+      socket.emit('broadcastNumQuestionsCreated', this.props.game.id, this.props.game.numQuestionsCreated)
+    }
   }
 
   componentWillUnmount() {

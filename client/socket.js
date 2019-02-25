@@ -27,10 +27,16 @@ socket.on('gameClosed', () => {
   store.dispatch(updateGame({ open: false }))
 })
 
-// update number of questions created
+// increment number of questions created
 socket.on('questionsAdded', (numQuestions) => {
   store.dispatch(incrementGameData({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
 })
+
+// update number of questions created in store, or set initial value
+socket.on('setNumQuestionsCreated', (numQuestions) => {
+  store.dispatch(updateGame({ numQuestionsCreated: numQuestions}))
+})
+
 
 // GAMEPLAY SOCKETS
 // receive answers from submitting players

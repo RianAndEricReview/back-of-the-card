@@ -8,6 +8,11 @@ module.exports = (io) => {
       io.in(`GameRoom${roomId}`).emit('welcome', `Welcome to GameRoom ${roomId}`)
     })
 
+    //let eveyone else in the room know how many questions have been created
+    socket.on('broadcastNumQuestionsCreated', (gameId, numQuestionsCreated) => {
+      socket.to(`GameRoom${gameId}`).emit('setNumQuestionsCreated', numQuestionsCreated)
+    })
+
     //let everyone in the game room know they need to close the game.
     socket.on('closeGame', (gameId) => {
       socket.to(`GameRoom${gameId}`).emit('gameClosed')
