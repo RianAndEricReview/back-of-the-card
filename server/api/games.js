@@ -124,9 +124,12 @@ router.post('/', (req, res, next) => {
                         dataIsGood = false
                       }
 
-                      //check first 10 fail if any are nulls or 0s
+                      //make sure that we have 10 data points, next validate that none are 0s
                       for (let j = 0; j < 10; j++) {
-                        if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0' || !consolidatedDataArr[j]) {
+                        if (!consolidatedDataArr[j]){
+                          dataIsGood = false
+                          break
+                        } else if (consolidatedDataArr[j][questionInfoArr[idx].questionChoices.statCategory] === '0') {
                           dataIsGood = false
                           break
                         }
