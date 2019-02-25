@@ -112,7 +112,7 @@ router.post('/', (req, res, next) => {
                   if (data.length < 6) {
                     dataIsGood = false
                   } else {
-                    //run the data consolidator
+                    //run the data consolidator and then check the data it returns
                     consolidatedDataArr = dataConsolidator(data, questionInfoArr[idx].questionChoices, questionInfoArr[idx].isDerived)
 
                     // for MOST questions check to make sure data is valid
@@ -148,6 +148,12 @@ router.post('/', (req, res, next) => {
                       if (consolidatedDataArr.slice(firstValidPlayerIdx).length < 30 && questionInfoArr[idx].questionChoices.questionType === 'singlePlayer') {
                         dataIsGood = false
                       }
+                      //check to make sure there are 10 data points
+                      for (let j = 0; j < 10; j++) {
+                        if (!consolidatedDataArr[j]){
+                          dataIsGood = false
+                          break
+                        }
                     }
                   }
 
