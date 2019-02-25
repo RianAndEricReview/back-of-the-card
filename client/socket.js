@@ -34,7 +34,7 @@ socket.on('questionsAdded', (numQuestions) => {
 
 // update number of questions created in store, or set initial value
 socket.on('setNumQuestionsCreated', (numQuestions) => {
-  store.dispatch(updateGame({ numQuestionsCreated: numQuestions}))
+  store.dispatch(updateGame({ numQuestionsCreated: numQuestions }))
 })
 
 

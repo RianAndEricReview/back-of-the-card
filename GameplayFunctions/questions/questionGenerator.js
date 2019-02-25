@@ -143,7 +143,7 @@ class QuestionObjectGenerator {
           if (possibleIncorrectAnswers.length < 3) {
             this.answers = []
             return new Error('Data Set invalid, cannot generate 4 possible answers')
-          //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
+            //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
           } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) >= 3) {
             // console.log('VDI', validDataIndex)
             // console.log('PIA', possibleIncorrectAnswers.length)

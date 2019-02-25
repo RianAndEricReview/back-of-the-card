@@ -28,12 +28,12 @@ export const getAllPlayersThunk = (gameId, playerId) =>
 export const addPlayerThunk = (newPlayer) =>
   //Because eager loading doesn't work on sequelize creation, we find the user and attach it to our newPlayer object.
   dispatch => axios.get(`/api/users/${newPlayer.userId}`)
-  .then(res => res.data)
-  .then(user => {
-    const gamePlayer = {...newPlayer, user}
-    dispatch(getPlayer(gamePlayer))
-  })
-  .catch(err => console.log(err))
+    .then(res => res.data)
+    .then(user => {
+      const gamePlayer = { ...newPlayer, user }
+      dispatch(getPlayer(gamePlayer))
+    })
+    .catch(err => console.log(err))
 
 
 //REDUCERS
