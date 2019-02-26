@@ -1,9 +1,9 @@
 import io from 'socket.io-client'
-import store, { getPlayer, updateGame, addPlayerAnswer, updatePlayer } from './store'
+import store, { addPlayerThunk, updateGame, addPlayerAnswer, updatePlayer, incrementGameData } from './store'
 
 const socket = io(window.location.origin)
 socket.on('connect', () => {
-  console.log('Socket connected')
+  console.log(`Socket connected ${socket.id}`)
 })
 
 // JOIN GAME SOCKETS
@@ -13,8 +13,13 @@ socket.on('welcome', (message) => {
 })
 
 // receive new player info when the new player joins
-socket.on('newPlayerJoin', (newPlayer) => {
-  store.dispatch(getPlayer(newPlayer))
+socket.on('newPlayerToGame', (newPlayer) => {
+  store.dispatch(addPlayerThunk(newPlayer))
+})
+
+// middleman to communicate that a player needs to join a specific room
+socket.on('hostJoinRoom', (roomId) => {
+  socket.emit('joinGameRoom', roomId)
 })
 
 // receive game close notification
@@ -22,10 +27,16 @@ socket.on('gameClosed', () => {
   store.dispatch(updateGame({ open: false }))
 })
 
-//function for joining a game room.
-socket.joinGameRoom = (roomId, newPlayer) => {
-  socket.emit('joinGameRoom', roomId, newPlayer)
-}
+// increment number of questions created
+socket.on('questionsAdded', (numQuestions) => {
+  store.dispatch(incrementGameData({ valueToIncrement: numQuestions, whatToIncrement: 'numQuestionsCreated' }))
+})
+
+// update number of questions created in store, or set initial value
+socket.on('setNumQuestionsCreated', (numQuestions) => {
+  store.dispatch(updateGame({ numQuestionsCreated: numQuestions }))
+})
+
 
 // GAMEPLAY SOCKETS
 // receive answers from submitting players

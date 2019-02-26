@@ -22,3 +22,9 @@ router.put('/:userId', (req, res, next) => {
       }
     })
 })
+
+router.get('/:userId', (req, res, next) => {
+  User.findById(req.params.userId)
+    .then(user => res.status(200).json(user))
+    .catch(next)
+})

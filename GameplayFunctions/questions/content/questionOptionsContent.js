@@ -1,6 +1,7 @@
 // THIS FILE CONTAINS ALL QUESTION OPTIONS NEEDED BY THE QuestionChoices CONSTRUCTOR
 
 //reminder, order matters. The first choice needs to be at the end of the file. The first choice also needs to be exported.
+//CONDITIONAL LOGIC DOES NOT GO IN THIS FILE. Place logic to prevent unwanted combinations in the question choice generator method.
 
 const mostOrLeast = [
   { whatToSet: [{ key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
@@ -16,7 +17,7 @@ const overallTeamStats = [
   { whatToSet: [{ key: 'statCategory', value: 'BB', skeletonType: { stat: { verb: [`had`], objectNoun: [`walks`] } } }], weight: 3, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: 'runs', skeletonType: { stat: { verb: [`scored`], objectNoun: [`runs`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: 'SB', skeletonType: { stat: { verb: [`stole`], objectNoun: [`bases`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
-  { whatToSet: [{ key: 'statCategory', value: 'SO', skeletonType: { stat: { verb: [`struck out`] } } }], weight: 3, nextChoice: mostOrLeast },
+  { whatToSet: [{ key: 'statCategory', value: 'SO', skeletonType: { stat: { verb: [`struck out`] } } }], weight: 2, nextChoice: mostOrLeast },
   { whatToSet: [{ key: 'statCategory', value: 'HBP', skeletonType: { stat: { verb: [`was hit by a pitch`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 1 },
 ]
 
@@ -41,13 +42,13 @@ const overallPlayerBattingStats = [
   { whatToSet: [{ key: 'statCategory', value: 'BA', skeletonType: { stat: { verb: [`had`], objectNoun: [`Batting Avg`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: 'RBI', skeletonType: { stat: { verb: [`had`], objectNoun: [`RBIs`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 5 },
   { whatToSet: [{ key: 'statCategory', value: 'AB', skeletonType: { stat: { verb: [`had`], objectNoun: [`at bats`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 2 },
-  { whatToSet: [{ key: 'statCategory', value: 'BB', skeletonType: { stat: { verb: [`had`], objectNoun: [`walks`] } } }], weight: 3, nextChoice: mostOrLeast },
+  { whatToSet: [{ key: 'statCategory', value: 'BB', skeletonType: { stat: { verb: [`had`], objectNoun: [`walks`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: 'runs', skeletonType: { stat: { verb: [`scored`], objectNoun: [`runs`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: 'SB', skeletonType: { stat: { verb: [`stole`], objectNoun: [`bases`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
-  { whatToSet: [{ key: 'statCategory', value: 'SO', skeletonType: { stat: { verb: [`struck out`] } } }], weight: 3, nextChoice: mostOrLeast },
+  { whatToSet: [{ key: 'statCategory', value: 'SO', skeletonType: { stat: { verb: [`struck out`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },
   { whatToSet: [{ key: 'statCategory', value: 'HBP', skeletonType: { stat: { verb: [`was hit by a pitch`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 1 },
   { whatToSet: [{ key: 'statCategory', value: 'IBB', skeletonType: { stat: { verb: [`was walked intentionally`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 1 },
-  { whatToSet: [{ key: 'statCategory', value: 'GIDP', skeletonType: { stat: { verb: [`hit into`], objectNoun: [`double plays`] } } }], weight: 1, nextChoice: mostOrLeast },
+  { whatToSet: [{ key: 'statCategory', value: 'GIDP', skeletonType: { stat: { verb: [`hit into`], objectNoun: [`double plays`] } } }, { key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 1 },
 ]
 
 const comparisonPlayerBattingStats = [
@@ -86,15 +87,13 @@ const comparisonPlayerTimeframe = [
   { whatToSet: [{ key: 'timeFrame', value: 'allTime', skeletonType: { stat: { timeFrame: [` all time`] } } }], weight: 1, nextChoice: comparisonPlayerBattingStats }
 ]
 
-
-
 const overallTeamOrPlayer = [
-  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: overallPlayerTimeframe },
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 3, nextChoice: overallPlayerTimeframe },
   { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 1, nextChoice: overallTeamTimeframe }
 ]
 
 const comparisonTeamOrPlayer = [
-  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 4, nextChoice: comparisonPlayerTimeframe },
+  { whatToSet: [{ key: 'teamOrPlayer', value: 'singlePlayer', skeletonType: { stat: { subjectNoun: [`player`] } } }], weight: 3, nextChoice: comparisonPlayerTimeframe },
   { whatToSet: [{ key: 'teamOrPlayer', value: 'wholeTeam', skeletonType: { stat: { subjectNoun: [`team`] } } }], weight: 1, nextChoice: comparisonTeamTimeframe }
 ]
 

@@ -83,6 +83,7 @@ const startListening = () => {
 
   // Initialize socket connection
   const io = socketio(server)
+  app.io = io
   require('./socket')(io)
 }
 

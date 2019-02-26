@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable complexity */
 const randomYearSelector = require('./questionHelperFuncs').randomYearSelector
 const randomValueSelector = require('./questionHelperFuncs').randomValueSelector
 const questionSkeletons = require('./content/questionContent').questionSkeletons
@@ -42,7 +44,9 @@ class QuestionChoices {
   // Run content selector and set certain query parameters.
   // eslint-disable-next-line complexity
   questionChoiceGenerator(optionsArray, yearRange) {
+    //run the question content selector to generate the question choices
     this.questionContentSelector(optionsArray, this)
+
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
       //eliminate strike years, BA before 1900
@@ -50,10 +54,23 @@ class QuestionChoices {
         this.questionSkeletonKey.year = randomYearSelector(yearRange)
       }
     }
-    //set stat category to adjBA if it is a who led the league in BA for a year question
+
+    //------------------------------------------------
+    // Establish conditions in this section to catch and update any unwanted combinations
+    // THIS SECTION OF CODE WILL GROW AS NEW QUESTION OPTIONS CONTENT IS CREATED
+
+    //set stat category to adjBA if it is a who led the league in BA for a year question to account for MLB's plate appearance requirements
     if (this.statCategory === 'BA' && this.timeFrame === 'singleSeason' && this.teamOrPlayer === 'singlePlayer' && this.questionType === 'overall') {
       this.statCategory = 'adjBA'
     }
+
+    //avoid least alltime questions, as currently they would result in too many players having 0 for the stat and would make for a bad question.
+    //if desired, to make these into good questions, the answerGenerator would need to be updated to choose from the other end of the data.
+    if (this.timeFrame === 'allTime') {
+      this.mostOrLeast = 'most'
+      this.questionSkeletonKey.mostOrLeast = ['most']
+    }
+    //------------------------------------------------
   }
 }
 
@@ -122,26 +139,57 @@ class QuestionObjectGenerator {
           this.answers.push(`${queryResults[answerIndex].person.dataValues.nameFirst} ${queryResults[answerIndex].person.dataValues.nameLast}`)
         })
       } else if (questionChoices.questionType === 'comparison') {
-        // randomly choose a player for comparison
-        const correctAnswerIndex = Math.floor(Math.random() * 26) + 4
+        let first = true
+        //set to true if we have verified that there are enough usable incorrect answers for the selected correct answer
+        let usableIncorrectAnswer = false
+        // randomly choose a player for comparison between the 5th and 30th player
+        let correctAnswerIndex = Math.floor(Math.random() * 26) + 4
+        // create a list of possible other players for comparison, which includes up to the next 70 players from the queryResults
+        let possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
+        //Test to make sure that the data set is valid. There need to be 3 usable incorrect answers available.
+        while (!usableIncorrectAnswer) {
+          //the index of the next potential usable incorrect answer
+          let answerStartIndex = 0
+          //find the index of the next value different from the correct answer value
+          const validDataIndex = possibleIncorrectAnswers.slice([answerStartIndex]).findIndex((player) => {
+            return queryResults[correctAnswerIndex][questionChoices.statCategory] !== player[questionChoices.statCategory]
+          })
+          //if there aren't 3 possible incorrect answers then the data set isn't valid, set answers to empty array and return an error.
+          if (possibleIncorrectAnswers.length < 3) {
+            this.answers = []
+            return new Error('Data Set invalid, cannot generate 4 possible answers')
+            //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
+          } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) >= 3) {
+            correctAnswerIndex = first ? 5 : correctAnswerIndex + 1
+            possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
+            //First (plus the above incrementing) is used for least questions where the more unique data tends to be farther down the list.
+            first = false
+          } else {
+            usableIncorrectAnswer = true
+          }
+        }
+
+        //Set the correct answer based on the chosen index, and push it the answers array
         this.correctAnswer = `${queryResults[correctAnswerIndex].person.dataValues.nameFirst} ${queryResults[correctAnswerIndex].person.dataValues.nameLast} ~ ${queryResults[correctAnswerIndex][questionChoices.statCategory]}`
         this.answers.push(`${queryResults[correctAnswerIndex].person.dataValues.nameFirst} ${queryResults[correctAnswerIndex].person.dataValues.nameLast}`)
 
-        // create a list of possible other players for comparison
-        const possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
         const answerIndexParameter = Math.floor(possibleIncorrectAnswers.length / 3)
-
-        // choose other possible answers while making sure the other answer choices do not have the same stat as chosen answer player
+        const incorrectAnswerIndexArray = []
+        // Find and set 3 usable incorrect answers
         for (let i = 0; i < 3; i++) {
           let incorrectAnswerIndex = Math.floor(Math.random() * answerIndexParameter) + (answerIndexParameter * i)
-          while (queryResults[correctAnswerIndex][questionChoices.statCategory] === possibleIncorrectAnswers[incorrectAnswerIndex][questionChoices.statCategory]) {
-            incorrectAnswerIndex = Math.floor(Math.random() * answerIndexParameter) + (answerIndexParameter * i)
+          //Find a valid incorrect answer (that the value doesn't equal the correct answer value and that it hasn't already been selected)
+          while (queryResults[correctAnswerIndex][questionChoices.statCategory] === possibleIncorrectAnswers[incorrectAnswerIndex][questionChoices.statCategory] && incorrectAnswerIndexArray.includes(incorrectAnswerIndex)) {
+            incorrectAnswerIndex = Math.floor(Math.random() * possibleIncorrectAnswers.length)
           }
+          //set the valid incorrect answer to the answers array & the idxs array
+          incorrectAnswerIndexArray.push(incorrectAnswerIndex)
           this.answers.push(`${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameFirst} ${possibleIncorrectAnswers[incorrectAnswerIndex].person.dataValues.nameLast}`)
         }
       }
     }
     shuffle(this.answers)
+    return 'Answers created successfully'
   }
 }
 

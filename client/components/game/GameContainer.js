@@ -154,15 +154,24 @@ export class GameContainerClass extends Component {
     this.props.setCountdownClock(this.state.initialQuestionCountdownInt)
     //failsafe to make sure no answers are left from a previous game.
     this.props.clearAllPlayerAnswers()
-    // the host player will create the questions for the game, all other players will fetch those questions
+    //Get all players already in the game and pass your info to everyone else in game
     this.props.getAllPlayers(this.props.game.id, this.props.user.id)
-    if (this.props.game.host) { this.props.createAllQuestions(this.props.game.id, this.props.game.gametype.numOfQuestions) }
-    else { this.props.getAllQuestions(this.props.game.id) }
+    // if all the questions have been created, grab them and put them in the store
+    if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions) this.props.getAllQuestions(this.props.game.id)
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.countdownClock === 0 && prevProps.countdownClock !== this.props.countdownClock) {
+    //If the countdownClock hits 0, start the scoring timer
+    if (this.props.countdownClock === 0 && prevProps.countdownClock !== 0) {
       this.state.scoringTimer.animate(1, {}, () => { this.answerSubmission() })
+    }
+    // Once the host has created all of the quesions, grab them
+    if (this.props.game.numQuestionsCreated === this.props.game.gametype.numOfQuestions && prevProps.game.numQuestionsCreated !== this.props.game.numQuestionsCreated) {
+      this.props.getAllQuestions(this.props.game.id)
+    }
+    //if a new player is added, let sockets know to send out numQuestionsCreated
+    if (this.props.players.length > prevProps.players.length) {
+      socket.emit('broadcastNumQuestionsCreated', this.props.game.id, this.props.game.numQuestionsCreated)
     }
   }
 
@@ -197,7 +206,7 @@ export class GameContainerClass extends Component {
     const gameOverProps = this.generateGameOverProps()
     return (
       <div className="game-container space-below-header" onLoad={topOfPageStart()}>
-        {(this.props.game.open || this.props.questions.length <= 0) ?
+        {(this.props.game.open || this.props.questions.length !== this.props.game.gametype.numOfQuestions) ?
           <LoadingPres /> :
           (this.state.gameOver) ?
             <GameOverPres {...gameOverProps} /> :

@@ -9,11 +9,13 @@ const defaultGame = {}
 export const GET_GAME = 'GET_GAME'
 export const UPDATE_GAME = 'UPDATE_GAME'
 export const CLEAR_GAME_DATA = 'CLEAR_GAME_DATA'
+export const INCREMENT_GAME_DATA = 'INCREMENT_GAME_DATA'
 
 //ACTION CREATORS
 export const getGame = game => ({ type: GET_GAME, game })
 export const updateGame = updatedItem => ({ type: UPDATE_GAME, updatedItem })
 export const clearGameData = () => ({ type: CLEAR_GAME_DATA })
+export const incrementGameData = itemToIncrement => ({type: INCREMENT_GAME_DATA, itemToIncrement})
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
@@ -22,13 +24,15 @@ export const getGameThunk = (gametypeId, playerId, open) =>
   .then(game => {
       if (!game) {
         // Creates a new game with the current player associated with the game instance
-        axios.post(`/api/games`, { playerId, gametypeId, open })
+        axios.post(`/api/games`, { playerId, gametypeId, open, socketId: socket.id })
           .then(newGame => {
-            dispatch(getGame({...newGame.data, host: true}))
+            dispatch(getGame({...newGame.data, host: true, numQuestionsCreated: 0}))
             history.push(`/game/${newGame.data.id}`)
           })
           .catch(err => console.log(err))
       } else {
+        // If a game exists have the player join the socket GameRoom
+        socket.emit('joinGameRoom', game.id)
         // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
           .then(joinedGame => {
@@ -52,6 +56,8 @@ export default function gameReducer(state = defaultGame, action) {
       return action.game
     case UPDATE_GAME:
       return {...state, ...action.updatedItem}
+    case INCREMENT_GAME_DATA:
+      return {...state, [action.itemToIncrement.whatToIncrement]: state[action.itemToIncrement.whatToIncrement] + action.itemToIncrement.valueToIncrement}
     case CLEAR_GAME_DATA:
       return {}
     default:

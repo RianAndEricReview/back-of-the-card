@@ -22,16 +22,22 @@ export const getAllPlayersThunk = (gameId, playerId) =>
     .then(res => res.data)
     .then(players => {
       dispatch(getAllPlayers(players))
-      // isolate newly joined player from the list of players in the game
-      const newPlayer = players.find(player => player.user.id === playerId)
-      // join the game room via sockets and pass your player info to each player in the room
-      socket.joinGameRoom(gameId, newPlayer)
+    })
+    .catch(err => console.log(err))
+
+export const addPlayerThunk = (newPlayer) =>
+  //Because eager loading doesn't work on sequelize creation, we find the user and attach it to our newPlayer object.
+  dispatch => axios.get(`/api/users/${newPlayer.userId}`)
+    .then(res => res.data)
+    .then(user => {
+      const gamePlayer = { ...newPlayer, user }
+      dispatch(getPlayer(gamePlayer))
     })
     .catch(err => console.log(err))
 
 
 //REDUCERS
-export default function gameReducer(state = defaultPlayers, action) {
+export default function playersReducer(state = defaultPlayers, action) {
   switch (action.type) {
     case GET_PLAYER:
       return [...state, action.player]
