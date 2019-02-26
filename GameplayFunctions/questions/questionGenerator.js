@@ -44,7 +44,9 @@ class QuestionChoices {
   // Run content selector and set certain query parameters.
   // eslint-disable-next-line complexity
   questionChoiceGenerator(optionsArray, yearRange) {
+    //run the question content selector to generate the question choices
     this.questionContentSelector(optionsArray, this)
+
     //set the year, if it needs one
     if (this.timeFrame === 'singleSeason') {
       //eliminate strike years, BA before 1900
@@ -52,10 +54,23 @@ class QuestionChoices {
         this.questionSkeletonKey.year = randomYearSelector(yearRange)
       }
     }
-    //set stat category to adjBA if it is a who led the league in BA for a year question
+
+    //------------------------------------------------
+    // Establish conditions in this section to catch and update any unwanted combinations
+    // THIS SECTION OF CODE WILL GROW AS NEW QUESTION OPTIONS CONTENT IS CREATED
+
+    //set stat category to adjBA if it is a who led the league in BA for a year question to account for MLB's plate appearance requirements
     if (this.statCategory === 'BA' && this.timeFrame === 'singleSeason' && this.teamOrPlayer === 'singlePlayer' && this.questionType === 'overall') {
       this.statCategory = 'adjBA'
     }
+
+    //avoid least alltime questions, as currently they would result in too many players having 0 for the stat and would make for a bad question.
+    //if desired, to make these into good questions, the answerGenerator would need to be updated to choose from the other end of the data.
+    if (this.timeFrame === 'allTime') {
+      this.mostOrLeast = 'most'
+      this.questionSkeletonKey.mostOrLeast = ['most']
+    }
+    //------------------------------------------------
   }
 }
 
@@ -145,9 +160,6 @@ class QuestionObjectGenerator {
             return new Error('Data Set invalid, cannot generate 4 possible answers')
             //if there isn't a usable incorrect answer before the final 3 values in the array choose a new correct answer and set of possible incorrect answers.
           } else if (validDataIndex === -1 || (validDataIndex - possibleIncorrectAnswers.length) >= 3) {
-            // console.log('VDI', validDataIndex)
-            // console.log('PIA', possibleIncorrectAnswers.length)
-            // console.log('else if')
             correctAnswerIndex = first ? 5 : correctAnswerIndex + 1
             possibleIncorrectAnswers = (queryResults.length - correctAnswerIndex + 1 > 70) ? queryResults.slice(correctAnswerIndex + 1, correctAnswerIndex + 71) : queryResults
             //First (plus the above incrementing) is used for least questions where the more unique data tends to be farther down the list.

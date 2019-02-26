@@ -1,6 +1,7 @@
 // THIS FILE CONTAINS ALL QUESTION OPTIONS NEEDED BY THE QuestionChoices CONSTRUCTOR
 
 //reminder, order matters. The first choice needs to be at the end of the file. The first choice also needs to be exported.
+//CONDITIONAL LOGIC DOES NOT GO IN THIS FILE. Place logic to prevent unwanted combinations in the question choice generator method.
 
 const mostOrLeast = [
   { whatToSet: [{ key: 'mostOrLeast', value: 'most', skeletonType: { stat: { mostOrLeast: [`most`] } } }], weight: 3 },

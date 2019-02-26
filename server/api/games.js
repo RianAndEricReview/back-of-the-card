@@ -2,7 +2,7 @@
 /* eslint-disable complexity */
 /* eslint-disable no-loop-func */
 const router = require('express').Router()
-const { Game, Gametype, GamePlayer, Batting, Question, Teams, User } = require('../db/models')
+const { Game, Gametype, GamePlayer, Batting, Question, Teams } = require('../db/models')
 const { QuestionChoices, QuestionObjectGenerator } = require('../../GameplayFunctions/questions/questionGenerator')
 const { QuestionQueryParameters } = require('../../GameplayFunctions/questions/questionQueryGenerator')
 const { randomYearSelector, dataConsolidator } = require('../../GameplayFunctions/questions/questionHelperFuncs')
@@ -63,12 +63,6 @@ router.post('/', (req, res, next) => {
             while (!question || questionTexts.includes(question.question)) {
               questionChoices = new QuestionChoices()
               questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
-              //TO REMOVE AFTER LEAST CONTENT IS UPDATED - currently prevents situations where all query results are invalid.
-              if (questionChoices.timeFrame === 'allTime') {
-                questionChoices.mostOrLeast = 'most'
-                questionChoices.questionSkeletonKey.mostOrLeast = ['most']
-              }
-
               question = new QuestionObjectGenerator(game.id, i)
               question.questionTextGenerator(questionChoices)
             }
