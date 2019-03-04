@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
-import { getGameThunk} from '../../store'
+import { getGameThunk, clearAllPlayers, clearAllQuestions, clearQuestionResults, clearGameData, clearAllPlayerAnswers } from '../../store'
 import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
 import axios from 'axios'
 
@@ -30,6 +30,7 @@ export class LandingContainerClass extends Component {
   componentDidMount() {
     this._mounted = true
     this.fetchGametypes()
+    this.props.clearAllGameplay()
   }
 
   componentWillUnmount() {
@@ -75,6 +76,13 @@ const mapDispatchToProps = dispatch => {
       // This is because we are adding the current player to the game on click.
       const open = maxPlayers !== 1
       dispatch(getGameThunk(gametypeId, playerId, open))
+    },
+    clearAllGameplay() {
+      dispatch(clearAllPlayers())
+      dispatch(clearAllQuestions())
+      dispatch(clearQuestionResults())
+      dispatch(clearGameData())
+      dispatch(clearAllPlayerAnswers())
     }
   }
 }

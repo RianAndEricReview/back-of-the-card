@@ -5,7 +5,7 @@ module.exports = router
 router.post('/', (req, res, next) => {
   PlayerQuestionResult.bulkCreate(req.body)
     .then(() => {
-      res.status(204)
+      res.status(204).end()
     })
     .catch(next)
 })

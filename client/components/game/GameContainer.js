@@ -258,6 +258,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(clearAllQuestions())
       dispatch(clearQuestionResults())
       dispatch(clearGameData())
+      dispatch(clearAllPlayerAnswers())
     },
     updateGame(updatedItem) {
       dispatch(updateGame(updatedItem))
