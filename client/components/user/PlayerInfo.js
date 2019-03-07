@@ -7,8 +7,8 @@ const PlayerInfo = props => {
   const { handleSubmit, error, userId, screenName } = props
   // This code generates a static/fixed number of images to display...In the future we will try to find a way to read the playerImage directory to generate all potential player images dynamically
   const imageArray = []
-  for (let i = 0; i <= 5; i++) {
-    imageArray.push({ path: `../../../playerImages/playerImage_${i}.jpg`, key: i })
+  for (let i = 0; i <= 7; i++) {
+    imageArray.push({ path: `../../../playerImages/playerImage_${i}.png`, key: i })
   }
   return (
     <div id="player-info-form">
