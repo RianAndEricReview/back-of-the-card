@@ -14,6 +14,7 @@ const Navbar = props => {
           <div className="nav-container">
             <div className="loggedin-nav-items">
               <NavLink className="home" to="/"><h4>BackOfTheCard</h4></NavLink>
+              {/*Tooltip to be removed when features are funtional*/}
               <Popup
                 trigger={<a id="player-statistics" /*href="#"*/ disabled="true" ><h4>Stats</h4></a>}
                 position="bottom center"

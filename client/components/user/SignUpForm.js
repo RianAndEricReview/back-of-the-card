@@ -10,6 +10,7 @@ const SignUp = props => {
   return (
     <div className="auth-form space-below-header" onLoad={topOfPageStart()}>
       <div className="auth-button-container">
+      {/*Tooltips to be removed when features are funtional*/}
         <Popup
           trigger={<a /*href="/auth/google"*/ className="btn btn-danger btn-sm google-button" >Sign Up with Google</a>}
           position="bottom center"
