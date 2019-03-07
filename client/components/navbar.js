@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { logOutThunk } from '../store'
 import { connect } from 'react-redux'
+import Popup from 'reactjs-popup'
 
 const Navbar = props => {
   const { handleClick, isLoggedIn, screenName, playerImage } = props
@@ -13,7 +14,15 @@ const Navbar = props => {
           <div className="nav-container">
             <div className="loggedin-nav-items">
               <NavLink className="home" to="/"><h4>BackOfTheCard</h4></NavLink>
-              <a id="player-statistics" href="#"><h4>Stats</h4></a>
+              {/*Tooltip to be removed when features are funtional*/}
+              <Popup
+                trigger={<a id="player-statistics" /*href="#"*/ disabled="true" ><h4>Stats</h4></a>}
+                position="bottom center"
+                on="hover"
+              >
+                Feature Coming Soon
+              </Popup>
+
             </div>
             <div className="loggedin-nav-items">
               <a id="player-profile" href="#">

@@ -1,16 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import Popup from 'reactjs-popup'
 import { signUpThunk, getUser } from '../../store'
-import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
+import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 
 const SignUp = props => {
   const { handleSubmit, error } = props
   return (
     <div className="auth-form space-below-header" onLoad={topOfPageStart()}>
       <div className="auth-button-container">
-        <a href="/auth/google" className="btn btn-danger btn-sm google-button">Sign Up with Google</a>
-        <a href="/auth/google" className="btn btn-primary btn-sm facebook-button">Sign Up with Facebook</a>
+      {/*Tooltips to be removed when features are funtional*/}
+        <Popup
+          trigger={<a /*href="/auth/google"*/ className="btn btn-danger btn-sm google-button" >Sign Up with Google</a>}
+          position="bottom center"
+          on="hover"
+        >
+          <p className="coming-soon-tooltip">Feature Coming Soon</p>
+        </Popup>
+
+        <Popup
+          trigger={<a /*href="/auth/facebook"*/ className="btn btn-primary btn-sm facebook-button" >Sign Up with Facebook</a>}
+          position="bottom center"
+          on="hover"
+        >
+          <p className="coming-soon-tooltip">Feature Coming Soon</p>
+        </Popup>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="name-input-container">

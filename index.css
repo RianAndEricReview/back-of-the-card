@@ -63,6 +63,7 @@ form div {
 }
 
 .auth-button-container {
+  color: white;
   display: flex;
   justify-content: space-between;
 }
@@ -425,6 +426,14 @@ form div {
   width: 5em;
   display: inline-block;
   font-size: 2em;
+}
+
+#player-statistics {
+  color: white;
+}
+
+.coming-soon-tooltip {
+  color: black;
 }
 
 
