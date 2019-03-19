@@ -39,9 +39,8 @@ export class LandingContainerClass extends Component {
 
   render() {
     return (
-      <div className=" space-below-header" onLoad={topOfPageStart()}>
+      <div className="space-below-header landing-background" onLoad={topOfPageStart()}>
         <LandingPres />
-
         {
           !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (

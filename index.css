@@ -412,8 +412,11 @@ form div {
 
 .space-below-header {
   margin-top: 3.65em;
+}
+
+.landing-background{
   background-image: url("https://i2.wp.com/keilorparkfc.com.au/wp-content/uploads/2016/12/grass.jpg?resize=300%2C188");
-  padding-bottom: 10em;
+  height: 100vh;
 }
 
 #scoringtimer {
