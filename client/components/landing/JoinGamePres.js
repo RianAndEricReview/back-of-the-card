@@ -5,13 +5,10 @@ export default (props) => {
     <div>
       <div id="landing-game-container">
         <div id="landing-game-content">
-          <div>
+          <div onClick={(e) => props.joinGameClick(e, props.gametypeId, props.playerId, props.gametypes)} style={{ cursor: 'pointer' }}>
             <img src={props.gametypeImage} className="landing-gametype-image" />
             <p className="centered-gametype"> {props.gametypeName} </p>
-            <p> {props.gametypeDescription} </p>
-            <div className="center-container">
-              <button className="btn play-button" onClick={(e) => props.joinGameClick(e, props.gametypeId, props.playerId, props.gametypes)}>PLAY</button>
-            </div>
+            <div className="center-container" />
           </div>
         </div>
       </div>

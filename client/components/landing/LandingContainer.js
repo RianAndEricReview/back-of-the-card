@@ -5,7 +5,7 @@ import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
 import { getGameThunk, clearAllPlayers, clearAllQuestions, clearQuestionResults, clearGameData, clearAllPlayerAnswers } from '../../store'
-import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
+import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {
@@ -39,9 +39,8 @@ export class LandingContainerClass extends Component {
 
   render() {
     return (
-      <div className=" space-below-header" onLoad={topOfPageStart()}>
+      <div className="space-below-header landing-background" onLoad={topOfPageStart()}>
         <LandingPres />
-
         {
           !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
             return (
