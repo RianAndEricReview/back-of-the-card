@@ -6,16 +6,15 @@ const _ = require('lodash')
 const User = db.define('user', {
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   screenName: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true
   },
   playerImage: {
     type: Sequelize.STRING,
