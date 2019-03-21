@@ -17,7 +17,6 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   }
 
   const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
-    // console.log('this is the profile', profile)
     const googleId = profile.id
     const firstName = profile.givenName
     const lastName = profile.familyName
