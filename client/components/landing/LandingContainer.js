@@ -5,7 +5,7 @@ import LandingPres from './LandingPres'
 import LoginToPlayPres from './LoginToPlayPres'
 import JoinGamePres from './JoinGamePres'
 import { getGameThunk, clearAllPlayers, clearAllQuestions, clearQuestionResults, clearGameData, clearAllPlayerAnswers } from '../../store'
-import {topOfPageStart} from '../../../HelperFunctions/utilityFunctions'
+import { topOfPageStart } from '../../../HelperFunctions/utilityFunctions'
 import axios from 'axios'
 
 export class LandingContainerClass extends Component {

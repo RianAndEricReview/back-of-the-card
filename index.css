@@ -148,15 +148,6 @@ form div {
   margin: 1em;
 }
 
-/* #landing-content {
- border: 1em solid rgb(247, 236, 217);
-} */
-
-/* #landing-content div {
-  border: .05em solid rgba(0, 0, 0, 0.335);
-  background-color: white;
- } */
-
  .landing-pres-container h1 {
   margin-top: .5em;
 }
@@ -415,7 +406,7 @@ form div {
 }
 
 .landing-background{
-  background-image: url("https://i2.wp.com/keilorparkfc.com.au/wp-content/uploads/2016/12/grass.jpg?resize=300%2C188");
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_nz7U6PCe1hqeylU_999vi-GeNQW3_9Xx8HVkUlMLMvoIenzu");
   height: 100vh;
 }
 
@@ -439,7 +430,7 @@ form div {
 
 #baseball-card-collage {
   width: 100vw;
-  height: 10vw;
+  height: 10vh;
 }
 
 
