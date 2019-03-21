@@ -6,16 +6,16 @@ const _ = require('lodash')
 const User = db.define('user', {
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   screenName: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
+    unique: true
   },
   playerImage: {
     type: Sequelize.STRING,
@@ -117,7 +117,15 @@ const setSaltAndPassword = user => {
 }
 const setDefaultScreenName = instance => {
   if (!instance.screenName){
-    instance.screenName = `${instance.firstName}${instance.lastName}`
+    if (instance.firstName && instance.lastName) {
+      instance.screenName = `${instance.firstName}${instance.lastName}`
+    } else if (!instance.firstName && instance.lastName) {
+      instance.screenName = `${instance.lastName}`
+    } else if (instance.firstName && !instance.lastName) {
+      instance.screenName = `${instance.firstName}`
+    } else {
+      instance.screenName = `${Math.floor(Math.random() * 100000)}`
+    }
   }
 }
 

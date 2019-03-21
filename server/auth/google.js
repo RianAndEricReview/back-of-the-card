@@ -18,14 +18,18 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
   const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
     const googleId = profile.id
-    const name = profile.displayName
+    const firstName = profile.givenName
+    const lastName = profile.familyName
+    const screenName = profile.displayName
     const email = profile.emails[0].value
 
     User.find({ where: { googleId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({ name, email, googleId })
-          .then(createdUser => done(null, createdUser))
+        : User.create({ firstName, lastName, screenName, email, googleId })
+          .then(createdUser => {
+            return done(null, createdUser)
+          })
       ))
       .catch(done)
   })
@@ -35,8 +39,11 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   router.get('/', passport.authenticate('google', { scope: 'email' }))
 
   router.get('/callback', passport.authenticate('google', {
-    successRedirect: '/home',
     failureRedirect: '/login'
-  }))
+  }),
+    function(req, res) {
+      res.redirect(`/player-info/${req.user.dataValues.id}`)
+    }
+  )
 
 }
