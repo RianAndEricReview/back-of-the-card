@@ -63,6 +63,7 @@ form div {
 }
 
 .auth-button-container {
+  color: white;
   display: flex;
   justify-content: space-between;
 }
@@ -150,13 +151,15 @@ form div {
 
  .landing-pres-container h1 {
   margin-top: .5em;
+  font-weight: bolder;
+  color: yellow;
 }
 
 #landing-content p {
   font-size: 1.25em;
   width: 80vw;
   text-align: justify;
-  background-color: white;
+  background-color: rgb(247, 236, 217);
   padding: .5em;
 }
 
@@ -431,6 +434,14 @@ form div {
 #baseball-card-collage {
   width: 100vw;
   height: 10vh;
+}
+
+#player-statistics {
+  color: white;
+}
+
+.coming-soon-tooltip {
+  color: black;
 }
 
 
