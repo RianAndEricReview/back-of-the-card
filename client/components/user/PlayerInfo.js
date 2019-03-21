@@ -53,7 +53,7 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(event, userId) {
       event.preventDefault()
-      const screenName = event.target.screenName.value
+      const screenName = event.target.screenName.value || event.target.screenName.placeholder
       const playerImage = event.target.playerImage.value
       dispatch(setPlayerInfoThunk(userId, screenName, playerImage))
     }
