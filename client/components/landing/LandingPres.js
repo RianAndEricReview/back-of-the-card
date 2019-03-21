@@ -3,7 +3,7 @@ import React from 'react'
 export default () => {
   return (
     <div className="landing-pres-container">
-      <img id="baseball-card-collage" src="../../../images/IMG_0118(3).jpg" />
+      <img id="baseball-card-collage" src="../../../images/card-collage-banner.jpg" />
       <h1>BACK OF THE CARD</h1>
       <div id="landing-content-container">
         <div id="landing-content">
