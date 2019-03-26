@@ -43,7 +43,11 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     failureRedirect: '/login'
   }),
     function(req, res) {
-      res.redirect(`/player-info/${req.user.dataValues.id}`)
+      if (req.user._changed.firstName !== false) {
+        res.redirect('/')
+      } else {
+        res.redirect(`/player-info/${req.user.dataValues.id}`)
+      }
     }
   )
 
