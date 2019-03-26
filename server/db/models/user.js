@@ -20,7 +20,7 @@ const User = db.define('user', {
   playerImage: {
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: 'https://i.pinimg.com/originals/50/45/bc/5045bcee09efb8b9f3281eb3c70e7914.jpg',
+    defaultValue: `../../../playerImages/playerImage_0.png`,
   },
   totalScores: {
     type: Sequelize.TEXT,
