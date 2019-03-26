@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Popup from 'reactjs-popup'
 
 const Navbar = props => {
-  const { handleClick, isLoggedIn, screenName, playerImage } = props
+  const { handleClick, isLoggedIn, screenName, playerImage, userId } = props
   return (
     <div>
       <nav>
@@ -25,7 +25,7 @@ const Navbar = props => {
 
             </div>
             <div className="loggedin-nav-items">
-              <a id="player-profile" href="#">
+              <a id="player-profile" href={`/player-info/${userId}`}>
                 <img id="player-icon" src={playerImage} />
                 <h4>{screenName}</h4>
               </a>
@@ -49,7 +49,8 @@ const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
     screenName: state.user.screenName,
-    playerImage: state.user.playerImage
+    playerImage: state.user.playerImage,
+    userId: state.user.id,
   }
 }
 
