@@ -43,7 +43,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   router.get('/callback', passport.authenticate('google', {
     failureRedirect: '/login'
   }),
-    function(req, res) {
+    function (req, res) {
       if (req.user._changed.firstName !== false) {
         res.redirect('/')
       } else {

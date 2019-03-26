@@ -51,7 +51,7 @@ const User = db.define('user', {
 }, {
     getterMethods: {
       totalScoresObject() {
-        if (this.totalScores){
+        if (this.totalScores) {
           return JSON.parse(this.totalScores)
         }
       },
@@ -104,7 +104,7 @@ User.signUpUser = function (reqBody, req, res, next) {
       }
       //checks to see if error is unique screenName validation error, if so it calls signUpUser recusively and creates a new screenName with a random number on end which it passes in as the new reqBody value.
       else if (err.name === 'SequelizeUniqueConstraintError' && err.fields.screenName) {
-        this.signUpUser({...reqBody, screenName: `${reqBody.firstName}${reqBody.lastName}${Math.floor(Math.random() * 100000)}`}, req, res, next)
+        this.signUpUser({ ...reqBody, screenName: `${reqBody.firstName}${reqBody.lastName}${Math.floor(Math.random() * 100000)}` }, req, res, next)
       } else {
         next(err)
       }
@@ -119,7 +119,7 @@ const setSaltAndPassword = user => {
   }
 }
 const setDefaultScreenName = instance => {
-  if (!instance.screenName){
+  if (!instance.screenName) {
     if (instance.firstName && instance.lastName) {
       instance.screenName = `${instance.firstName}${instance.lastName}`
     } else if (!instance.firstName && instance.lastName) {
