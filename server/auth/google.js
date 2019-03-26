@@ -13,7 +13,8 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   const googleConfig = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK
+    callbackURL: process.env.GOOGLE_CALLBACK,
+    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
   }
 
   const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
@@ -42,7 +43,11 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     failureRedirect: '/login'
   }),
     function(req, res) {
-      res.redirect(`/player-info/${req.user.dataValues.id}`)
+      if (req.user._changed.firstName !== false) {
+        res.redirect('/')
+      } else {
+        res.redirect(`/player-info/${req.user.dataValues.id}`)
+      }
     }
   )
 
