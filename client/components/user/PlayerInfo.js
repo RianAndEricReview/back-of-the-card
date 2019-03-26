@@ -26,7 +26,7 @@ const PlayerInfo = props => {
           {
             imageArray.map(image => (
               <div className="form-check" key={image.key}>
-                <input className="form-check-input col-md-3" type="radio" name="playerImage" value={image.path} />
+                <input className="form-check-input col-md-3" type="radio" name="playerImage" value={image.path} defaultChecked={(image.path === playerImage)} />
                 <label className="form-check-label">
                   <img src={image.path} className="img-thumbnail player-image" />
                 </label>
