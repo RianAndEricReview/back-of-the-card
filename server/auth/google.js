@@ -28,7 +28,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     User.find({ where: { googleId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({ firstName, lastName, screenName, email, googleId, profileImage })
+        : User.create({ firstName, lastName, screenName, email, googleId, profileImage, playerImage: profileImage })
           .then(createdUser => {
             return done(null, createdUser)
           })
