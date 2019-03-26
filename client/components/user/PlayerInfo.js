@@ -4,9 +4,11 @@ import PropTypes from 'prop-types'
 import { setPlayerInfoThunk } from '../../store'
 
 const PlayerInfo = props => {
-  const { handleSubmit, error, userId, screenName } = props
+  const { handleSubmit, error, userId, screenName, profileImage, playerImage } = props
   // This code generates a static/fixed number of images to display...In the future we will try to find a way to read the playerImage directory to generate all potential player images dynamically
-  const imageArray = []
+
+  //if there is a profileImage add it to the image array.
+  const imageArray = !profileImage ? [] : [{ path: profileImage }]
   for (let i = 0; i <= 7; i++) {
     imageArray.push({ path: `../../../playerImages/playerImage_${i}.png`, key: i })
   }
@@ -24,7 +26,7 @@ const PlayerInfo = props => {
           {
             imageArray.map(image => (
               <div className="form-check" key={image.key}>
-                <input className="form-check-input col-md-3" type="radio" name="playerImage" value={image.path} />
+                <input className="form-check-input col-md-3" type="radio" name="playerImage" value={image.path} defaultChecked={(image.path === playerImage)} />
                 <label className="form-check-label">
                   <img src={image.path} className="img-thumbnail player-image" />
                 </label>
@@ -45,7 +47,9 @@ const mapState = state => {
   return {
     userId: state.user.id,
     error: state.user.error,
-    screenName: state.user.screenName
+    screenName: state.user.screenName,
+    profileImage: state.user.profileImage,
+    playerImage: state.user.playerImage,
   }
 }
 
