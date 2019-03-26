@@ -44,6 +44,9 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  profileImage: {
+    type: Sequelize.STRING
   }
 }, {
     getterMethods: {
