@@ -7,19 +7,9 @@ const Footer = () => {
       <footer className="container">
         <div className="row">
           <div className="col-4">
-            <div>Created by:</div>
-            <div>Rian Halperin</div>
-            <div>Eric Garnett</div>
-          </div>
-          <div className="col-4">
-
-          </div>
-          <div className="col-4">
             <div>Baseball Statistics Provided By:</div>
-
-            <a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman Baseball Database</a>
+            <div><a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman Baseball Database</a></div>
             <div>copyright 1996-2018 by Sean Lahman</div>
-
             <Popup
               trigger={<div style={{ cursor: 'pointer' }} id="license-link" className="btn btn-info">Click to Display License Information</div>}
               modal
@@ -33,6 +23,16 @@ const Footer = () => {
             </Popup>
 
           </div>
+          <div className="col-4">
+            <div>BackOfTheCard Created By:</div>
+            <div>Rian Halperin & Eric Garnett</div>
+          </div>
+          <div className="col-4">
+            <div>Art Provided By:</div>
+            <div><a href="http://stickpng.com">StickPNG</a></div>
+            <div>Rian Halperin & Eric Garnett</div>
+          </div>
+
         </div>
       </footer>
     </div>
