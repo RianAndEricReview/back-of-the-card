@@ -2,6 +2,10 @@ body {
   font-family: sans-serif;
 }
 
+/* #content {
+  margin-bottom: 5em;
+} */
+
 a {
   text-decoration: none;
 }
@@ -144,6 +148,7 @@ form div {
   align-items: center;
   margin-top: 0;
 }
+
 
 #landing-content {
   margin: 1em;
@@ -410,7 +415,8 @@ form div {
 
 .landing-background{
   background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_nz7U6PCe1hqeylU_999vi-GeNQW3_9Xx8HVkUlMLMvoIenzu");
-  height: 100vh;
+  height: 120vh;
+  padding-bottom: 5em;
 }
 
 #scoringtimer {
@@ -448,13 +454,18 @@ form div {
   color: white;
 }
 
-#footer-container footer.row {
+footer {
+  background-color: #bfb9b9;
+  max-width: 100vw;
+  padding-top: .5em;
+}
+
+footer.row {
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   padding: 1rem;
-  background-color: #493f3f;
   text-align: center;
 }
 

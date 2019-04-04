@@ -3,8 +3,7 @@ import Popup from 'reactjs-popup'
 
 const Footer = () => {
   return (
-    <div id="footer-container">
-      <footer className="container">
+      <footer>
         <div className="row">
           <div className="col-4">
             <div>Baseball Statistics Provided By:</div>
@@ -37,7 +36,6 @@ const Footer = () => {
 
         </div>
       </footer>
-    </div>
   )
 }
 
