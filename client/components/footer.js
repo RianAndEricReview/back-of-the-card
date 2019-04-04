@@ -5,7 +5,7 @@ const Footer = () => {
   return (
       <footer>
         <div className="row">
-          <div className="col-4">
+          <div className="col-4 footer-left">
             <div>Baseball Statistics Provided By:</div>
             <div><a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman Baseball Database</a></div>
             <div>copyright 1996-2018 by Sean Lahman</div>
@@ -22,16 +22,17 @@ const Footer = () => {
             </Popup>
 
           </div>
-          <div className="col-4">
-            <div>BackOfTheCard Created By:</div>
-            <div>Rian Halperin & Eric Garnett</div>
-            <div><a href="mailto:backofthecard@gmail.com?subject=BackOfTheCard">
-            Send Email</a></div>
+          <div className="col-4 footer-middle">
+            <div><h2>BackOfTheCard</h2></div>
+            <div><h4>Rian Halperin & Eric Garnett</h4></div>
+            <div><h5><a href="mailto:backofthecard@gmail.com?subject=BackOfTheCard">
+            backofthecard@gmail.com</a></h5></div>
           </div>
-          <div className="col-4">
-            <div>Art Provided By:</div>
+          <div className="col-4 footer-right">
+            <div>Art Assets Provided By:</div>
             <div><a href="http://stickpng.com">StickPNG</a></div>
-            <div>Rian Halperin & Eric Garnett</div>
+            <div>Rian Halperin</div>
+            <div>Eric Garnett</div>
           </div>
 
         </div>
