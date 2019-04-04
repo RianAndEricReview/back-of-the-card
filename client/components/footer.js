@@ -26,6 +26,8 @@ const Footer = () => {
           <div className="col-4">
             <div>BackOfTheCard Created By:</div>
             <div>Rian Halperin & Eric Garnett</div>
+            <div><a href="mailto:backofthecard@gmail.com?subject=BackOfTheCard">
+            Send Email</a></div>
           </div>
           <div className="col-4">
             <div>Art Provided By:</div>
