@@ -7,16 +7,16 @@ html{
   height: 100%;
 }
 
+#app {
+  position: relative;
+  min-height: 100%;
+}
+
 #main-app {
   padding-bottom: 9em;
   position: absolute;
   min-height: 100%;
   width: 100%;
-}
-
-#app {
-  position: relative;
-  min-height: 100%;
 }
 
 a {
@@ -192,6 +192,13 @@ footer {
 }
 
 .landing-pres-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
+#landing-container {
   position: absolute;
   top: 0;
   display: flex;
@@ -347,7 +354,7 @@ footer {
   border-left: .15em solid black;
   border-right: .15em solid black;
   background-color:  rgb(202, 199, 190);
-  height: 100vh;
+  min-height: 100vh;
   width: 20vw;
 }
 
@@ -465,15 +472,13 @@ footer {
 .space-below-header {
   margin-top: 3.65em;
   position: relative;
+  height: 100%;
 }
 
-.landing-background{
-  min-height: 100vh;
-  padding-bottom: 5em;
-}
-
-.landing-background img{
+#landing-background-image{
+  opacity: .80;
   width: 100vw;
+  height: 100vh;
 }
 
 #scoringtimer {
