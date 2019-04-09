@@ -192,6 +192,8 @@ footer {
 }
 
 .landing-pres-container {
+  position: absolute;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -462,12 +464,16 @@ footer {
 
 .space-below-header {
   margin-top: 3.65em;
+  position: relative;
 }
 
 .landing-background{
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_nz7U6PCe1hqeylU_999vi-GeNQW3_9Xx8HVkUlMLMvoIenzu");
   min-height: 100vh;
   padding-bottom: 5em;
+}
+
+.landing-background img{
+  width: 100vw;
 }
 
 #scoringtimer {
