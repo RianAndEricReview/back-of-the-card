@@ -2,7 +2,6 @@ import React from 'react'
 /* eslint-disable react/display-name */
 export default (props) => {
   return (
-    <div>
       <div id="landing-game-container">
         <div id="landing-game-content">
           <div onClick={(e) => props.joinGameClick(e, props.gametypeId, props.playerId, props.gametypes)} style={{ cursor: 'pointer' }}>
@@ -12,6 +11,5 @@ export default (props) => {
           </div>
         </div>
       </div>
-    </div>
   )
 }
