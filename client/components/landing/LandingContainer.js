@@ -39,20 +39,23 @@ export class LandingContainerClass extends Component {
 
   render() {
     return (
-      <div className="space-below-header landing-background" onLoad={topOfPageStart()}>
-        <LandingPres />
-        {
-          !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
-            return (
-              gametype.enabled && <div key={gametype.id} className="col-4">
-                <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} playerId={this.props.user.id} joinGameClick={this.props.joinGameClick} gametypes={this.state.gametypes} />
-              </div>
-            )
-          })
+      <div className="space-below-header" onLoad={topOfPageStart()}>
+        <img src="../../../images/bbfield.jpg" id="landing-background-image" />
+        <div id="landing-container">
+          <LandingPres />
+          {
+            !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
+              return (
+                gametype.enabled && <div key={gametype.id} className="col-4">
+                  <JoinGamePres gametypeName={gametype.name} gametypeImage={gametype.image} gametypeDescription={gametype.description} gametypeId={gametype.id} playerId={this.props.user.id} joinGameClick={this.props.joinGameClick} gametypes={this.state.gametypes} />
+                </div>
+              )
+            })
+            }
+            </div>
+            </div>
           }
-          </div>
-          </div>
-        }
+        </div>
 
       </div>
     )

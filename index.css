@@ -7,16 +7,16 @@ html{
   height: 100%;
 }
 
+#app {
+  position: relative;
+  min-height: 100%;
+}
+
 #main-app {
   padding-bottom: 9em;
   position: absolute;
   min-height: 100%;
   width: 100%;
-}
-
-#app {
-  position: relative;
-  min-height: 100%;
 }
 
 a {
@@ -198,6 +198,15 @@ footer {
   margin-top: 0;
 }
 
+#landing-container {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
 
 #landing-content {
   margin: 1em;
@@ -345,7 +354,7 @@ footer {
   border-left: .15em solid black;
   border-right: .15em solid black;
   background-color:  rgb(202, 199, 190);
-  height: 100vh;
+  min-height: 100vh;
   width: 20vw;
 }
 
@@ -462,12 +471,14 @@ footer {
 
 .space-below-header {
   margin-top: 3.65em;
+  position: relative;
+  height: 100%;
 }
 
-.landing-background{
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_nz7U6PCe1hqeylU_999vi-GeNQW3_9Xx8HVkUlMLMvoIenzu");
-  min-height: 100vh;
-  padding-bottom: 5em;
+#landing-background-image{
+  opacity: .80;
+  width: 100vw;
+  height: 100vh;
 }
 
 #scoringtimer {
