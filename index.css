@@ -212,23 +212,22 @@ footer {
   z-index: 1;
   position: relative;
 }
-
-#landing-content {
-  margin: 1em 0 2em 0;
-}
-
- .landing-pres-container h1 {
+.landing-pres-container h1 {
   margin-top: .5em;
   font-weight: bolder;
   color: yellow;
 }
 
-#landing-content p {
-  font-size: 1.25em;
-  width: 80vw;
-  text-align: justify;
+#landing-content {
+  margin: 1em 0 2em 0;
+}
+
+#landing-text {
   background-color: rgb(247, 236, 217);
+  font-size: 1.25em;
+  text-align: justify;
   padding: .5em;
+  width: 80vw;
 }
 
 #login-signup-container {
