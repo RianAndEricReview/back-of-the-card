@@ -99,6 +99,7 @@ footer {
 #player-icon {
   height: 2em;
   width: 2em;
+  background-color: white;
 }
 
 #player-profile {
@@ -408,7 +409,7 @@ footer {
 .individual-player-image {
   margin: 0 .1em .1em .1em;
   border: .15em solid black;
-  background-color:  rgb(247, 236, 217);
+  background-color:  white;
   height: 4em;
   width: 4em;
 }
