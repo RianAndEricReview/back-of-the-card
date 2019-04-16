@@ -3,7 +3,7 @@ body {
   height: 100%;
 }
 
-html{
+html {
   height: 100%;
 }
 
@@ -48,7 +48,7 @@ form div {
   justify-content: space-between;
   align-items: center;
   font-size: 120%;
-  height: 3em;
+  height: 60px;
   font-family: Palantino;
 }
 
@@ -474,10 +474,10 @@ footer {
 }
 
 .space-below-header {
-  margin-top: 3.65em;
+  margin-top: 60px;
 }
 
-#landing-background-image{
+#landing-background-image {
   opacity: .80;
   width: 100vw;
   height: 100vh;
