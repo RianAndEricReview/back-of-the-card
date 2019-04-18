@@ -222,19 +222,31 @@ footer {
   margin: 1em 0 2em 0;
 }
 
-#landing-text {
+.landing-text {
+  border: .1em solid black;
   background-color: rgb(247, 236, 217);
-  font-size: 1.25em;
+  font-size: 18px;
   text-align: justify;
   padding: .5em;
   width: 80vw;
 }
 
+.landing-text-end {
+  display: flex;
+  justify-content: space-between;
+}
+
+.landing-toggle-text {
+  margin-left: 1em;
+}
+
 #login-signup-container {
-  border: .1em solid black;
+  border: .4em gray;
+  border-style: double;
   margin-bottom: 1em;
   width: 40em;
   text-align: center;
+  background-color:  white;
 }
 
 #login-signup-buttons {
