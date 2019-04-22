@@ -288,13 +288,13 @@ footer {
 }
 
 #landing-game-content {
- border: 1em solid rgb(247, 236, 217);
+ border: .5em solid rgb(247, 236, 217);
 }
 
 .centered-gametype {
   position: absolute;
   text-align: center;
-  top: 89.5%;
+  top: 91.5%;
   left: 50%;
   width: 90%;
   transform: translate(-50%, -50%);
@@ -529,4 +529,9 @@ footer {
 
 #license-link {
   color: white;
+}
+
+.landing-divider {
+  height: 40px;
+  width: 50%;
 }
