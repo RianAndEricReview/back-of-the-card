@@ -10,7 +10,7 @@ export default (props) => {
       <p>Back of the Card was built using Node.js, React, Redux, Sequelize, Express, Socket.io, & additional technologies.</p>
       <div className="landing-text-end">
         <i><sup>†</sup>Don Hoak,  <sup>††</sup>Ryan Howard</i>
-        <button className="landing-toggle-text" onClick={(e) => props.toggleTextDisplay(e)}>▲ Less</button>
+        <button type="button" className="btn btn-outline-primary landing-toggle-text" onClick={(e) => props.toggleTextDisplay(e)}>▲ Less</button>
       </div>
     </div>
   )

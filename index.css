@@ -234,10 +234,13 @@ footer {
 .landing-text-end {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 .landing-toggle-text {
+  height: 40px;
   margin-left: 1em;
+  white-space: nowrap;
 }
 
 #login-signup-container {
