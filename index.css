@@ -197,6 +197,7 @@ footer {
   flex-direction: column;
   align-items: center;
   margin-top: 0;
+  margin-bottom: -1em;
 }
 
 #landing-container {
@@ -535,6 +536,7 @@ footer {
 }
 
 .landing-divider {
-  height: 40px;
-  width: 50%;
+  width: 27%;
+  margin: 1em 0em;
+  opacity: .7;
 }

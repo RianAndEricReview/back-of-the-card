@@ -54,6 +54,7 @@ export class LandingContainerClass extends Component {
           <img src="../../../images/bbfield.jpg" id="landing-background-image" />
           <div id="landing-main-content">
             <LandingPres showMoreText={this.state.showMoreText} toggleTextDisplay={this.toggleTextDisplay} />
+            <img src="../../../images/textDivider.png" className="landing-divider" />
             {
               !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
                 return (
