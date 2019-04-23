@@ -14,11 +14,13 @@ const Footer = () => {
             modal
             closeOnDocumentClick
           >
-            <p>Limited Use License</p>
-            <p>This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.</p>
-            <p>For details see: <a href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a></p>
-            <p>Thanks to Ted Turocy of the Chadwick Baseball Bureau, who for several years has done the heavy lifting to make the annual updates possible. Ted also hosts a version of the data at github, for folks who are inclined to interface with it that way.</p>
-            <p>Thanks also to Mark Keip for producing a SQL version of the latest database.</p>
+            <div>
+              <p>Limited Use License</p>
+              <p>This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.</p>
+              <p>For details see: <a href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a></p>
+              <p>Thanks to Ted Turocy of the Chadwick Baseball Bureau, who for several years has done the heavy lifting to make the annual updates possible. Ted also hosts a version of the data at github, for folks who are inclined to interface with it that way.</p>
+              <p>Thanks also to Mark Keip for producing a SQL version of the latest database.</p>
+            </div>
           </Popup>
 
         </div>
