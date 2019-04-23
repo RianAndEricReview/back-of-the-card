@@ -230,6 +230,7 @@ footer {
   text-align: justify;
   padding: .5em;
   width: 80vw;
+  line-height: 1.2;
 }
 
 .landing-text-end {
