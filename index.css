@@ -247,7 +247,7 @@ footer {
 #login-signup-container {
   border: .4em gray;
   border-style: double;
-  margin-bottom: 1em;
+  margin: 1em 0em;
   width: 40em;
   text-align: center;
   background-color:  white;
