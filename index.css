@@ -3,7 +3,7 @@ body {
   height: 100%;
 }
 
-html{
+html {
   height: 100%;
 }
 
@@ -48,7 +48,7 @@ form div {
   justify-content: space-between;
   align-items: center;
   font-size: 120%;
-  height: 3em;
+  height: 60px;
   font-family: Palantino;
 }
 
@@ -99,6 +99,7 @@ footer {
 #player-icon {
   height: 2em;
   width: 2em;
+  background-color: white;
 }
 
 #player-profile {
@@ -196,6 +197,7 @@ footer {
   flex-direction: column;
   align-items: center;
   margin-top: 0;
+  margin-bottom: -1em;
 }
 
 #landing-container {
@@ -211,30 +213,44 @@ footer {
   z-index: 1;
   position: relative;
 }
-
-#landing-content {
-  margin: 1em 0 2em 0;
-}
-
- .landing-pres-container h1 {
+.landing-pres-container h1 {
   margin-top: .5em;
   font-weight: bolder;
   color: yellow;
 }
 
-#landing-content p {
-  font-size: 1.25em;
-  width: 80vw;
-  text-align: justify;
+#landing-content {
+  margin: 1em 0 2em 0;
+}
+
+.landing-text {
+  border: .1em solid black;
   background-color: rgb(247, 236, 217);
+  font-size: 18px;
+  text-align: justify;
   padding: .5em;
+  width: 80vw;
+}
+
+.landing-text-end {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.landing-toggle-text {
+  height: 40px;
+  margin-left: 1em;
+  white-space: nowrap;
 }
 
 #login-signup-container {
-  border: .1em solid black;
-  margin-bottom: 1em;
+  border: .4em gray;
+  border-style: double;
+  margin: 1em 0em;
   width: 40em;
   text-align: center;
+  background-color:  white;
 }
 
 #login-signup-buttons {
@@ -276,13 +292,13 @@ footer {
 }
 
 #landing-game-content {
- border: 1em solid rgb(247, 236, 217);
+ border: .5em solid rgb(247, 236, 217);
 }
 
 .centered-gametype {
   position: absolute;
   text-align: center;
-  top: 89.5%;
+  top: 91.5%;
   left: 50%;
   width: 90%;
   transform: translate(-50%, -50%);
@@ -408,7 +424,7 @@ footer {
 .individual-player-image {
   margin: 0 .1em .1em .1em;
   border: .15em solid black;
-  background-color:  rgb(247, 236, 217);
+  background-color:  white;
   height: 4em;
   width: 4em;
 }
@@ -474,10 +490,10 @@ footer {
 }
 
 .space-below-header {
-  margin-top: 3.65em;
+  margin-top: 60px;
 }
 
-#landing-background-image{
+#landing-background-image {
   opacity: .80;
   width: 100vw;
   height: 100vh;
@@ -517,4 +533,10 @@ footer {
 
 #license-link {
   color: white;
+}
+
+.landing-divider {
+  width: 27%;
+  margin: 1em 0em;
+  opacity: .7;
 }

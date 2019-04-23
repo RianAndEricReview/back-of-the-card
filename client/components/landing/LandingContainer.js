@@ -11,12 +11,21 @@ import axios from 'axios'
 export class LandingContainerClass extends Component {
   constructor(props) {
     super(props)
-    this.state = { gametypes: [] }
+    this.state = {
+      gametypes: [],
+      showMoreText: false,
+    }
     this._mounted = false
 
     this.fetchGametypes = this.fetchGametypes.bind(this)
+    this.toggleTextDisplay = this.toggleTextDisplay.bind(this)
   }
 
+  toggleTextDisplay(event) {
+    event.preventDefault()
+    //changes the value of showMoreText boolean in state
+    this.state.showMoreText ? this.setState({showMoreText: false}) : this.setState({showMoreText: true})
+  }
 
   fetchGametypes() {
     axios.get(`/api/games/gametypes`)
@@ -44,7 +53,8 @@ export class LandingContainerClass extends Component {
         <div id="landing-container">
           <img src="../../../images/bbfield.jpg" id="landing-background-image" />
           <div id="landing-main-content">
-            <LandingPres />
+            <LandingPres showMoreText={this.state.showMoreText} toggleTextDisplay={this.toggleTextDisplay} />
+            <img src="../../../images/textDivider.png" className="landing-divider" />
             {
               !this.props.user.id ? <LoginToPlayPres /> : <div className="container"><div className="row">{this.state.gametypes.map(gametype => {
                 return (
@@ -88,7 +98,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(clearQuestionResults())
       dispatch(clearGameData())
       dispatch(clearAllPlayerAnswers())
-    }
+    },
   }
 }
 
