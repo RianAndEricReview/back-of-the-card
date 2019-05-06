@@ -41,7 +41,7 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.44.0",
     "shuffle-array": "^1.0.1",
     "socket.io": "^2.1.0"
   },
