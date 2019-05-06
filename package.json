@@ -43,7 +43,7 @@
     "redux-thunk": "^2.3.0",
     "sequelize": "^4.44.0",
     "shuffle-array": "^1.0.1",
-    "socket.io": "^2.1.0"
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.15.0",
