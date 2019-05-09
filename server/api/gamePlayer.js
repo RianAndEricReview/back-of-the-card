@@ -3,7 +3,7 @@ const { GamePlayer } = require('../db/models')
 module.exports = router
 
 router.put('/:gamePlayerId', (req, res, next) => {
-  GamePlayer.findById(req.params.gamePlayerId)
+  GamePlayer.findByPk(req.params.gamePlayerId)
     .then(gamePlayer => {
       return gamePlayer.update(req.body)
     })
