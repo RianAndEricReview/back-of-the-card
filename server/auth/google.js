@@ -25,7 +25,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     const email = profile.emails[0].value
     const profileImage = profile.photos[0].value
 
-    User.find({ where: { googleId } })
+    User.findOne({ where: { googleId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
         : User.create({ firstName, lastName, screenName, email, googleId, profileImage, playerImage: profileImage })

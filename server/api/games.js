@@ -43,7 +43,7 @@ router.get('/:gameId/players', (req, res, next) => {
 
 // Used to create a new game instance with gametype
 router.post('/', (req, res, next) => {
-  Gametype.findById(req.body.gametypeId)
+  Gametype.findByPk(req.body.gametypeId)
     .then(gametype => {
       return Game.create({ open: req.body.open, gametypeId: gametype.id })
         .then(game => {
@@ -220,7 +220,7 @@ router.put('/:gameId/addNewPlayer', (req, res, next) => {
       //let everyone in the GameRoom know there is a new gamePlayer
       req.app.io.in(`GameRoom${req.params.gameId}`).emit('newPlayerToGame', newPlayer)
       //Get info to decide whether to close game or not.
-      return Promise.all([Game.findById(req.params.gameId), GamePlayer.findAll({ where: { gameId: req.params.gameId } })])
+      return Promise.all([Game.findByPk(req.params.gameId), GamePlayer.findAll({ where: { gameId: req.params.gameId } })])
         .then((result) => {
           const [game, players] = result
           if (players.length >= game.gametype.maxPlayers) {
@@ -246,7 +246,7 @@ router.get('/:gameId/questions', (req, res, next) => {
 
 // Used to update data in a specific game instance
 router.put('/:gameId', (req, res, next) => {
-  Game.findById(req.params.gameId)
+  Game.findByPk(req.params.gameId)
     .then(game => {
       return game.update(req.body)
     })
