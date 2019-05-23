@@ -1,9 +1,10 @@
 const { randomYearSelector, dataConsolidator } = require('./questionHelperFuncs')
+const { defaultYearRanges } = require('./content/questionContent')
 const { Question } = require('../../server/db/models')
 
-// function used to create valid questions. It is called recursively when non-valid questions are found.
-// REFACTOR: SHOULD BE MADE INTO A HELPER FUNCTION
-const questionCreatorFunc = (questionInfoArr, gameRoomSocket) => {
+// Function used to create valid questions. It is called recursively when non-valid questions are found. 
+// Currently used in gamesApi post route.
+const questionCreatorFunc = (questionInfoArr, gameRoomSocket, gameId) => {
   const questionsArr = []
   const newQuestionInfoArr = []
   Promise.all(questionInfoArr.map(findInfo => findInfo.table.findAll({ ...findInfo.QQP })))
@@ -94,22 +95,22 @@ const questionCreatorFunc = (questionInfoArr, gameRoomSocket) => {
         return Promise.all(questionsArr.map(question => Question.create(question)))
           .then(() => {
             const questionCount = questionsArr.length
-            gameRoomSocket.in(`GameRoom${game.id}`).emit('questionsAdded', questionCount)
+            gameRoomSocket.in(`GameRoom${gameId}`).emit('questionsAdded', questionCount)
             // use the updated queries of the bad questions that were created to recursively create good ones
             if (newQuestionInfoArr.length > 0) {
-              questionCreatorFunc(newQuestionInfoArr, gameRoomSocket)
+              questionCreatorFunc(newQuestionInfoArr, gameRoomSocket, gameId)
             }
           })
-          .catch(next)
+          .catch(err => console.log(err))
       }
 
       // if no good questions were created, recursively run the function if there are bad questions
       if (newQuestionInfoArr.length > 0) {
-        questionCreatorFunc(newQuestionInfoArr, gameRoomSocket)
+        questionCreatorFunc(newQuestionInfoArr, gameRoomSocket, gameId)
       }
 
     })
-    .catch(next)
+    .catch(err => console.log(err))
 }
 
 module.exports = {

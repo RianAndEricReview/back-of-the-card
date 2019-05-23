@@ -92,10 +92,9 @@ router.post('/', (req, res, next) => {
             findAllInfoArr.push(findAllInfo)
           }
 
-        
           //join the room and then run the question creator func
           req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
-          questionCreatorFunc(findAllInfoArr, req.app.io)
+          questionCreatorFunc(findAllInfoArr, req.app.io, game.id)
           //create the user's gamePlayer in DB
           return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
         })
