@@ -111,3 +111,7 @@ const questionCreatorFunc = (questionInfoArr, gameRoomSocket) => {
     })
     .catch(next)
 }
+
+module.exports = {
+  questionCreatorFunc
+}
