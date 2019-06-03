@@ -50,53 +50,53 @@ router.post('/', (req, res, next) => {
           game.dataValues.gametype = gametype
           res.status(201).json(game)
 
-          // const numOfQuestions = gametype.numOfQuestions
-          // const questionTexts = []
-          // const findAllInfoArr = []
+          const numOfQuestions = gametype.numOfQuestions
+          const questionTexts = []
+          const findAllInfoArr = []
 
-          // //create the proper number of questions for a game based on the # of questions stated in the req.
-          // for (let i = 1; i <= numOfQuestions; i++) {
-          //   //generate and populate questionChoices, questionText, question object
-          //   let questionChoices = {}
-          //   let question
-          //   //check to make sure we don't include a question twice in the same game.
-          //   while (!question || questionTexts.includes(question.question)) {
-          //     questionChoices = new QuestionChoices()
-          //     questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
-          //     question = new QuestionObjectGenerator(game.id, i)
-          //     question.questionTextGenerator(questionChoices)
-          //   }
-          //   questionTexts.push(question.question)
+          //create the proper number of questions for a game based on the # of questions stated in the req.
+          for (let i = 1; i <= numOfQuestions; i++) {
+            //generate and populate questionChoices, questionText, question object
+            let questionChoices = {}
+            let question
+            //check to make sure we don't include a question twice in the same game.
+            while (!question || questionTexts.includes(question.question)) {
+              questionChoices = new QuestionChoices()
+              questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
+              question = new QuestionObjectGenerator(game.id, i)
+              question.questionTextGenerator(questionChoices)
+            }
+            questionTexts.push(question.question)
 
-          //   //Check derived content and set variable if chosen stat category is derived.
-          //   let isDerived = derivedBattingStats.find((stat) => {
-          //     return questionChoices.statCategory === stat.statCat
-          //   })
+            //Check derived content and set variable if chosen stat category is derived.
+            let isDerived = derivedBattingStats.find((stat) => {
+              return questionChoices.statCategory === stat.statCat
+            })
 
-          //   //Create and populate the object that will be passed into the query
-          //   const QQP = new QuestionQueryParameters()
-          //   Object.getOwnPropertyNames(QQP.constructor.prototype).forEach(method => {
-          //     if (method !== 'constructor') {
-          //       QQP[method](questionChoices, isDerived)
-          //     }
-          //   })
+            //Create and populate the object that will be passed into the query
+            const QQP = new QuestionQueryParameters()
+            Object.getOwnPropertyNames(QQP.constructor.prototype).forEach(method => {
+              if (method !== 'constructor') {
+                QQP[method](questionChoices, isDerived)
+              }
+            })
 
-          //   //select table to query based on whether it is a team or player question
-          //   //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
-          //   let table = ''
-          //   if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
-          //   else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting }
+            //select table to query based on whether it is a team or player question
+            //as we update the logic to add additional types like pitching or individual team, this might be better off as a switch statement.
+            let table = ''
+            if (questionChoices.teamOrPlayer === 'wholeTeam') { table = Teams }
+            else if (questionChoices.teamOrPlayer === 'singlePlayer') { table = Batting }
 
-          //   // Info needed to build a question object
-          //   const findAllInfo = { QQP, questionChoices, isDerived, table, question }
-          //   findAllInfoArr.push(findAllInfo)
-          // }
+            // Info needed to build a question object
+            const findAllInfo = { QQP, questionChoices, isDerived, table, question }
+            findAllInfoArr.push(findAllInfo)
+          }
 
-          // //join the room and then run the question creator func
-          // req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
-          // questionCreatorFunc(findAllInfoArr, req.app.io, game.id)
-          // //create the user's gamePlayer in DB
-          // return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
+          //join the room and then run the question creator func
+          req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
+          questionCreatorFunc(findAllInfoArr, req.app.io, game.id)
+          //create the user's gamePlayer in DB
+          return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
         })
     })
     .catch(next)

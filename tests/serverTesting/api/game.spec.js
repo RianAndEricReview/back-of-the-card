@@ -17,7 +17,7 @@ describe('Games routes', () => {
       .send({ gametypeId: gametype.id, open })
       .expect(201)
       .then(res => {
-        expect(res.body.id).to.be.a('number')
+        expect(res.body.id).to.not.be.equal(null)
         expect(res.body.currentQuestion).to.equal(1)
         expect(res.body.open).to.be.equal(open)
         expect(res.body.gametypeId).to.be.equal(gametype.id)
