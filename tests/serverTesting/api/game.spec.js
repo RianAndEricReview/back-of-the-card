@@ -7,6 +7,7 @@ const ioServer = require('socket.io').listen(8080)
 app.io = ioServer
 const Gametype = db.model('gametype')
 const User = db.model('user')
+const GamePlayer = db.model('gamePlayer')
 
 describe('Games routes', () => {
   beforeEach(() => db.sync({ force: true }))
@@ -47,6 +48,18 @@ describe('Games routes', () => {
           expect(res.body.currentQuestion).to.equal(1)
           expect(res.body.open).to.be.equal(open)
           expect(res.body.gametypeId).to.be.equal(gametype.id)
+        }))
+
+      it('POST api/games: initial gamePlayer creation', () => request(app)
+        .post('/api/games')
+        .send({ gametypeId: gametype.id, open, playerId })
+        .expect(201)
+        .then(res => {
+          GamePlayer.findByPk(playerId)
+          .then(foundGamePlayer => {
+          expect(foundGamePlayer.gameId).to.be.equal(res.body.id)
+          expect(foundGamePlayer.userId).to.be.equal(playerId)
+          })
         }))
     })
   })
