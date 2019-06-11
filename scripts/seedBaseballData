@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+
+psql -U postgres -d back_of_the_card-test -c "
+COPY People FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/People.csv'DELIMITER ',' CSV HEADER;
+COPY Franchises FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Franchises.csv'DELIMITER ',' CSV HEADER;
+COPY Teams FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Teams.csv'DELIMITER ',' CSV HEADER;
+COPY battings FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Batting.csv'DELIMITER ',' CSV HEADER;
+"

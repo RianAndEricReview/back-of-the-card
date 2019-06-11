@@ -4,6 +4,7 @@
   "description": "A baseball trivia game",
   "main": "index.js",
   "scripts": {
+    "seedBaseballData": "scripts/seedBaseballData",
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
     "deploy": "scripts/deploy",
@@ -11,6 +12,7 @@
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
     "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' mocha ./tests/**/**/*.spec.js --require babel-polyfill --require babel-register",
+    "test-create-game": "npm run seedBaseballData && NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' mocha ./testsGameCreation/**/**/*.spec.js --require babel-polyfill --require babel-register",
     "test-baseball": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test_baseball' mocha ./testsBaseballData/**/*.spec.js --delay --require babel-polyfill --require babel-register -w"
   },
   "keywords": [
