@@ -40,28 +40,28 @@ describe('Games routes', () => {
         done()
       });
 
-      // it('POST api/games: game creation', () => request(app)
-      //   .post('/api/games')
-      //   .send({ gametypeId: gametype.id, open, playerId })
-      //   .expect(201)
-      //   .then(res => {
-      //     expect(res.body.id).to.not.be.equal(null)
-      //     expect(res.body.currentQuestion).to.equal(1)
-      //     expect(res.body.open).to.be.equal(open)
-      //     expect(res.body.gametypeId).to.be.equal(gametype.id)
-      //   }))
+      it('POST api/games: game creation', () => request(app)
+        .post('/api/games')
+        .send({ gametypeId: gametype.id, open, playerId })
+        .expect(201)
+        .then(res => {
+          expect(res.body.id).to.not.be.equal(null)
+          expect(res.body.currentQuestion).to.equal(1)
+          expect(res.body.open).to.be.equal(open)
+          expect(res.body.gametypeId).to.be.equal(gametype.id)
+        }))
 
-      // it('POST api/games: initial gamePlayer creation', () => request(app)
-      //   .post('/api/games')
-      //   .send({ gametypeId: gametype.id, open, playerId })
-      //   .expect(201)
-      //   .then(res => {
-      //     GamePlayer.findOne({where: {gameId: res.body.id}})
-      //     .then(foundGamePlayer => {
-      //     expect(foundGamePlayer.gameId).to.be.equal(5)
-      //     expect(foundGamePlayer.userId).to.be.equal(playerId)
-      //     })
-      //   }))
+      it('POST api/games: initial gamePlayer creation', () => request(app)
+        .post('/api/games')
+        .send({ gametypeId: gametype.id, open, playerId })
+        .expect(201)
+        .then(res => {
+          return GamePlayer.findOne({where: {gameId: res.body.id}})
+          .then(foundGamePlayer => {
+          expect(foundGamePlayer.gameId).to.be.equal(res.body.id)
+          expect(foundGamePlayer.userId).to.be.equal(playerId)
+          })
+        }))
     })
   })
 })
