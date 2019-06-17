@@ -5,13 +5,18 @@ const app = require('../server/index')
 const io = require('socket.io-client')
 const ioServer = require('socket.io').listen(8080)
 app.io = ioServer
-const Gametype = db.model('gametype')
-const User = db.model('user')
-const GamePlayer = db.model('gamePlayer')
+const { Gametype, User, GamePlayer, Question } = require('../server/db/models')
+// const Gametype = db.model('gametype')
+// const User = db.model('user')
+// const GamePlayer = db.model('gamePlayer')
+// const Question = db.model('question')
 
 describe('Games routes', () => {
-  beforeEach(() => db.sync())
-  // after(() => db.sync({force: true}))
+  before(() => db.sync())
+  after(() => {
+    console.log('cleared the DB$$$$$$$$$$$$$$$')
+    db.sync({ force: true })
+  })
 
   describe('api/games', () => {
     const gametype = { id: 1, name: 'onePlayer', description: '1 Player Game', enabled: true, maxPlayers: 1 }
@@ -35,7 +40,7 @@ describe('Games routes', () => {
         })
       })
 
-      afterEach(done => {
+      after(done => {
         ioServer.close()
         done()
       });
@@ -51,16 +56,31 @@ describe('Games routes', () => {
           expect(res.body.gametypeId).to.be.equal(gametype.id)
         }))
 
+      //to be moved to question.spec.js after game API is refactored and question creation is relocated
+      it('POST api/games: question creation', () => request(app)
+        .post('/api/games')
+        .send({ gametypeId: gametype.id, open, playerId })
+        .expect(201)
+        .then(res => {
+          // console.log('*****RB******', res.body, 'IDDDD', res.body.id)
+          return Question.findAll()
+            .then(foundQuestions => {
+                        console.log('*****RB******', foundQuestions.length)
+              expect(foundQuestions).to.have.length(10)
+            })
+        }))
+
+      //to be moved to gamePlayer.spec.js after game API is refactored and gamePlayer creation is relocated
       it('POST api/games: initial gamePlayer creation', () => request(app)
         .post('/api/games')
         .send({ gametypeId: gametype.id, open, playerId })
         .expect(201)
         .then(res => {
-          return GamePlayer.findOne({where: {gameId: res.body.id}})
-          .then(foundGamePlayer => {
-          expect(foundGamePlayer.gameId).to.be.equal(res.body.id)
-          expect(foundGamePlayer.userId).to.be.equal(playerId)
-          })
+          return GamePlayer.findOne({ where: { gameId: res.body.id } })
+            .then(foundGamePlayer => {
+              expect(foundGamePlayer.gameId).to.be.equal(res.body.id)
+              expect(foundGamePlayer.userId).to.be.equal(playerId)
+            })
         }))
     })
   })
