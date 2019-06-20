@@ -101,8 +101,6 @@ router.post('/', (req, res, next) => {
           res.status(201).json(game)
           //join the room and then run the question creator func
           req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
-          //create the user's gamePlayer in DB
-          return GamePlayer.create({ gameId: game.id, userId: req.body.playerId.toString() })
         })
     })
     .catch(next)
