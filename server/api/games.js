@@ -41,7 +41,10 @@ router.get('/:gameId/players', (req, res, next) => {
     .catch(next)
 })
 
+// Used to create a new set of questions for a game
 router.post('/:gameId/createQuestions', (req, res, next) => {
+  const gametype = req.body.gametype
+  const gameId = req.body.gameId
   const numOfQuestions = gametype.numOfQuestions
   const questionTexts = []
   const findAllInfoArr = []
@@ -55,7 +58,7 @@ router.post('/:gameId/createQuestions', (req, res, next) => {
     while (!question || questionTexts.includes(question.question)) {
       questionChoices = new QuestionChoices()
       questionChoices.questionChoiceGenerator(firstOption, defaultYearRanges)
-      question = new QuestionObjectGenerator(game.id, i)
+      question = new QuestionObjectGenerator(gameId, i)
       question.questionTextGenerator(questionChoices)
     }
     questionTexts.push(question.question)
@@ -84,7 +87,8 @@ router.post('/:gameId/createQuestions', (req, res, next) => {
     findAllInfoArr.push(findAllInfo)
   }
 
-  questionCreatorFunc(findAllInfoArr, req.app.io, game.id)
+  questionCreatorFunc(findAllInfoArr, req.app.io, gameId)
+  res.end()
 })
 
 // Used to create a new game instance with gametype
