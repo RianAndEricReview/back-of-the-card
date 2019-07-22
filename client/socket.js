@@ -17,11 +17,6 @@ socket.on('newPlayerToGame', (newPlayer) => {
   store.dispatch(addPlayerThunk(newPlayer))
 })
 
-// middleman to communicate that a player needs to join a specific room
-socket.on('hostJoinRoom', (roomId) => {
-  socket.emit('joinGameRoom', roomId)
-})
-
 // receive game close notification
 socket.on('gameClosed', () => {
   store.dispatch(updateGame({ open: false }))

@@ -15,19 +15,31 @@ export const INCREMENT_GAME_DATA = 'INCREMENT_GAME_DATA'
 export const getGame = game => ({ type: GET_GAME, game })
 export const updateGame = updatedItem => ({ type: UPDATE_GAME, updatedItem })
 export const clearGameData = () => ({ type: CLEAR_GAME_DATA })
-export const incrementGameData = itemToIncrement => ({type: INCREMENT_GAME_DATA, itemToIncrement})
+export const incrementGameData = itemToIncrement => ({ type: INCREMENT_GAME_DATA, itemToIncrement })
 
 //THUNK CREATORS
 export const getGameThunk = (gametypeId, playerId, open) =>
   dispatch => axios.get(`/api/games/${gametypeId}`)
-  .then(game => game.data)
-  .then(game => {
+    .then(game => game.data)
+    .then(game => {
       if (!game) {
         // Creates a new game with the current player associated with the game instance
-        axios.post(`/api/games`, { playerId, gametypeId, open, socketId: socket.id })
+        axios.post(`/api/games`, { gametypeId, open, socketId: socket.id })
+          .then(newGame => newGame.data)
           .then(newGame => {
-            dispatch(getGame({...newGame.data, host: true, numQuestionsCreated: 0}))
-            history.push(`/game/${newGame.data.id}`)
+            socket.emit('joinGameRoom', newGame.id)
+            // Associate the current player to the open game instance
+            axios.put(`/api/games/${newGame.id}/addNewPlayer`, { playerId })
+              .then(joinedGame => joinedGame.data)
+              .then(joinedGame => {
+                dispatch(getGame({ ...joinedGame, host: true, numQuestionsCreated: 0 }))
+                history.push(`/game/${joinedGame.id}`)
+                if (!joinedGame.open) {
+                  //let server know that the game is closed, passing game id so that the socket room name can be recreated.
+                  socket.emit('closeGame', joinedGame.id)
+                  return axios.post(`/api/games/${joinedGame.id}/createQuestions`, { gametypeId: joinedGame.gametypeId })
+                }
+              })
           })
           .catch(err => console.log(err))
       } else {
@@ -35,12 +47,14 @@ export const getGameThunk = (gametypeId, playerId, open) =>
         socket.emit('joinGameRoom', game.id)
         // Associate the current player to the open game instance
         axios.put(`/api/games/${game.id}/addNewPlayer`, { playerId })
+          .then(joinedGame => joinedGame.data)
           .then(joinedGame => {
-            dispatch(getGame(joinedGame.data))
-            history.push(`/game/${joinedGame.data.id}`)
-            if (!joinedGame.data.open) {
+            dispatch(getGame(joinedGame))
+            history.push(`/game/${joinedGame.id}`)
+            if (!joinedGame.open) {
               //let server know that the game is closed, passing game id so that the socket room name can be recreated.
-              socket.emit('closeGame', joinedGame.data.id)
+              socket.emit('closeGame', joinedGame.id)
+              return axios.post(`/api/games/${joinedGame.id}/createQuestions`, { gametypeId: joinedGame.gametypeId })
             }
           })
           .catch(err => console.log(err))
@@ -55,9 +69,9 @@ export default function gameReducer(state = defaultGame, action) {
     case GET_GAME:
       return action.game
     case UPDATE_GAME:
-      return {...state, ...action.updatedItem}
+      return { ...state, ...action.updatedItem }
     case INCREMENT_GAME_DATA:
-      return {...state, [action.itemToIncrement.whatToIncrement]: state[action.itemToIncrement.whatToIncrement] + action.itemToIncrement.valueToIncrement}
+      return { ...state, [action.itemToIncrement.whatToIncrement]: state[action.itemToIncrement.whatToIncrement] + action.itemToIncrement.valueToIncrement }
     case CLEAR_GAME_DATA:
       return {}
     default:
