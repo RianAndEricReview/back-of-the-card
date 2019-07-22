@@ -101,8 +101,6 @@ router.post('/', (req, res, next) => {
         .then(game => {
           game.dataValues.gametype = gametype
           res.status(201).json(game)
-          // //join the room and then run the question creator func
-          // req.app.io.to(`${req.body.socketId}`).emit('hostJoinRoom', game.id)
         })
     })
     .catch(next)
