@@ -78,3 +78,5 @@ COPY "teamsHalves" FROM '/Users/eeegee/Fullstack Academy/RianAndEricReview/backO
 1	1 Player		../../../images/baseballCards/1966ToppsClonePhillips01.jpeg	1 Player Game	TRUE	1	20	10	right-wrong		2019-03-26 12:18:20.002856-04	2019-03-26 12:18:20.002856-04
 2	2 Player		../../../images/baseballCards/1966ToppsCloneDonaldson01.jpeg	2 Player Game	TRUE	2	20	10	right-wrong		2019-03-26 12:18:20.002856-04	2019-03-26 12:18:20.002856-04
 3	4 Player		../../../images/baseballCards/1966ToppsCloneMartin01.jpeg	4 Player Game	TRUE	4	20	10	right-wrong		2019-03-26 12:18:20.002856-04	2019-03-26 12:18:20.002856-04
+
+npm run seedBaseballData && 
