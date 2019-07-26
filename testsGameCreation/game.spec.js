@@ -5,11 +5,7 @@ const app = require('../server/index')
 const io = require('socket.io-client')
 const ioServer = require('socket.io').listen(8080)
 app.io = ioServer
-const { Game, Gametype, User, GamePlayer, Question } = require('../server/db/models')
-// const Gametype = db.model('gametype')
-// const User = db.model('user')
-// const GamePlayer = db.model('gamePlayer')
-// const Question = db.model('question')
+const { Game, Gametype, User, GamePlayer } = require('../server/db/models')
 
 describe('Games routes', () => {
   before(() => db.sync())
@@ -22,15 +18,19 @@ describe('Games routes', () => {
     const gametype = { id: 1, name: 'onePlayer', description: '1 Player Game', enabled: true, maxPlayers: 1 }
     const user = { id: 1, email: 'bob@bob.bob' }
     const playerId = user.id
+    let sampleGame
 
     describe('Creating and Adding players to a game', () => {
       let socket
       before(done => {
         User.create(user)
         Gametype.create(gametype)
-        .then((createdGametype) => {
-          Game.create({gametypeId: createdGametype.dataValues.id, open: true})
-        })
+          .then((createdGametype) => {
+            return Game.create({ gametypeId: createdGametype.dataValues.id, open: true })
+              .then((createdGame) => {
+                sampleGame = createdGame.dataValues
+              })
+          })
 
         socket = io.connect('http://localhost:8080', {
           'reconnection delay': 0,
@@ -57,21 +57,24 @@ describe('Games routes', () => {
           expect(res.body.currentQuestion).to.equal(1)
           expect(res.body.open).to.be.equal(false)
           expect(res.body.gametypeId).to.be.equal(gametype.id)
-        }))
+        })
+      )
 
-      //to be moved to question.spec.js after game API is refactored and question creation is relocated
-      xit('POST api/games: question creation', () => request(app)
-        .post('/api/games/${joinedGame.id}/createQuestions')
-        .send({ gametypeId: gametype.id, open, playerId })
-        .expect(201)
+      //tests for question creation are route only, actual creation of questions will be tested in questionCreatorFunc tests.
+      it('POST api/games: question creation', () => request(app)
+        .post(`/api/games/${sampleGame.id}/createQuestions`)
+        .send({ gametypeId: sampleGame.gametypeId })
         .then(res => {
-          // console.log('*****RB******', res.body, 'IDDDD', res.body.id)
-          return Question.findAll()
-            .then(foundQuestions => {
-                        console.log('*****RB******', foundQuestions.length)
-              expect(foundQuestions).to.have.length(10)
-            })
-        }))
+          expect(res.status).to.be.equal(200)
+        })
+      )
+      //testing an incorrect gametype that causes an error in the route
+      it('POST api/games: incorrect gametype', () => request(app)
+        .post(`/api/games/${sampleGame.id}/createQuestions`)
+        .send({ gametypeId: 101 })
+        .expect(500)
+      )
+
 
       //to be moved to gamePlayer.spec.js after game API is refactored and gamePlayer creation is relocated
       xit('POST api/games: initial gamePlayer creation', () => request(app)

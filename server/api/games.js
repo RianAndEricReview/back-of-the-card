@@ -91,6 +91,7 @@ router.post('/:gameId/createQuestions', (req, res, next) => {
       questionCreatorFunc(findAllInfoArr, req.app.io, gameId)
       res.end()
     })
+    .catch(next)
 })
 
 // Used to create a new game instance with gametype
