@@ -69,12 +69,14 @@ describe('Games routes', () => {
       )
 
 
-      //tests gamePlayer PUT route and checks that the new gamePlayer was posted in the DB
+      //tests gamePlayer PUT route, checks that the game updates to closed, and checks that the new gamePlayer was posted in the DB 
       it('PUT api/games: initial gamePlayer creation', () => request(app)
         .put(`/api/games/100/addNewPlayer`)
         .send({ playerId })
         .expect(200)
         .then(res => {
+          expect(res.body.gametype.maxPlayers).to.be.equal(1)
+          expect(res.body.open).to.be.equal(false)
           return GamePlayer.findOne({ where: { gameId: res.body.id } })
             .then(foundGamePlayer => {
               expect(foundGamePlayer.gameId).to.be.equal(res.body.id)
