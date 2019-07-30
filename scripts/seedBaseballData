@@ -6,4 +6,6 @@ COPY People FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/People
 COPY Franchises FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Franchises.csv'DELIMITER ',' CSV HEADER;
 COPY Teams FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Teams.csv'DELIMITER ',' CSV HEADER;
 COPY battings FROM '/Users/rianhalperin/RianEricReview/back-of-the-card/CSV/Batting.csv'DELIMITER ',' CSV HEADER;
+INSERT INTO gametypes VALUES (100, 'Seeded Gametype', 'sg', '../../../images/baseballCards/1966ToppsCloneAspecBumgarner02.jpeg', 'A seeded gametype', true, 1, 10, 10, 'right-wrong', 1200, '2019-03-26 13:36:55.928-04', '2019-03-26 13:36:55.928-04');
+INSERT INTO games VALUES (100, 1, true, '2019-03-26 13:36:55.928-04', '2019-03-26 13:36:55.928-04', 100);
 "

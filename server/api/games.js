@@ -109,6 +109,7 @@ router.post('/', (req, res, next) => {
 
 // Used to add a player to a game instance
 router.put('/:gameId/addNewPlayer', (req, res, next) => {
+  console.log('in the put')
   //Create the GamePlayer instance linking user to game.
   GamePlayer.create({ gameId: req.params.gameId, userId: req.body.playerId.toString() })
     .then((newPlayer) => {
