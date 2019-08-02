@@ -10,7 +10,7 @@ const { User, GamePlayer } = require('../server/db/models')
 describe('Games routes', () => {
   before(() => db.sync())
   after(() => {
-    db.sync({force: true})
+    db.sync({ force: true })
   })
 
   describe('api/games', () => {
@@ -54,11 +54,11 @@ describe('Games routes', () => {
       //tests for question creation are route only, actual creation of questions will be tested in questionCreatorFunc tests.
       it('POST api/games: question creation', () => {
         return request(app)
-        .post(`/api/games/100/createQuestions`)
-        .send({ gametypeId: 100 })
-        .then(res => {
-          expect(res.status).to.be.equal(200)
-        })
+          .post(`/api/games/100/createQuestions`)
+          .send({ gametypeId: 100 })
+          .then(res => {
+            expect(res.status).to.be.equal(200)
+          })
       })
 
       //testing an incorrect gametype that causes an error in the route
