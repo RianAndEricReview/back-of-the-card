@@ -35,7 +35,7 @@ describe('questions store - actions, thunk, and reducer', () => {
     })
     it('creates and dispatches the GET_ALL_QUESTIONS action', () => {
       mockAxios.onGet('/api/games/1/questions').replyOnce(200, questions)
-      store.dispatch(questionsStore.getAllQuestionsThunk(1))
+      return store.dispatch(questionsStore.getAllQuestionsThunk(1))
         .then(() => {
           const expectedActions = [{
             type: questionsStore.GET_ALL_QUESTIONS,
