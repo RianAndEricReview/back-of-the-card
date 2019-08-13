@@ -11,7 +11,7 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' jest ./tests/clientTesting/**/*.test.js",
+    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' mocha ./tests/serverTesting/**/*.spec.js --require @babel/polyfill --require @babel/register && jest ./tests/clientTesting/**/*.test.js",
     "test-create-game": "npm run seedBaseballData && NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test' mocha ./testsGameCreation/**/**/*.spec.js --require @babel/polyfill --require @babel/register",
     "test-baseball": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/back_of_the_card-test_baseball' mocha ./testsBaseballData/**/*.spec.js --delay --require @babel/polyfill --require @babel/register -w"
   },

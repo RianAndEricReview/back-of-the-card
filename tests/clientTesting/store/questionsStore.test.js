@@ -53,8 +53,8 @@ describe('questions store - actions, thunk, and reducer', () => {
     it('should handle GET_ALL_QUESTIONS', () => {
       expect(questionsStore.default([], {type: questionsStore.GET_ALL_QUESTIONS, questions})).toEqual(questions)
     })
+    it('should handle CLEAR_ALL_QUESTIONS', () => {
+      expect(questionsStore.default(questions, {type: questionsStore.CLEAR_ALL_QUESTIONS})).toEqual([])
+    })
   })
 })
-
-// REMINDER TO PUT THIS BACK IN THE TEST SCRIPT
-// mocha ./tests/serverTesting/**/*.spec.js --require @babel/polyfill --require @babel/register &&
