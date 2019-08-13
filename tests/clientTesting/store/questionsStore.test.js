@@ -45,6 +45,12 @@ describe('questions store - actions, thunk, and reducer', () => {
         })
     })
   })
+
+  describe('questionReducer', () => {
+    it('should return empty initial state', () => {
+      expect(questionsStore.default(undefined, {})).toEqual([])
+    })
+  })
 })
 
 // REMINDER TO PUT THIS BACK IN THE TEST SCRIPT
