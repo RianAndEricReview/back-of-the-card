@@ -50,6 +50,9 @@ describe('questions store - actions, thunk, and reducer', () => {
     it('should return empty initial state', () => {
       expect(questionsStore.default(undefined, {})).toEqual([])
     })
+    it('should handle GET_ALL_QUESTIONS', () => {
+      expect(questionsStore.default([], {type: questionsStore.GET_ALL_QUESTIONS, questions})).toEqual(questions)
+    })
   })
 })
 
