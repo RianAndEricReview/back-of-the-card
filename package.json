@@ -28,7 +28,7 @@
     "connect-session-sequelize": "^6.0.0",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
