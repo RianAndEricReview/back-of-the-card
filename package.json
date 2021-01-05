@@ -22,7 +22,7 @@
   "author": "Rian & Eric",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-session-sequelize": "^6.0.0",
